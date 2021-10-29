@@ -7,7 +7,7 @@ Bicycle counts in Central Lane MPO area combine both permanent and short-term tu
 
 # Bike shares
 
-Bike shares data is provided by [Cascadia Mobility](https://forthmobility.org/CascadiaMobility) through the [PeaceHealth Rides](https://peacehealthrides.com/) program and is accessible [here](https://peacehealthrides.com/opendata).
+Bike share data is provided by [Cascadia Mobility](https://forthmobility.org/CascadiaMobility) through the [PeaceHealth Rides](https://peacehealthrides.com/) program and is accessible [here](https://peacehealthrides.com/opendata). The bike share is organized and presented in the [data portal](https://www.lcog.org/thempo/page/peacehealth-rides-bike-share-program).
 
 # Bikes on buses
 
