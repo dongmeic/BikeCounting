@@ -11,6 +11,10 @@ Bike share data is provided by [Cascadia Mobility](https://forthmobility.org/Cas
 
 # Bike on buses
 
-Bike on buses data is provided by LTD every April and October. 
+Bike on buses data is provided by LTD every April and October.
 
 # Bike facilities and infrastructure (bike map)
+
+## 1. [Eugene bike map](https://www.eugene-or.gov/DocumentCenter/View/4268/Eugene-Bike-Map---English?bidId=)
+
+## 2. [Springfield bike map](https://www.eugene-or.gov/DocumentCenter/View/4270/Springfield-Bike-Map---English?bidId=)
