@@ -7,7 +7,7 @@ Bicycle counts in Central Lane MPO area combine both permanent and short-term tu
 
 # Bike shares
 
-Bike share data is provided by [Cascadia Mobility](https://forthmobility.org/CascadiaMobility) through the [PeaceHealth Rides](https://peacehealthrides.com/) program and is accessible [here](https://peacehealthrides.com/opendata). The bike share is organized and presented in the [data portal](https://www.lcog.org/thempo/page/peacehealth-rides-bike-share-program). More explanations on the bike share data can be found [here](https://github.com/NABSA/gbfs).
+Bike share data is provided by [Cascadia Mobility](https://forthmobility.org/CascadiaMobility) through the [PeaceHealth Rides](https://peacehealthrides.com/) program and is accessible [here](https://peacehealthrides.com/opendata). The bike share is organized and presented in the [MPO data portal](https://www.lcog.org/thempo/page/peacehealth-rides-bike-share-program). More explanations on the bike share data can be found [here](https://github.com/NABSA/gbfs). Account credentials are required to access the [PeachHealth Rides data portal](https://data.socialbicycles.com/) for bike trips and hub data. 
 
 # Bike on buses
 
@@ -15,7 +15,7 @@ Bike on buses data is provided by LTD every April and October.
 
 # Bike facilities and infrastructure (bike map)
 
-The [interactive bike map](https://lcog.maps.arcgis.com/apps/webappviewer/index.html?id=c598924750d94d06a372bb467ec9a01e) is built using [ArcGIS Web AppBuilder](https://developers.arcgis.com/web-appbuilder/). 
+The [interactive bike map](https://lcog.maps.arcgis.com/apps/webappviewer/index.html?id=c598924750d94d06a372bb467ec9a01e) is built using [ArcGIS Web AppBuilder](https://developers.arcgis.com/web-appbuilder/). The bike facilities data is available on [RLID](https://www.rlid.org/).
 
 <!---[Eugene bike map](https://www.eugene-or.gov/DocumentCenter/View/4268/Eugene-Bike-Map---English?bidId=);
 [Springfield bike map](https://www.eugene-or.gov/DocumentCenter/View/4270/Springfield-Bike-Map---English?bidId=)--->
