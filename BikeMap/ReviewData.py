@@ -48,7 +48,10 @@ def readBikeStores():
     bikestores = gpd.read_file(path, layer="Bike_Stores")
     return bikestores
 
-
+def readLensBikeShops():
+    path = r'T:\DCProjects\StoryMap\BikeCounting\BikeMap\BikeMap.gdb'
+    bikeshops = gpd.read_file(path, layer="LensBikeShop")
+    return bikeshops
 
 
 
