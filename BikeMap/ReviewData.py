@@ -6,6 +6,8 @@
 import geopandas as gpd
 import os
 from sqlalchemy import create_engine
+import matplotlib.pyplot as plt
+import contextily as ctx
 
 
 engine = create_engine(   
@@ -17,19 +19,22 @@ engine = create_engine(
 "ApplicationIntent%3DReadWrite%3B"
 "WSID%3Dclwrk4087.int.lcog.org%3B")
 
+MPObd = gpd.read_file("V:/Data/Transportation/MPO_Bound.shp")
+
 def readBikeFacility():
     sql = '''
     SELECT 
-    bike_segid AS id,
     name,
     ftypedes AS type,
-    status,
     source,
     Shape.STAsBinary() AS geom
-    FROM dbo.BikeFacility;
+    FROM dbo.BikeFacility
+    WHERE status = 'built';
     '''
     
     bikeways = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geom')
+    bikeways.crs = "EPSG:2914"
+    bikeways = bikeways.to_crs(epsg=3857)
     return bikeways
 
 
@@ -53,7 +58,14 @@ def readLensBikeShops():
     bikeshops = gpd.read_file(path, layer="LensBikeShop")
     return bikeshops
 
-
-
+def mapBikeFacilityType(ftype='Shared Use Path'):
+    bikeways = readBikeFacility()
+    fig, ax = plt.subplots(figsize=(14, 12))
+    bikeways[bikeways['type']==ftype].plot(ax=ax, color='blue', aspect=1)
+    MPObd.plot(ax=ax, facecolor="none", edgecolor="black", linestyle='--', linewidth = 1.5, aspect=1)
+    ctx.add_basemap(ax, alpha = 0.7)
+    plt.title(ftype + " in Central MPO", fontsize=30, fontname="Palatino Linotype", 
+              color="grey")
+    ax.axis("off");
 
 
