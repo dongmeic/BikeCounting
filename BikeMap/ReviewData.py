@@ -21,7 +21,7 @@ engine = create_engine(
 
 MPObd = gpd.read_file("V:/Data/Transportation/MPO_Bound.shp")
 
-def readBikeFacility():
+def readBikeFacility(add=True):
     sql = '''
     SELECT 
     name,
@@ -34,6 +34,13 @@ def readBikeFacility():
     
     bikeways = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geom')
     bikeways.crs = "EPSG:2914"
+    if add:
+        path = r'T:\DCProjects\StoryMap\BikeCounting\BikeMap\AGO\AGO.gdb'
+        morebikeways = gpd.read_file(path, layer='BikeFacilityNullStatus')
+        morebikeways = morebikeways[morebikeways.status=='Built'][['name', 'ftypedes', 'source', 'geometry']]
+        morebikeways.rename(columns={'ftypedes': 'type', 'geometry':'geom'}, inplace=True)
+        bikeways = bikeways.append(morebikeways, ignore_index=True)
+        
     bikeways = bikeways.to_crs(epsg=3857)
     return bikeways
 
