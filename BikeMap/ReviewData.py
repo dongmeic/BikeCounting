@@ -44,7 +44,6 @@ def readBikeFacility(add=True):
     bikeways = bikeways.to_crs(epsg=3857)
     return bikeways
 
-
 def readBusiness():
     path = r'X:\Projects\RLID\BusinessData\InfoUSA\2021\October\Geocoded.gdb'
     business = gpd.read_file(path, layer="Oct2021_Geo")
@@ -75,4 +74,15 @@ def mapBikeFacilityType(ftype='Shared Use Path'):
               color="grey")
     ax.axis("off");
 
-
+def readBikeRacks():
+    path = r'T:\DCProjects\StoryMap\BikeCounting\BikeMap\MoreBikeData.gdb'
+    bikeracks = gpd.read_file(path, layer="Bike_Racks")
+    bikeracks.fillna("",inplace=True)
+    bikeracks['Address'] = bikeracks.AddressNo + ' ' + bikeracks.Direction + ' ' + bikeracks.AddressName.str.capitalize() + ' ' + bikeracks.AddressType.str.capitalize()
+    bikeracks.Address.replace('\s+', ' ', regex=True, inplace=True)
+    bikeracks['Business'] = bikeracks.Business.str.capitalize()
+    bikeracks.rename(columns={'Color_Style': 'ColorStyle'}, inplace=True)
+    bikeracks = bikeracks[['RackType', 'NoOfRacks', 'ColorStyle', 'Business', 'Address', 'geometry']]
+    bikeracks = bikeracks.to_crs(epsg=3857)
+    return bikeracks
+    
