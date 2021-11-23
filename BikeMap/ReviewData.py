@@ -86,3 +86,19 @@ def readBikeRacks():
     bikeracks = bikeracks.to_crs(epsg=3857)
     return bikeracks
     
+def readLTDstops():
+    sql = '''
+    SELECT 
+    stop_number AS stopNumber,
+    stop_name AS stopName,
+    longitude,
+    latitude,
+    Shape.STAsBinary() AS geom
+    FROM dbo.LTD_Stop;
+    '''
+    
+    ltdstops = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geom')
+    ltdstops.crs = "EPSG:2914"
+    
+    ltdstops = ltdstops.to_crs(epsg=3857)
+    return ltdstops
