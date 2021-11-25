@@ -102,3 +102,20 @@ def readLTDstops():
     
     ltdstops = ltdstops.to_crs(epsg=3857)
     return ltdstops
+
+def readSiteAddress():
+    sql = '''
+    SELECT 
+    concat_address AS address,
+    longitude,
+    latitude,
+    Shape.STAsBinary() AS geom
+    FROM dbo.Site_Address;
+    '''
+    
+    site_address = gpd.GeoDataFrame.from_postgis(sql, engine, geom_col='geom')
+    site_address.crs = "EPSG:2914"
+    
+    site_address = site_address.to_crs(epsg=3857)
+    return site_address
+
