@@ -11,13 +11,13 @@ Bike share data is provided by [Cascadia Mobility](https://forthmobility.org/Cas
 
 # Bike on buses
 
-Bike on buses data is provided by LTD every April and October.
+Bike on buses data is provided by LTD monthly since 2013.
 
 # Bike facilities and infrastructure (bike map)
 
 The [interactive bike map](https://lcog.maps.arcgis.com/apps/webappviewer/index.html?id=c598924750d94d06a372bb467ec9a01e) is built using [ArcGIS Web AppBuilder](https://developers.arcgis.com/web-appbuilder/). The bike facilities data is available on [RLID](https://www.rlid.org/). The map also includes bike shops, bike share stations, bike racks, bike friendly business, bike lockers, and bike fixit stations. Bike shops in Eugene are listed [here](https://www.eugene-or.gov/3260/Bike-Repair-Rentals). Bike shops and bike racks are provided by City of Eugene. Bike share locations are from the [map on PeaceHealth Rides](https://www.peacehealthrides.com/). The bike share stations are [organized](https://github.com/dongmeic/BikeCounting/blob/main/BikeMap/BikeShareStations.ipynb) from the [open data portal](https://peacehealthrides.com/opendata/station_information.json). Bike friendly business, bike lockers, and bike fixit stations are from previous work by Chrissy. The bike facilities data was further modified by reviewing the NULL status and changing some status to built, adding to the existing built ones. The LTD stops are from the Winter 2019 version.
 
-The bike-friendly business data is from Travel Oregon provided with business name and address. The coordinates are mostly from the InfoUSA (now Data Axle USA) business data by matching business names. If there is not a match, the coordinates are from Google Maps by manually typing in the address or using geopy. The discrepancy between the two approaches is not neglectable in some addresses because geopy can't get the exact addresses. As such, coordinates values from the manual searching are retained. There are six points located outside of the MPO boundary. 
+The bike-friendly business data is from Travel Oregon provided with business name, address, and coordinates. The coordinates are mostly from the InfoUSA (now Data Axle USA) business data by matching business names, since a few provided coordinates are not accurate. If there is not a match, the coordinates are from Google Maps by manually typing in the address or using `geopy`. The discrepancy between the two approaches is not neglectable in some addresses because geopy can't get the exact addresses. As such, coordinates values from the manual searching are retained. There are six points located outside of the MPO boundary. The coordinates were reviewed between data sources to correct errors, although the data was not checked one by one.
 
 <!---[Eugene bike map](https://www.eugene-or.gov/DocumentCenter/View/4268/Eugene-Bike-Map---English?bidId=);
 [Springfield bike map](https://www.eugene-or.gov/DocumentCenter/View/4270/Springfield-Bike-Map---English?bidId=)--->
