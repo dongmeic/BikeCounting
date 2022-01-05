@@ -11,7 +11,7 @@ Bike share data is provided by [Cascadia Mobility](https://forthmobility.org/Cas
 
 # Bike on buses
 
-Bike on buses data is provided by LTD monthly since 2013. The April and October data can be explored by routes in the [MPO data portal](https://www.lcog.org/thempo/page/bikes-buses).
+Bike on buses data is provided by LTD monthly since 2013. The April and October data can be explored by routes in the [MPO data portal](https://www.lcog.org/thempo/page/bikes-buses). The monthly data is [aggregated](https://github.com/dongmeic/BikeCounting/blob/main/BikeCounts/Explore_Bikes_On_Buses.ipynb) to show the stations with the most frequent bikes on buses. 
 
 # Bike facilities and infrastructure (bike map)
 
