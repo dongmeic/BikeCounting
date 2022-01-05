@@ -24,3 +24,40 @@ mapping <- function(plotvar, spdf, nclr=8, col="BrBG", sty="kmeans", legtlt='BPH
   legend("topright", legend=names(attr(colcode, "table")),
          fill=attr(colcode, "palette"), cex=0.9, bty="n", title=legtlt)
 }
+
+readSheet <- function(fileName = "LTD Bike Count_2013.xlsx",
+                      sheetName = "bike count_Jan13"){
+    data <- read_excel(path = paste0(path, fileName), sheet = sheetName, 
+             col_types = c("text", "date", "numeric", "date", "date", "text", "text", "text", 
+                            "text", "numeric", "numeric", "text","numeric", "text", "numeric"))
+    stops.to.remove <- unique(grep('anx|arr|ann|escenter|garage', data$stop, value = TRUE))
+    # remove the stops with letters
+    data <- subset(data, !(stop %in% stops.to.remove))
+    data$MonthYear <- paste(as.character(month(data$date, label=TRUE, abbr=FALSE)),
+                                year(data$date))
+    dates <- sort(unique(data$date))
+    routes <- unique(data$route)
+    for(i in 1:length(dates)){
+        d <- dates[i]
+        for(j in 1:length(routes)){
+          r <- routes[j]
+          data$DailyRtQty[data$date==d & data$route==r] <- sum(data$qty[data$date==d & data$route==r], na.rm = TRUE)
+        }
+        data$DailyQty[data$date==d] <- sum(data$qty[data$date==d], na.rm = TRUE)
+      }
+    
+    return(data)
+}
+
+readExcel <- function(fileName = "LTD Bike Count_2013.xlsx"){
+    sheets <- excel_sheets(paste0(path,fileName))
+    for(i in 1:length(sheets)){
+        if(i==1){
+            df <- readSheet(fileName = fileName, sheetName = sheets[i])
+        }else{
+            ndf <- readSheet(fileName = fileName, sheetName = sheets[i])
+            df <- rbind(df, ndf)
+        }
+    }
+    return(df)
+}
