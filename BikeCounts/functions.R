@@ -26,13 +26,22 @@ mapping <- function(plotvar, spdf, nclr=8, col="BrBG", sty="kmeans", legtlt='BPH
 }
 
 readSheet <- function(fileName = "LTD Bike Count_2013.xlsx",
-                      sheetName = "bike count_Jan13"){
+                      sheetName = "bike count_Jan13",
+                      stop.path="T:/Data/LTD Data/2020 Winter LTD Routes and Stops",
+                      layer="Winter_2020_Stops"){
     data <- read_excel(path = paste0(path, fileName), sheet = sheetName, 
              col_types = c("text", "date", "numeric", "date", "date", "text", "text", "text", 
                             "text", "numeric", "numeric", "text","numeric", "text", "numeric"))
     stops.to.remove <- unique(grep('anx|arr|ann|escenter|garage', data$stop, value = TRUE))
     # remove the stops with letters
-    data <- subset(data, !(stop %in% stops.to.remove))
+    data <- subset(data, !(stop %in% stops.to.remove)) %>% select(-c(latitude, longitude))
+    # convert EmX
+    Emx <- c("101", "102", "103", "104", "105")
+    data$route <- ifelse(data$route %in% Emx, "EmX", data$route)
+    # make the stop numbers to 5 digits
+    zeros <- c("0", "00", "000", "0000")
+    data$stop <- ifelse(nchar(data$stop) == 5, data$stop,
+                            paste0(zeros[(5 - nchar(data$stop))], data$stop))
     data$MonthYear <- paste(as.character(month(data$date, label=TRUE, abbr=FALSE)),
                                 year(data$date))
     dates <- sort(unique(data$date))
@@ -45,8 +54,20 @@ readSheet <- function(fileName = "LTD Bike Count_2013.xlsx",
         }
         data$DailyQty[data$date==d] <- sum(data$qty[data$date==d], na.rm = TRUE)
       }
-    
+    stops.df <- get.stop.coordinates(stop.path=stop.path,layer=layer)
+    data <- merge(data, stops.df, by = 'stop')
     return(data)
+}
+
+get.stop.coordinates <- function(stop.path="T:/Data/LTD Data/2020 Winter LTD Routes and Stops",
+                                layer="Winter_2020_Stops"){
+  stops <- readOGR(dsn = stop.path, layer = layer, verbose = FALSE, 
+                   stringsAsFactors = FALSE)
+  # convert to data frame
+  colnames <- c("stop_numbe", "longitude", "latitude")
+  stops.df <- stops@data[, colnames]
+  names(stops.df)[1] <- "stop"
+  return(stops.df)
 }
 
 readExcel <- function(fileName = "LTD Bike Count_2013.xlsx"){
