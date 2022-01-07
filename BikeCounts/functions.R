@@ -25,13 +25,28 @@ mapping <- function(plotvar, spdf, nclr=8, col="BrBG", sty="kmeans", legtlt='BPH
          fill=attr(colcode, "palette"), cex=0.9, bty="n", title=legtlt)
 }
 
-readSheet <- function(fileName = "LTD Bike Count_2013.xlsx",
+readSheet <- function(path = "T:/Data/LTD Data/BikeOnBuses/Monthly/", 
+                      fileName = "LTD Bike Count_2013.xlsx",
                       sheetName = "bike count_Jan13",
                       stop.path="T:/Data/LTD Data/2020 Winter LTD Routes and Stops",
                       layer="Winter_2020_Stops"){
-    data <- read_excel(path = paste0(path, fileName), sheet = sheetName, 
+    if(fileName == "April 2013.xlsx"){
+        data <- read_excel(path = paste0(path, fileName), sheet = sheetName,
+                            col_types = c("text", "text", "numeric", "text", 
+                                           "text", "text", "text", "text", 
+                                           "text", "numeric", "numeric", "numeric", 
+                                           "numeric", "text", "numeric"))
+    
+        data$date <- strptime(data$date, "%m/%d/%Y")
+        data$trip_end <- strptime(data$trip_end, "%H:%M")
+        data$time <- strptime(data$time, "%H:%M")
+        data$route <- ifelse(data$route == '01', '1', data$route)
+        data <- data[month(data$date)==4,]
+    }else{
+        data <- read_excel(path = paste0(path, fileName), sheet = sheetName, 
              col_types = c("text", "date", "numeric", "date", "date", "text", "text", "text", 
                             "text", "numeric", "numeric", "text","numeric", "text", "numeric"))
+    }
     stops.to.remove <- unique(grep('anx|arr|ann|escenter|garage', data$stop, value = TRUE))
     # remove the stops with letters
     data <- subset(data, !(stop %in% stops.to.remove)) %>% select(-c(latitude, longitude))
@@ -44,16 +59,6 @@ readSheet <- function(fileName = "LTD Bike Count_2013.xlsx",
                             paste0(zeros[(5 - nchar(data$stop))], data$stop))
     data$MonthYear <- paste(as.character(month(data$date, label=TRUE, abbr=FALSE)),
                                 year(data$date))
-    dates <- sort(unique(data$date))
-    routes <- unique(data$route)
-    for(i in 1:length(dates)){
-        d <- dates[i]
-        for(j in 1:length(routes)){
-          r <- routes[j]
-          data$DailyRtQty[data$date==d & data$route==r] <- sum(data$qty[data$date==d & data$route==r], na.rm = TRUE)
-        }
-        data$DailyQty[data$date==d] <- sum(data$qty[data$date==d], na.rm = TRUE)
-      }
     stops.df <- get.stop.coordinates(stop.path=stop.path,layer=layer)
     data <- merge(data, stops.df, by = 'stop')
     return(data)
@@ -70,13 +75,14 @@ get.stop.coordinates <- function(stop.path="T:/Data/LTD Data/2020 Winter LTD Rou
   return(stops.df)
 }
 
-readExcel <- function(fileName = "LTD Bike Count_2013.xlsx"){
-    sheets <- excel_sheets(paste0(path,fileName))
+readExcel <- function(path = "T:/Data/LTD Data/BikeOnBuses/Monthly/", 
+                     fileName = "LTD Bike Count_2013.xlsx",
+                     sheets = excel_sheets(paste0(path,fileName))){   
     for(i in 1:length(sheets)){
         if(i==1){
-            df <- readSheet(fileName = fileName, sheetName = sheets[i])
+            df <- readSheet(path = path, fileName = fileName, sheetName = sheets[i])
         }else{
-            ndf <- readSheet(fileName = fileName, sheetName = sheets[i])
+            ndf <- readSheet(path = path, fileName = fileName, sheetName = sheets[i])
             df <- rbind(df, ndf)
         }
     }
