@@ -1,3 +1,4 @@
+library(lubridate)
 
 inpath <- "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/Trips"
 files <- list.files(inpath)
@@ -49,3 +50,37 @@ write.csv(df1, "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_20_21.c
 
 write.csv(df2, "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_org_dst_20_21.csv",
           row.names=FALSE)
+
+# trips and duration by year
+df1$Start.Date <- as.Date(df1$Start.Date, format = "%Y-%m-%d")
+df_trips <- transform(aggregate(x=list(Trips = df1$Route.ID), 
+                                by=list(Year = year(df1$Start.Date)), 
+                                FUN=function(x) length(unique(x))), 
+                                Growth=ave(Trips,FUN=function(x) c(NA, diff(x)/x[-length(x)]))) 
+df_trips
+                                                                                                              
+df_users <- transform(aggregate(x=list(Users = df1$User.ID), 
+                                by=list(Year = year(df1$Start.Date)), 
+                                FUN=function(x) length(unique(x))), 
+                      Growth=ave(Users,FUN=function(x) c(NA, diff(x)/x[-length(x)]))) 
+
+df_users
+
+toMinutes <- function(x){
+  h <- as.numeric(strsplit(x, ":")[[1]][1])
+  m <- as.numeric(strsplit(x, ":")[[1]][2])
+  s <- as.numeric(strsplit(x, ":")[[1]][3])
+  
+  res <- h*60 + m + s/60
+  
+  return(res)
+}
+
+df1$Minutes <- unlist(lapply(df1$Duration, function(x) toMinutes(x)))
+
+df_duration <- transform(aggregate(x=list(Duration = df1$Minutes), 
+                                by=list(Year = year(df1$Start.Date)), 
+                                FUN=mean), 
+                      Growth=ave(Duration,FUN=function(x) c(NA, diff(x)/x[-length(x)]))) 
+
+df_duration
