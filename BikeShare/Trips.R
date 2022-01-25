@@ -9,6 +9,8 @@ selected_vars <- c('User.ID', 'Route.ID', 'Start.Hub',
                    'End.Date', 'End.Time', 'Bike.ID', 'Bike.Name',
                    'Distance..Miles.', 'Duration')
 
+test <- read.csv("T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_2019-05-01_2019-05-31.csv")
+
 organize_points <- function(file){
   trips <- read.csv(paste0(inpath, "/", file))
   org <- trips[,c('Route.ID', 'Bike.ID', 'User.ID', 
@@ -32,10 +34,15 @@ organize_points <- function(file){
 for(file in files){
   if(file == files[1]){
     df1 <- read.csv(paste0(inpath, "/", file))
+    df1 <- df1[selected_vars]
     df2 <- organize_points(file)
     
   }else{
     ndf1 <- read.csv(paste0(inpath, "/", file))
+    if(file=='trips_peace_health_rides_05_01_2019-05_31_2019.csv'){
+      colnames(ndf1)[which(colnames(ndf1)=='Distance')] <- "Distance..Miles."
+    }
+    ndf1 <- ndf1[selected_vars]
     df1 <- rbind(df1, ndf1)
     
     ndf2 <- organize_points(file)
@@ -44,7 +51,6 @@ for(file in files){
   print(file)
 }
 
-df1 <- df1[selected_vars]
 write.csv(df1, "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_20_21.csv",
           row.names=FALSE)
 
