@@ -1,3 +1,7 @@
+# This script was created to organize bike share trips data
+# By Dongmei Chen (dchen@lcog.org)
+# On January 23th, 2022
+
 library(lubridate)
 
 inpath <- "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/Trips"
