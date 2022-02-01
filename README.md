@@ -1,5 +1,5 @@
 # BikeCounting
-The repository is to organize bike counting related datasets (bike counts, bike shares, bikes on buses, bike facilities and infrastructure, etc.) collected in CLMPO.
+The repository is to organize bike counting related datasets (bike counts, bike shares, bikes on buses, bike facilities and infrastructure, etc.) collected in CLMPO. The US Census ACS [Table B08301: Means of Transportation to Work](https://censusreporter.org/tables/B08301/) and [Table B08006: Sex of Workers by Means of Transportation to Work](https://censusreporter.org/tables/B08006/) are also reviewed to understand the number and percent of bike commuters in the metropolitan area.
 
 # Bike counts
 
