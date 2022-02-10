@@ -55,10 +55,10 @@ for(file in files){
   print(file)
 }
 
-write.csv(df1, "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_20_21.csv",
+write.csv(df1, "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_all.csv",
           row.names=FALSE)
 
-write.csv(df2, "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_org_dst_20_21.csv",
+write.csv(df2, "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_org_dst.csv",
           row.names=FALSE)
 
 # trips and duration by year
