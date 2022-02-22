@@ -29,5 +29,12 @@ The bike-friendly business data is from Travel Oregon provided with business nam
 ## Spatial overlay between bike counts and bike facility type
 To understand the bike count distribution among the bike facility types, a spatial join links the two dataset with the nearest function. Setting 10 meters as the reference for road width based the maximum lane width 15 feet and the typical two-lane roadway, the bikes per hour data is aggregated by bike lane type to compare.
 
-# Data aggregation on bike counts, bike share counts and bikes on buses counts
-Bike counts, bike share counts, and bikes on buses counts are aggregated from multi-year data using summary statistics, saved as spatial data, and uploaded to the online bike map for reference. 
+## Data aggregation on bike counts, bike share counts and bikes on buses counts
+Bike counts, bike share counts, and bikes on buses counts are aggregated from multi-year data using summary statistics, saved as spatial data, and uploaded to the [online bike map](https://arcg.is/K59Oi0) for reference. Bike counting data includes average bikes per hour during 2012 and 2020, total origin and destination bike share station trips during 2019 - 2021, and average annual total counts on bikes on buses during 2013 - 2021.
+
+## Exploratory data analysis
+To understand the bike counting spatial patterns, hot spot analysis is conducted in R and ArcGIS Pro.
+
+### Heat map in R
+
+### Hot spot analysis in ArcGIS Pro
