@@ -6,6 +6,8 @@ options(warn = -1)
 library(rgdal)
 library(raster)
 library(rgeos)
+library(sf)
+library(RODBC)
 
 outpath <- "T:/DCProjects/StoryMap/BikeCounting"
 # MPO boundary
@@ -149,11 +151,34 @@ heat_map_analysis(shp=destination, field='ntrips',
                   legend.title='Bike Share Trips Per Year',
                   outname='heatmap_bs_dest')
 
+library(odbc)
+con <- dbConnect(odbc(),
+                 Driver = "SQL Server",
+                 Server = "rliddb.int.lcog.org,5433",
+                 Database = "RLIDGeo",
+                 Trusted_Connection = "True")
+sql = "
+SELECT 
+OBJECTID AS id,
+name,
+type,
+fed_class,
+Shape.STAsBinary() AS geom
+FROM dbo.Road;
+"
+
+roads <- st_read(con, geometry_column = "geom", query = sql)
+class(roads)
+plot(st_geometry(roads))
+majroads <- roads[!grepl("Collector|Local", roads$fed_class),] %>% st_set_crs(2914)
+majroads <- st_transform(majroads, 3857)
+
 
 png(paste0(outpath, "/figures/hot_spots_by_data.png"), width = 8, 
     height = 5, units = "in", res = 300)
 par(mar=c(0,0,2,0))
 plot(MPOBound, bord="darkgrey", main="Bike Counting Hot Spots By Data Sources")
+plot(st_geometry(majroads), col='grey', add=T)
 plot(heat_map_analysis(res=TRUE, print = FALSE), bord='red', add=T)
 
 plot(heat_map_analysis(shp=bob_out, field='Counts', 
