@@ -26,6 +26,7 @@ def readBikeFacility(add=True):
     SELECT 
     name,
     ftypedes AS type,
+    lane_typedes AS lane_type,
     source,
     Shape.STAsBinary() AS geom
     FROM dbo.BikeFacility
@@ -37,8 +38,8 @@ def readBikeFacility(add=True):
     if add:
         path = r'T:\DCProjects\StoryMap\BikeCounting\BikeMap\AGO\AGO.gdb'
         morebikeways = gpd.read_file(path, layer='BikeFacilityNullStatus')
-        morebikeways = morebikeways[morebikeways.status=='Built'][['name', 'ftypedes', 'source', 'geometry']]
-        morebikeways.rename(columns={'ftypedes': 'type', 'geometry':'geom'}, inplace=True)
+        morebikeways = morebikeways[morebikeways.status=='Built'][['name', 'ftypedes', 'lane_typedes', 'source', 'geometry']]
+        morebikeways.rename(columns={'ftypedes': 'type', 'lane_typedes': 'lane_type', 'geometry':'geom'}, inplace=True)
         bikeways = bikeways.append(morebikeways, ignore_index=True)
         
     bikeways = bikeways.to_crs(epsg=3857)
