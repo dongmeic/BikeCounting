@@ -131,6 +131,10 @@ text(x = df_eug$YEAR,
      y = df_eug$PCT+0.002,
      labels = paste0(round(df_eug$PCT,4)*100, "%"),
      col = "red")
+text(x = 2017,                               
+     y = 0.05,
+     labels = "Eugene-Springfield", 
+     col = "red")
 points(x = data_maxes$Year[2:10],                             
        y = data_maxes$x[2:10])
 lines(data_maxes$Year[2:10], data_maxes$x[2:10], 

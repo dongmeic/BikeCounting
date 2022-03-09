@@ -93,6 +93,31 @@ plot(heat_bph, col=pal(7), legend.only=TRUE,
 
 
 # funtions
+# reference: http://michaelminn.net/tutorials/r-point-analysis/
+
+library(odbc)
+con <- dbConnect(odbc(),
+                 Driver = "SQL Server",
+                 Server = "rliddb.int.lcog.org,5433",
+                 Database = "RLIDGeo",
+                 Trusted_Connection = "True")
+sql = "
+SELECT 
+OBJECTID AS id,
+name,
+type,
+fed_class,
+Shape.STAsBinary() AS geom
+FROM dbo.Road;
+"
+
+roads <- st_read(con, geometry_column = "geom", query = sql)
+class(roads)
+plot(st_geometry(roads))
+majroads <- roads[!grepl("Collector|Local", roads$fed_class),] %>% st_set_crs(2914)
+majroads <- st_transform(majroads, 3857)
+
+
 heat_map_analysis <- function(shp=bph, field='BPH', pixelsize=100, 
                               d=264, threshold.p = 0.99, 
                               legend.title='Bikes Per Hour',
@@ -124,6 +149,7 @@ heat_map_analysis <- function(shp=bph, field='BPH', pixelsize=100,
     plot(heat, xlim=extent(r)[1:2], ylim=extent(r)[3:4],
          col=pal(7), legend=F, axes=F, box=F,
          frame.plot=F,useRaster=F, add=T)
+    plot(st_geometry(majroads), col='grey', add=T)
     plot(contours, border='blue', add=T)
     plot(heat, col=pal(7), legend.only=TRUE, 
          horizontal = TRUE, legend.args = list(text=legend.title),
@@ -150,28 +176,6 @@ heat_map_analysis(shp=bob_out, field='Counts',
 heat_map_analysis(shp=destination, field='ntrips', 
                   legend.title='Bike Share Trips Per Year',
                   outname='heatmap_bs_dest')
-
-library(odbc)
-con <- dbConnect(odbc(),
-                 Driver = "SQL Server",
-                 Server = "rliddb.int.lcog.org,5433",
-                 Database = "RLIDGeo",
-                 Trusted_Connection = "True")
-sql = "
-SELECT 
-OBJECTID AS id,
-name,
-type,
-fed_class,
-Shape.STAsBinary() AS geom
-FROM dbo.Road;
-"
-
-roads <- st_read(con, geometry_column = "geom", query = sql)
-class(roads)
-plot(st_geometry(roads))
-majroads <- roads[!grepl("Collector|Local", roads$fed_class),] %>% st_set_crs(2914)
-majroads <- st_transform(majroads, 3857)
 
 
 png(paste0(outpath, "/figures/hot_spots_by_data.png"), width = 8, 
