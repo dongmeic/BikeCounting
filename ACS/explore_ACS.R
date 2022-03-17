@@ -217,3 +217,7 @@ text(x = df$YEAR,
      y = df$PCT+0.006,
      labels = paste0(round(df$PCT, 3)*100, "%"), col='red')
 dev.off()
+
+# check the rank
+sdf = data[data$YEAR==2019,c('NAME', 'PCT')]
+head(sdf[order(sdf$PCT, decreasing = TRUE),], 10)
