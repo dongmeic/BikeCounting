@@ -82,7 +82,7 @@ data_maxes <- aggregate(data$PCT,
 
 colnames(data_maxes)[1] <- "Year"
 
-for(year in 2010:2019){
+for(year in 2010:2020){
   sdf <- data[data$YEAR==year,]
   max <- max(na.omit(sdf$PCT))
   print(paste0(year, ": ", sdf[sdf$PCT==max,"NAME"]))
@@ -100,7 +100,7 @@ data_maxes_tot <- aggregate(data$B08301_018E,
 
 colnames(data_maxes_tot)[1] <- "Year"
 
-for(year in 2010:2019){
+for(year in 2010:2020){
   sdf <- data[data$YEAR==year,]
   max <- max(na.omit(sdf$B08301_018E))
   print(paste0(year, ": ", sdf[sdf$B08301_018E==max,"NAME"]))
@@ -114,7 +114,7 @@ boxplot(df_total$PCT~df_total$YEAR, xlab="",
         ylab="% Bike Commuters",
         col="grey", outcol="lightgrey")
 par(new=T)
-plot(df_eug$YEAR, df_eug$PCT, xlim=c(2009.5, 2019.5), 
+plot(df_eug$YEAR, df_eug$PCT, xlim=c(2009.5, 2020.5), 
      ylim=range(na.omit(df_total$PCT)), pch=19, cex=1.5,
      col="red", axes=F, xlab="", ylab="")
 lines(df_eug$YEAR, df_eug$PCT, 
@@ -135,9 +135,9 @@ text(x = 2017,
      y = 0.048,
      labels = "Eugene-Springfield", 
      col = "red")
-points(x = data_maxes$Year[2:10],                             
-       y = data_maxes$x[2:10])
-lines(data_maxes$Year[2:10], data_maxes$x[2:10], 
+points(x = data_maxes$Year[2:11],                             
+       y = data_maxes$x[2:11])
+lines(data_maxes$Year[2:11], data_maxes$x[2:11], 
       lwd=2, lty=2)
 text(x = 2018,                               
      y = 0.085,
@@ -166,6 +166,7 @@ files <- list.files(paste0(inpath, "/B08006"),
                     pattern = "_data_with_overlays_")
 
 for(file in files){
+  #print(file)
   if(file==files[1]){
     df <- read_table(file, foldernm = "B08006")
   }else{
@@ -183,7 +184,7 @@ add_legend <- function(...){
 
 
 mean(df$PCT)
-png(paste0(inpath, "/boxplot_bike_commuters_sex.png"), width = 8, height = 6,
+png(paste0(inpath, "/bike_commuters_sex.png"), width = 8, height = 6,
     units = "in", res = 300)
 par(mar=c(2,4,1,1))
 layout(matrix(c(1,2,3), ncol=1), widths = c(8,8,8), heights = c(3.5,0.5,2), TRUE)
@@ -213,11 +214,32 @@ legend("center", c("Total", "Men", "Women"), horiz=TRUE, bty="n",
 plot(df$YEAR, df$PCT, xlab="", ylab="% Women bike commuters", 
      col="red", cex=1.5, ylim=c(range(df$PCT)[1], range(df$PCT)[2]+0.008))
 lines(df$YEAR, df$PCT, col="red", lwd=2)
-text(x = df$YEAR,                               
-     y = df$PCT+0.006,
-     labels = paste0(round(df$PCT, 3)*100, "%"), col='red')
+text(x = df$YEAR[1:10],                               
+     y = df$PCT[1:10]+0.006,
+     labels = paste0(round(df$PCT[1:10], 3)*100, "%"), col='red')
+text(x = df$YEAR[11]+0.18,                               
+     y = df$PCT[11]+0.006,
+     labels = paste0(round(df$PCT[11], 3)*100, "%"), col='red')
 dev.off()
 
 # check the rank
-sdf = data[data$YEAR==2019,c('NAME', 'PCT')]
-head(sdf[order(sdf$PCT, decreasing = TRUE),], 10)
+sdf = data[data$YEAR==2020,c('NAME', 'PCT')]
+odf = sdf[order(sdf$PCT, decreasing = TRUE),]
+head(odf, 10)
+which(odf$NAME == "Portland-Vancouver-Hillsboro, OR-WA Metro Area")
+
+df$PCT_M = 1-df$PCT
+
+
+png(paste0(inpath, "/bike_commuters_sex_pct.png"), width = 4, height = 4,
+    units = "in", res = 300)
+par(mar=c(2,4,1,1))
+plot(df$YEAR, df$PCT_M, pch=16, col='blue', cex=1.2, ylim=c(0.3, 0.7),
+     xlab="Year", ylab="% Bike Commuters")
+lines(df$YEAR, df$PCT_M, col='blue',lwd=2)
+lines(df$YEAR, df$PCT, col="red", lwd=2)
+points(df$YEAR, df$PCT, col='red', pch=16, cex=1.2)
+dev.off()
+
+
+

@@ -169,9 +169,9 @@ heat_map_analysis <- function(shp=bph, field='BPH', pixelsize=100,
 
 heat_map_analysis()
 
-heat_map_analysis(shp=bob_out, field='Counts', 
+heat_map_analysis(shp=bob_in, field='Counts', 
                   legend.title='Bikes On Buses Per Year',
-                  outname='heatmap_bob_out')
+                  outname='heatmap_bob_in')
 
 heat_map_analysis(shp=destination, field='ntrips', 
                   legend.title='Bike Share Trips Per Year',
@@ -185,9 +185,9 @@ plot(MPOBound, bord="darkgrey", main="Bike Counting Hot Spots By Data Sources")
 plot(st_geometry(majroads), col='grey', add=T)
 plot(heat_map_analysis(res=TRUE, print = FALSE), bord='red', add=T)
 
-plot(heat_map_analysis(shp=bob_out, field='Counts', 
+plot(heat_map_analysis(shp=bob_in, field='Counts', 
                   legend.title='Bikes On Buses Per Year',
-                  outname='heatmap_bob_out',
+                  outname='heatmap_bob_in',
                   res=TRUE, print = FALSE), bord='blue', add=T)
 
 plot(heat_map_analysis(shp=destination, field='ntrips', 
@@ -201,9 +201,9 @@ text(x=-13685639, y=5483928, "* Top 1% is included as the hot spots", cex=0.8)
 dev.off()
 
 heat_map_analysis(res=FALSE, print = FALSE, export = TRUE)
-heat_map_analysis(shp=bob_out, field='Counts', 
+heat_map_analysis(shp=bob_in, field='Counts', 
                   legend.title='Bikes On Buses Per Year',
-                  outname='heatmap_bob_out',
+                  outname='heatmap_bob_in',
                   res=FALSE, print = FALSE, export = TRUE)
 heat_map_analysis(shp=destination, field='ntrips', 
                   legend.title='Bike Share Trips Per Year',
