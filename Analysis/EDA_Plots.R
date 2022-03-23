@@ -170,8 +170,12 @@ heat_map_analysis <- function(shp=bph, field='BPH', pixelsize=100,
 heat_map_analysis()
 
 heat_map_analysis(shp=bob_in, field='Counts', 
-                  legend.title='Bikes On Buses Per Year',
+                  legend.title='Inbound Bikes On Buses Per Year',
                   outname='heatmap_bob_in')
+
+heat_map_analysis(shp=bob_out, field='Counts', 
+                  legend.title='Outbound Bikes On Buses Per Year',
+                  outname='heatmap_bob_out')
 
 heat_map_analysis(shp=destination, field='ntrips', 
                   legend.title='Bike Share Trips Per Year',
@@ -190,14 +194,19 @@ plot(heat_map_analysis(shp=bob_in, field='Counts',
                   outname='heatmap_bob_in',
                   res=TRUE, print = FALSE), bord='blue', add=T)
 
+plot(heat_map_analysis(shp=bob_out, field='Counts', 
+                       legend.title='Bikes On Buses Per Year',
+                       outname='heatmap_bob_out',
+                       res=TRUE, print = FALSE), bord='purple', add=T)
+
 plot(heat_map_analysis(shp=destination, field='ntrips', 
                   legend.title='Bike Share Trips Per Year',
                   outname='heatmap_bs_dest',
                   res=TRUE, print = FALSE), bord='green', add=T)
-legend(x=-13693639, y=5489428, pch = c(1,1,1), col = c("red", "blue", "green"), 
-       legend = c("Bike Counts", "Bikes On Buses", "Bike Shares"),
+legend(x=-13693639, y=5489428, pch = c(1,1,1,1), col = c("red", "blue", "purple", "green"), 
+       legend = c("Bike Counts", "Bikes On Buses (inbound)", "Bikes On Buses (outbound)", "Bike Shares"),
        bty = "n")
-text(x=-13685639, y=5483928, "* Top 1% is included as the hot spots", cex=0.8)
+text(x=-13685639, y=5482828, "* Top 1% are included as the hot spots", cex=0.8)
 dev.off()
 
 heat_map_analysis(res=FALSE, print = FALSE, export = TRUE)
@@ -209,3 +218,10 @@ heat_map_analysis(shp=destination, field='ntrips',
                   legend.title='Bike Share Trips Per Year',
                   outname='heatmap_bs_dest',
                   res=FALSE, print = FALSE, export = TRUE)
+
+png(paste0(outpath, "/figures/bound_roads.png"), width = 8, 
+    height = 5, units = "in", res = 300)
+par(mar=c(0,0,2,0))
+plot(MPOBound, bord="black")
+plot(st_geometry(majroads), col='darkgrey', add=T)
+dev.off()
