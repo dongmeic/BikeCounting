@@ -13,7 +13,7 @@ selected_vars <- c('User.ID', 'Route.ID', 'Start.Hub',
                    'End.Date', 'End.Time', 'Bike.ID', 'Bike.Name',
                    'Distance..Miles.', 'Duration')
 
-test <- read.csv("T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_2019-05-01_2019-05-31.csv")
+#test <- read.csv("T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_2019-05-01_2019-05-31.csv")
 
 organize_points <- function(file){
   trips <- read.csv(paste0(inpath, "/", file))
@@ -33,6 +33,16 @@ organize_points <- function(file){
   dst$OriginDestination <- rep("Destination", dim(dst)[1])
   df <- rbind(org, dst)
   return(df)
+}
+
+toMinutes <- function(x){
+  h <- as.numeric(strsplit(x, ":")[[1]][1])
+  m <- as.numeric(strsplit(x, ":")[[1]][2])
+  s <- as.numeric(strsplit(x, ":")[[1]][3])
+  
+  res <- h*60 + m + s/60
+  
+  return(res)
 }
 
 for(file in files){
@@ -55,6 +65,9 @@ for(file in files){
   print(file)
 }
 
+df1$Start.Date <- as.Date(df1$Start.Date, format = "%Y-%m-%d")
+df1$Minutes <- unlist(lapply(df1$Duration, function(x) toMinutes(x)))
+
 write.csv(df1, "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_all.csv",
           row.names=FALSE)
 
@@ -62,7 +75,6 @@ write.csv(df2, "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_org_dst
           row.names=FALSE)
 
 # trips and duration by year
-df1$Start.Date <- as.Date(df1$Start.Date, format = "%Y-%m-%d")
 df_trips <- transform(aggregate(x=list(Trips = df1$Route.ID), 
                                 by=list(Year = year(df1$Start.Date)), 
                                 FUN=function(x) length(unique(x))), 
@@ -75,18 +87,6 @@ df_users <- transform(aggregate(x=list(Users = df1$User.ID),
                       Growth=ave(Users,FUN=function(x) c(NA, diff(x)/x[-length(x)]))) 
 
 df_users
-
-toMinutes <- function(x){
-  h <- as.numeric(strsplit(x, ":")[[1]][1])
-  m <- as.numeric(strsplit(x, ":")[[1]][2])
-  s <- as.numeric(strsplit(x, ":")[[1]][3])
-  
-  res <- h*60 + m + s/60
-  
-  return(res)
-}
-
-df1$Minutes <- unlist(lapply(df1$Duration, function(x) toMinutes(x)))
 
 df_duration <- transform(aggregate(x=list(Duration = df1$Minutes), 
                                 by=list(Year = year(df1$Start.Date)), 
