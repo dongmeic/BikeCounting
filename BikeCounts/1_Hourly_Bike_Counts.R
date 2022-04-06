@@ -6,6 +6,8 @@ library(rgdal)
 library(RColorBrewer)
 library(classInt)
 
+options(warn = -1)
+
 inpath <- 'T:/Data/COUNTS/Nonmotorized Counts/Summary Tables/Bicycle/'
 outpath <- "T:/DCProjects/StoryMap/BikeCounting"
 data <- read.csv(paste0(inpath, 'Bicycle_HourlyForTableau.csv'))
@@ -29,7 +31,7 @@ df2spdf <- function(df, lon_col_name, lat_col_name, trans = TRUE){
 }
 
 # use only the total direction
-data1 <- data[data$Direction == 'Total',]
+data1 <- data[(!is.na(data$Hourly_Count)) & (data$Direction == 'Total'),]
 # aggregate the mean by year and location
 outdata <- aggregate(x=list(BPH = data1$Hourly_Count), 
                      by=list(Year = data1$Year, 

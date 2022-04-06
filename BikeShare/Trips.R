@@ -3,8 +3,11 @@
 # On January 23th, 2022
 
 library(lubridate)
+source("T:/DCProjects/GitHub/RLearning/geocoding_functions.R")
 
 inpath <- "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/Trips"
+outpath <- "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/Output"
+  
 files <- list.files(inpath)
 selected_vars <- c('User.ID', 'Route.ID', 'Start.Hub', 
                    'Start.Latitude', 'Start.Longitude',
@@ -15,8 +18,9 @@ selected_vars <- c('User.ID', 'Route.ID', 'Start.Hub',
 
 #test <- read.csv("T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_2019-05-01_2019-05-31.csv")
 
-organize_points <- function(file){
-  trips <- read.csv(paste0(inpath, "/", file))
+########################################### Collect Data ###############################################
+organize_points <- function(trips){
+  #trips <- read.csv(paste0(inpath, "/", file))
   org <- trips[,c('Route.ID', 'Bike.ID', 'User.ID', 
                   'Start.Hub', 'Start.Latitude', 'Start.Longitude',
                   'Start.Date', 'Start.Time')]
@@ -45,22 +49,52 @@ toMinutes <- function(x){
   return(res)
 }
 
+#file = files[1]
+geocode_hubs <- function(file){
+  df1 <- read.csv(paste0(inpath, "/", file))
+  df2 <- df1[df1$Start.Hub != "" & df1$Start.Latitude != " - " & df1$End.Hub != "", selected_vars]
+  df3 <- df1[df1$Start.Hub == "" & df1$Start.Latitude != " - " & df1$End.Hub != "", selected_vars]
+  df4 <- df1[df1$Start.Hub != "" & df1$Start.Latitude != " - " & df1$End.Hub == "", selected_vars]
+  
+  starthub_google_crd <- df3[ , c("Start.Latitude", "Start.Longitude")]
+  
+  ptm <- proc.time()
+  for(i in 1:dim(starthub_google_crd)[1]){
+    df3$Start.Hub[i] <- unlist(strsplit(rev_geocode_google(starthub_google_crd[i,], api_key)$address,","))[1]
+    print(paste(i, df3$Start.Hub[i]))
+  }
+  proc.time() - ptm
+  
+  df3$Start.Hub <- str_remove(df3$Start.Hub, "Eugene: ")
+  
+  endhub_google_crd <- df4[ , c("End.Latitude", "End.Longitude")]
+  
+  ptm <- proc.time()
+  for(i in 1:dim(endhub_google_crd)[1]){
+    df4$End.Hub[i] <- unlist(strsplit(rev_geocode_google(endhub_google_crd[i,], api_key)$address,","))[1]
+    print(paste(i, df4$End.Hub[i]))
+  }
+  proc.time() - ptm
+  
+  df4$End.Hub <- str_remove(df4$End.Hub, "Eugene: ")
+  
+  df5 <- rbind(df2, df3)
+  df6 <- rbind(df5, df4)
+  return(df6)
+}
+
+
 for(file in files){
   if(file == files[1]){
-    df1 <- read.csv(paste0(inpath, "/", file))
-    df1 <- df1[selected_vars]
-    df2 <- organize_points(file)
-    
+    df1 <- geocode_hubs(file)
+    write.csv(df1, paste0(outpath, "/", file), row.names = FALSE)
   }else{
-    ndf1 <- read.csv(paste0(inpath, "/", file))
+    ndf1 <- geocode_hubs(file)
+    write.csv(ndf1, paste0(outpath, "/", file), row.names = FALSE)
     if(file=='trips_peace_health_rides_05_01_2019-05_31_2019.csv'){
       colnames(ndf1)[which(colnames(ndf1)=='Distance')] <- "Distance..Miles."
     }
-    ndf1 <- ndf1[selected_vars]
     df1 <- rbind(df1, ndf1)
-    
-    ndf2 <- organize_points(file)
-    df2 <- rbind(df2, ndf2)
   }
   print(file)
 }
@@ -68,12 +102,23 @@ for(file in files){
 df1$Start.Date <- as.Date(df1$Start.Date, format = "%Y-%m-%d")
 df1$Minutes <- unlist(lapply(df1$Duration, function(x) toMinutes(x)))
 
+df2 <- organize_points(df1)
+
 write.csv(df1, "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_all.csv",
           row.names=FALSE)
 
 write.csv(df2, "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_org_dst.csv",
           row.names=FALSE)
 
+########################################### Select Stations ##################################################
+df3 <- df2[df2$OriginDestination == "Origin", ]
+df4 <- df3[df3$Location != "",]
+
+site <- df4$Location
+df <- as.data.frame(table(site))
+df[order(df$Freq),]
+  
+########################################### Aggregate Data by Year ###########################################
 # trips and duration by year
 df_trips <- transform(aggregate(x=list(Trips = df1$Route.ID), 
                                 by=list(Year = year(df1$Start.Date)), 
