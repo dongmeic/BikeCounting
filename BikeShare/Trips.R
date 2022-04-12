@@ -6,9 +6,13 @@ library(lubridate)
 source("T:/DCProjects/GitHub/RLearning/geocoding_functions.R")
 
 inpath <- "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/Trips"
-outpath <- "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/Output"
+outpath <- "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/Output/review"
   
 files <- list.files(inpath)
+fileso <- list.files(outpath)
+#files[which(!(files %in% fileso))]
+  
+
 selected_vars <- c('User.ID', 'Route.ID', 'Start.Hub', 
                    'Start.Latitude', 'Start.Longitude',
                    'Start.Date', 'Start.Time', 
@@ -23,17 +27,21 @@ organize_points <- function(trips){
   #trips <- read.csv(paste0(inpath, "/", file))
   org <- trips[,c('Route.ID', 'Bike.ID', 'User.ID', 
                   'Start.Hub', 'Start.Latitude', 'Start.Longitude',
-                  'Start.Date', 'Start.Time')]
+                  'Start.Date', 'Start.Time', 'Path.ID',
+                  'Distance..Miles.', 'Minutes')]
   names(org) <- c("RouteID", "BikeID", 'UserID',
                   "Location", "Latitude", "Longitude",
-                  "Date", "Time")
+                  "Date", "Time", 'PathID',
+                  'Distance', 'Minutes')
   org$OriginDestination <- rep("Origin", dim(org)[1])
   dst <- trips[,c('Route.ID', 'Bike.ID', 'User.ID', 'End.Hub',
                   'End.Latitude', 'End.Longitude',
-                  'End.Date','End.Time')]
+                  'End.Date','End.Time', 'Path.ID',
+                  'Distance..Miles.', 'Minutes')]
   names(dst) <- c("RouteID", "BikeID", 'UserID',
                   "Location", "Latitude", "Longitude", 
-                  "Date", "Time")
+                  "Date", "Time", 'PathID',
+                  'Distance', 'Minutes')
   dst$OriginDestination <- rep("Destination", dim(dst)[1])
   df <- rbind(org, dst)
   return(df)
@@ -50,11 +58,12 @@ toMinutes <- function(x){
 }
 
 #file = files[1]
-geocode_hubs <- function(file){
+#geocode_hubs <- function(file){
   df1 <- read.csv(paste0(inpath, "/", file))
-  df2 <- df1[df1$Start.Hub != "" & df1$Start.Latitude != " - " & df1$End.Hub != "", selected_vars]
-  df3 <- df1[df1$Start.Hub == "" & df1$Start.Latitude != " - " & df1$End.Hub != "", selected_vars]
-  df4 <- df1[df1$Start.Hub != "" & df1$Start.Latitude != " - " & df1$End.Hub == "", selected_vars]
+  df1 <- df1[df1$Start.Latitude != " - " | df1$Start.Longitude != " - " | df1$End.Latitude != " - " | df1$End.Longitude != " - ",]
+  df2 <- df1[df1$Start.Hub != "" & df1$End.Hub != "", selected_vars]
+  df3 <- df1[df1$Start.Hub == "" & df1$End.Hub != "", selected_vars]
+  df4 <- df1[df1$Start.Hub != "" & df1$End.Hub == "", selected_vars]
   
   starthub_google_crd <- df3[ , c("Start.Latitude", "Start.Longitude")]
   
@@ -83,41 +92,82 @@ geocode_hubs <- function(file){
   return(df6)
 }
 
+#for(file in files){
+  df <- geocode_hubs(file)
+  if(file=='trips_peace_health_rides_05_01_2019-05_31_2019.csv'){
+    colnames(df)[which(colnames(df)=='Distance')] <- "Distance..Miles."
+  }
+  write.csv(df, paste0(outpath, "/", file), row.names = FALSE)
+  print(file)
+}
 
-for(file in files){
-  if(file == files[1]){
-    df1 <- geocode_hubs(file)
-    write.csv(df1, paste0(outpath, "/", file), row.names = FALSE)
+
+for(file in fileso){
+  if(file == fileso[1]){
+    df <- read.csv(paste0(outpath, "/", file))
+    df <- df[selected_vars]
   }else{
-    ndf1 <- geocode_hubs(file)
-    write.csv(ndf1, paste0(outpath, "/", file), row.names = FALSE)
-    if(file=='trips_peace_health_rides_05_01_2019-05_31_2019.csv'){
-      colnames(ndf1)[which(colnames(ndf1)=='Distance')] <- "Distance..Miles."
-    }
-    df1 <- rbind(df1, ndf1)
+    ndf <- read.csv(paste0(outpath, "/", file))
+    # if(file=='trips_peace_health_rides_05_01_2019-05_31_2019.csv'){
+    #   colnames(ndf)[which(colnames(ndf)=='Distance')] <- "Distance..Miles."
+    # }
+    ndf <- ndf[selected_vars]
+    df <- rbind(df, ndf)
   }
   print(file)
 }
 
-df1$Start.Date <- as.Date(df1$Start.Date, format = "%Y-%m-%d")
-df1$Minutes <- unlist(lapply(df1$Duration, function(x) toMinutes(x)))
+df <- df[!(df$Start.Latitude == " - " | df$Start.Longitude == " - " | df$End.Latitude == " - " | df$End.Longitude == "- "), ]
+dim(df[(df$Start.Hub == "" | df$End.Hub == ""), ])
+df <- df[!(df$Start.Hub == "" | df$End.Hub == ""), ]
 
-df2 <- organize_points(df1)
+df$Start.Date <- as.Date(df$Start.Date, format = "%Y-%m-%d")
+df$Minutes <- unlist(lapply(df$Duration, function(x) toMinutes(x)))
+df$Path.ID = paste(df$Start.Hub, "-", df$End.Hub)
 
-write.csv(df1, "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_all.csv",
+# library(rgdal)
+# library(raster)
+# 
+# mpob <- readOGR(dsn="V:/Data/Transportation", layer="MPO_Boundary")
+# mpob <- spTransform(mpob, CRS("+init=epsg:4326"))
+# 
+# > extent(mpob)
+# class      : Extent 
+# xmin       : -123.2321 
+# xmax       : -122.8281 
+# ymin       : 43.97865 
+# ymax       : 44.16123 
+
+mdf <- df[(df$Start.Latitude >= 43.97865 & df$Start.Latitude <= 44.16123) & 
+           (df$Start.Longitude >= -123.2321 & df$Start.Longitude <= -122.8281) & 
+           (df$End.Latitude >= 43.97865 & df$End.Latitude <= 44.16123) &
+           (df$End.Longitude >= -123.2321 & df$End.Longitude <= -122.8281), ]
+
+mdf <- mdf[!(mdf$Start.Longitude == mdf$End.Longitude) & (mdf$Start.Latitude == mdf$End.Latitude),]
+
+write.csv(df, "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_all.csv",
           row.names=FALSE)
 
-write.csv(df2, "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_org_dst.csv",
+ndf <- organize_points(mdf)
+
+write.csv(ndf, "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_org_dst.csv",
           row.names=FALSE)
+
+pathname <- as.data.frame(table(df$Path.Name))
+tail(pathname[order(pathname$Freq),])
 
 ########################################### Select Stations ##################################################
-df3 <- df2[df2$OriginDestination == "Origin", ]
-df4 <- df3[df3$Location != "",]
+#ndf <- read.csv("T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_org_dst.csv")
+orgdf <- ndf[ndf$OriginDestination == "Origin", ]
+orgdf[orgdf$Location != "",]
+#orgdf <- orgdf[orgdf$Location != "",]
 
-site <- df4$Location
-df <- as.data.frame(table(site))
-df[order(df$Freq),]
-  
+sites <- orgdf$Location
+sitedf <- as.data.frame(table(sites))
+
+tail(sitedf[order(sitedf$Freq),],50)$sites
+hist(sitedf$Freq)
+ 
 ########################################### Aggregate Data by Year ###########################################
 # trips and duration by year
 df_trips <- transform(aggregate(x=list(Trips = df1$Route.ID), 
