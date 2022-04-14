@@ -101,16 +101,26 @@ toMinutes <- function(x){
   print(file)
 }
 
+# file <- "trips_peace_health_rides_05_01_2019-05_31_2019.csv"
+# testdf <- read.csv(paste0(outpath, "/", file))
 
 for(file in fileso){
   if(file == fileso[1]){
     df <- read.csv(paste0(outpath, "/", file))
+    df$Start.Date <- as.Date(df$Start.Date, format = "%Y-%m-%d")
+    df$End.Date <- as.Date(df$End.Date, format = "%Y-%m-%d")
     df <- df[selected_vars]
   }else{
     ndf <- read.csv(paste0(outpath, "/", file))
-    # if(file=='trips_peace_health_rides_05_01_2019-05_31_2019.csv'){
-    #   colnames(ndf)[which(colnames(ndf)=='Distance')] <- "Distance..Miles."
-    # }
+    
+    if(file=='trips_peace_health_rides_05_01_2019-05_31_2019.csv'){
+      ndf$Start.Date <- as.Date(ndf$Start.Date, format = "%m/%d/%Y")
+      ndf$End.Date <- as.Date(ndf$End.Date, format = "%m/%d/%Y")
+      #colnames(ndf)[which(colnames(ndf)=='Distance')] <- "Distance..Miles."
+    }else{
+      ndf$Start.Date <- as.Date(ndf$Start.Date, format = "%Y-%m-%d")
+      ndf$End.Date <- as.Date(ndf$End.Date, format = "%Y-%m-%d")
+    }
     ndf <- ndf[selected_vars]
     df <- rbind(df, ndf)
   }
@@ -121,8 +131,30 @@ df <- df[!(df$Start.Latitude == " - " | df$Start.Longitude == " - " | df$End.Lat
 dim(df[(df$Start.Hub == "" | df$End.Hub == ""), ])
 df <- df[!(df$Start.Hub == "" | df$End.Hub == ""), ]
 
-df$Start.Date <- as.Date(df$Start.Date, format = "%Y-%m-%d")
 df$Minutes <- unlist(lapply(df$Duration, function(x) toMinutes(x)))
+
+unique(df$Start.Hub[grep("HEDCO", df$Start.Hub)])
+df$Start.Hub[grep("University of Oregon Station - Bay", df$Start.Hub)]  <- "UO Station"
+df$Start.Hub[grep("U of O Station", df$Start.Hub)]  <- "UO Station"
+df$Start.Hub[grep("University of Oregon", df$Start.Hub)] <- str_replace(df$Start.Hub[grep("University of Oregon", df$Start.Hub)], 
+                                                                        "University of Oregon", "UO")
+df$Start.Hub[grep("EMU|Erb Memorial Union", df$Start.Hub)] <- "Erb Memorial Union"
+df$Start.Hub[grep("Eugene Station", df$Start.Hub)] <- "Eugene Station"
+df$Start.Hub[grep("Police Dept", df$Start.Hub)] <- "UO Police Department"
+df$Start.Hub[grep("HEDCO", df$Start.Hub)]  <- "HEDCO Education Building"
+df$Start.Hub[grep("Virtual", df$Start.Hub)] <- str_replace(df$Start.Hub[grep("Virtual", df$Start.Hub)], 
+                                                                        " \\(Virtual Hub\\)", "")
+
+df$End.Hub[grep("University of Oregon Station - Bay", df$End.Hub)]  <- "UO Station"
+df$End.Hub[grep("U of O Station", df$End.Hub)]  <- "UO Station"
+df$End.Hub[grep("University of Oregon", df$End.Hub)] <- str_replace(df$End.Hub[grep("University of Oregon", df$End.Hub)], 
+                                                                        "University of Oregon", "UO")
+df$End.Hub[grep("EMU|Erb Memorial Union", df$End.Hub)] <- "Erb Memorial Union"
+df$End.Hub[grep("Eugene Station", df$End.Hub)] <- "Eugene Station"
+df$End.Hub[grep("Police Dept", df$End.Hub)] <- "UO Police Department"
+df$End.Hub[grep("HEDCO", df$End.Hub)]  <- "HEDCO Education Building"
+df$End.Hub[grep("Virtual", df$End.Hub)] <- str_replace(df$End.Hub[grep("Virtual", df$End.Hub)], 
+                                                                  " \\(Virtual Hub\\)", "")
 df$Path.ID = paste(df$Start.Hub, "-", df$End.Hub)
 
 # library(rgdal)
@@ -138,15 +170,15 @@ df$Path.ID = paste(df$Start.Hub, "-", df$End.Hub)
 # ymin       : 43.97865 
 # ymax       : 44.16123 
 
+write.csv(df, "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_all.csv",
+          row.names=FALSE)
+
 mdf <- df[(df$Start.Latitude >= 43.97865 & df$Start.Latitude <= 44.16123) & 
            (df$Start.Longitude >= -123.2321 & df$Start.Longitude <= -122.8281) & 
            (df$End.Latitude >= 43.97865 & df$End.Latitude <= 44.16123) &
            (df$End.Longitude >= -123.2321 & df$End.Longitude <= -122.8281), ]
 
-mdf <- mdf[!(mdf$Start.Longitude == mdf$End.Longitude) & (mdf$Start.Latitude == mdf$End.Latitude),]
-
-write.csv(df, "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_all.csv",
-          row.names=FALSE)
+mdf <- mdf[!(mdf$Start.Longitude == mdf$End.Longitude & mdf$Start.Latitude == mdf$End.Latitude),]
 
 ndf <- organize_points(mdf)
 
