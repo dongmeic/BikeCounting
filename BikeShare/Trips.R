@@ -133,7 +133,7 @@ df <- df[!(df$Start.Hub == "" | df$End.Hub == ""), ]
 
 df$Minutes <- unlist(lapply(df$Duration, function(x) toMinutes(x)))
 
-unique(df$Start.Hub[grep("HEDCO", df$Start.Hub)])
+#unique(df$Start.Hub[grep("HEDCO", df$Start.Hub)])
 df$Start.Hub[grep("University of Oregon Station - Bay", df$Start.Hub)]  <- "UO Station"
 df$Start.Hub[grep("U of O Station", df$Start.Hub)]  <- "UO Station"
 df$Start.Hub[grep("University of Oregon", df$Start.Hub)] <- str_replace(df$Start.Hub[grep("University of Oregon", df$Start.Hub)], 
@@ -155,6 +155,10 @@ df$End.Hub[grep("Police Dept", df$End.Hub)] <- "UO Police Department"
 df$End.Hub[grep("HEDCO", df$End.Hub)]  <- "HEDCO Education Building"
 df$End.Hub[grep("Virtual", df$End.Hub)] <- str_replace(df$End.Hub[grep("Virtual", df$End.Hub)], 
                                                                   " \\(Virtual Hub\\)", "")
+
+df[df$Start.Hub == "Monroe St & Blair Blvd ", "Start.Hub"] = "Monroe St & Blair Blvd"
+df[df$End.Hub == "Monroe St & Blair Blvd ", "Start.Hub"] = "Monroe St & Blair Blvd"
+
 df$Path.ID = paste(df$Start.Hub, "-", df$End.Hub)
 
 # library(rgdal)
@@ -197,7 +201,7 @@ orgdf[orgdf$Location != "",]
 sites <- orgdf$Location
 sitedf <- as.data.frame(table(sites))
 
-tail(sitedf[order(sitedf$Freq),],50)$sites
+tail(sitedf[order(sitedf$Freq),],100)$sites
 hist(sitedf$Freq)
  
 ########################################### Aggregate Data by Year ###########################################
