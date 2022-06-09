@@ -7,14 +7,14 @@ BikeShare <- readOGR(dsn="T:/DCProjects/StoryMap/BikeCounting/BikeShare/Output",
 BikesOnBuses <- readOGR(dsn="T:/DCProjects/StoryMap/BikeCounting/BikeOnBuses/Output", layer="Sum_Bikes_On_Buses")
 
 # high count cuts
-countsCut <- 521 # bike counts
-shareCut <- 21.3 # bike share trips
-BOBCut <- 2.15 # bikes on buses (average daily)
+countsCut <- 522 # bike counts
+shareCut <- 21.4 # bike share trips
+BOBCut <- 2.16 # bikes on buses (average daily)
 BOBtCut <- 600 # bikes on buses (total)
 
-bc <- BikeCounts[BikeCounts$AvDlyCn > countsCut,]
-bs <- BikeShare[BikeShare$AvgNoTrips > shareCut,]
-bob <- BikesOnBuses[BikesOnBuses$avgqty > BOBCut & BikesOnBuses$qty > BOBtCut,]
+bc <- BikeCounts[BikeCounts$AvDlyCn >= countsCut,]
+bs <- BikeShare[BikeShare$AvgNoTrips >= shareCut,]
+bob <- BikesOnBuses[BikesOnBuses$avgqty >= BOBCut & BikesOnBuses$qty >= BOBtCut,]
 
 coordd2dataframe <- function(shp){
   df <- as.data.frame(shp@coords)
