@@ -13,7 +13,7 @@ outpath <- "T:/DCProjects/StoryMap/BikeCounting"
 data <- read.csv(paste0(inpath, 'Bicycle_HourlyForTableau.csv'))
 data$Date <- as.Date(data$Date, "%Y-%m-%d")
 locdata <- read.csv("T:/Data/COUNTS/Nonmotorized Counts/Supporting Data/Supporting Bicycle Data/CountLocationInformation.csv")
-MPOBound <- readOGR(dsn = "V:/Data/Transportation", layer="MPO_Bound")
+MPOBound <- readOGR(dsn = "X:/Data/Transportation", layer="MPO_Bound")
 
 # require MPOBound
 df2spdf <- function(df, lon_col_name, lat_col_name, trans = TRUE){

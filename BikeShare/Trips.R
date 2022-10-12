@@ -58,47 +58,49 @@ toMinutes <- function(x){
 }
 
 #file = files[1]
-#geocode_hubs <- function(file){
-  df1 <- read.csv(paste0(inpath, "/", file))
-  df1 <- df1[df1$Start.Latitude != " - " | df1$Start.Longitude != " - " | df1$End.Latitude != " - " | df1$End.Longitude != " - ",]
-  df2 <- df1[df1$Start.Hub != "" & df1$End.Hub != "", selected_vars]
-  df3 <- df1[df1$Start.Hub == "" & df1$End.Hub != "", selected_vars]
-  df4 <- df1[df1$Start.Hub != "" & df1$End.Hub == "", selected_vars]
-  
-  starthub_google_crd <- df3[ , c("Start.Latitude", "Start.Longitude")]
-  
-  ptm <- proc.time()
-  for(i in 1:dim(starthub_google_crd)[1]){
-    df3$Start.Hub[i] <- unlist(strsplit(rev_geocode_google(starthub_google_crd[i,], api_key)$address,","))[1]
-    print(paste(i, df3$Start.Hub[i]))
+if(FALSE){
+  geocode_hubs <- function(file){
+    df1 <- read.csv(paste0(inpath, "/", file))
+    df1 <- df1[df1$Start.Latitude != " - " | df1$Start.Longitude != " - " | df1$End.Latitude != " - " | df1$End.Longitude != " - ",]
+    df2 <- df1[df1$Start.Hub != "" & df1$End.Hub != "", selected_vars]
+    df3 <- df1[df1$Start.Hub == "" & df1$End.Hub != "", selected_vars]
+    df4 <- df1[df1$Start.Hub != "" & df1$End.Hub == "", selected_vars]
+    
+    starthub_google_crd <- df3[ , c("Start.Latitude", "Start.Longitude")]
+    
+    ptm <- proc.time()
+    for(i in 1:dim(starthub_google_crd)[1]){
+      df3$Start.Hub[i] <- unlist(strsplit(rev_geocode_google(starthub_google_crd[i,], api_key)$address,","))[1]
+      print(paste(i, df3$Start.Hub[i]))
+    }
+    proc.time() - ptm
+    
+    df3$Start.Hub <- str_remove(df3$Start.Hub, "Eugene: ")
+    
+    endhub_google_crd <- df4[ , c("End.Latitude", "End.Longitude")]
+    
+    ptm <- proc.time()
+    for(i in 1:dim(endhub_google_crd)[1]){
+      df4$End.Hub[i] <- unlist(strsplit(rev_geocode_google(endhub_google_crd[i,], api_key)$address,","))[1]
+      print(paste(i, df4$End.Hub[i]))
+    }
+    proc.time() - ptm
+    
+    df4$End.Hub <- str_remove(df4$End.Hub, "Eugene: ")
+    
+    df5 <- rbind(df2, df3)
+    df6 <- rbind(df5, df4)
+    return(df6)
   }
-  proc.time() - ptm
   
-  df3$Start.Hub <- str_remove(df3$Start.Hub, "Eugene: ")
-  
-  endhub_google_crd <- df4[ , c("End.Latitude", "End.Longitude")]
-  
-  ptm <- proc.time()
-  for(i in 1:dim(endhub_google_crd)[1]){
-    df4$End.Hub[i] <- unlist(strsplit(rev_geocode_google(endhub_google_crd[i,], api_key)$address,","))[1]
-    print(paste(i, df4$End.Hub[i]))
+  for(file in files){
+    df <- geocode_hubs(file)
+    if(file=='trips_peace_health_rides_05_01_2019-05_31_2019.csv'){
+      colnames(df)[which(colnames(df)=='Distance')] <- "Distance..Miles."
+    }
+    write.csv(df, paste0(outpath, "/", file), row.names = FALSE)
+    print(file)
   }
-  proc.time() - ptm
-  
-  df4$End.Hub <- str_remove(df4$End.Hub, "Eugene: ")
-  
-  df5 <- rbind(df2, df3)
-  df6 <- rbind(df5, df4)
-  return(df6)
-}
-
-#for(file in files){
-  df <- geocode_hubs(file)
-  if(file=='trips_peace_health_rides_05_01_2019-05_31_2019.csv'){
-    colnames(df)[which(colnames(df)=='Distance')] <- "Distance..Miles."
-  }
-  write.csv(df, paste0(outpath, "/", file), row.names = FALSE)
-  print(file)
 }
 
 # file <- "trips_peace_health_rides_05_01_2019-05_31_2019.csv"
@@ -133,6 +135,7 @@ df <- df[!(df$Start.Hub == "" | df$End.Hub == ""), ]
 
 df$Minutes <- unlist(lapply(df$Duration, function(x) toMinutes(x)))
 
+# review hub names
 #unique(df$Start.Hub[grep("HEDCO", df$Start.Hub)])
 df$Start.Hub[grep("University of Oregon Station - Bay", df$Start.Hub)]  <- "UO Station"
 df$Start.Hub[grep("U of O Station", df$Start.Hub)]  <- "UO Station"
