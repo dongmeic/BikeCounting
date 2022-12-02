@@ -16,15 +16,15 @@ read_table <- function(file, foldernm="B08006"){
   data <- read.csv(paste0(inpath, "/", file))
   year <- as.numeric(substr(file, 8, 11))
   if(foldernm=="B08006"){
-    cols <- c("B08006_001E", "B08006_001M",
-              "B08006_014E", "B08006_014M", 
-              "B08006_031E", "B08006_031M",
-              "B08006_048E", "B08006_048M")
+    cols <- paste0(foldernm, c("_001E", "_001M",
+              "_014E", "_014M", 
+              "_031E", "_031M",
+              "_048E", "_048M"))
   }else if(foldernm=="B08301"){
-    cols <- c("B08301_001E", "B08301_001M", 
-              "B08301_018E", "B08301_018M")
+    cols <- paste0(foldernm, c("_001E", "_001M", 
+              "_018E", "_018M"))
   }else{
-    cols <- c("B01003_001E", "B01003_001M")
+    cols <- paste0(foldernm, c("_001E", "_001M"))
   }
   
   dat <- data[-1,-which(names(data) %in% c("GEO_ID", "NAME"))]
