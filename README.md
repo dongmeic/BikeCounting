@@ -1,40 +1,79 @@
-The repository is to organize bike counting related datasets (bike counts, bike shares, bikes on buses, bike facilities and infrastructure, etc.) collected in CLMPO. The US Census ACS [Table B08301: Means of Transportation to Work](https://censusreporter.org/tables/B08301/) ([download](https://data.census.gov/cedsci/table?q=Table%20B08301&g=0100000US%243100000&tid=ACSDT5Y2020.B08301)) and [Table B08006: Sex of Workers by Means of Transportation to Work](https://censusreporter.org/tables/B08006/) ([download](https://data.census.gov/cedsci/table?q=Table%20B08006&g=310XX00US21660&tid=ACSDT5Y2020.B08006)) are also reviewed to understand the number and percent of bike commuters in the metropolitan area.
+# MTIP mapping
+To organize data for MTIP mapping
 
-# Data
-## Bike counts
+# Reference
+[ODOT TransGIS](https://gis.odot.state.or.us/transgis/)
 
-Bicycle counts in Central Lane MPO area combine both permanent and short-term tube counts. There are 16 permanent counters that are collecting data continuously and data is accessible from [Eco-Visio](https://www.eco-visio.net/v5/login/?callback=%2Fv5%2F#::) with credentials. Six [short-term bike counting tubes](https://www.eco-counter.com/produits/pyro-evo-range-en/urban-postevo/) are rotated manually every two weeks from March to October among the locations determined by a process described in the Section 2 Data Collection (page 19) in [the ODOT bicycle count data report](https://www.oregon.gov/odot/Programs/ResearchDocuments/304-761%20Bicycle%20Counts%20Travel%20Safety%20Health.pdf#page=24). The CLMPO bike counts can be viewed and downloaded from the [data portal](https://www.lcog.org/thempo/page/bicycle-counts). The data includes various spatial and temporal information about bike counts with a temporal resolution of hourly. Bikes per hour (BPH) is chosen as an indicator to [explore](https://github.com/dongmeic/BikeCounting/blob/main/BikeCounts/Explore_Bike_Counts.ipynb) the spatial and temporal patterns.
+[Transportation Project Tracker](https://gis.odot.state.or.us/tpt/)
 
-In the "[BikeCounts](https://github.com/dongmeic/BikeCounting/tree/main/BikeCounts)" folder, the script "[Explore_Bike_Counts.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/BikeCounts/Explore_Bike_Counts.ipynb)" aggregates the average bikes per hour by year and location and merges the data with the sampling locations. The script also calculates the growth of bikers per hour over year and aggregates MPO-wide average bike counts. The script is reorganized to [1_Hourly_Bike_Counts.R](https://github.com/dongmeic/BikeCounting/blob/main/BikeCounts/1_Hourly_Bike_Counts.R) in the review process. The script "[Bike_Counts_Merged_by_Locations.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/BikeCounts/Bike_Counts_Merged_by_Locations.ipynb)" merges bike counts and sampling locations without aggregation. Both scripts generate data for the Tableau viz "Bike Counts".
+# Contacts
+[Dan Callister](dcallister@lcog.org), [Ellen Currier](ecurrier@lcog.org)
 
-## Bike shares
+# Steps for FY 24-27
+## Review projects with location info
 
-Bike share data is provided by [Cascadia Mobility](https://forthmobility.org/CascadiaMobility) through the [PeaceHealth Rides](https://peacehealthrides.com/) program and is accessible [here](https://peacehealthrides.com/opendata). The bike share is organized and presented in the [MPO data portal](https://www.lcog.org/thempo/page/peacehealth-rides-bike-share-program). More explanations on the bike share data can be found [here](https://github.com/NABSA/gbfs). Account credentials are required to access the [PeachHealth Rides data portal](https://data.socialbicycles.com/) for the bike trips data. The data portal also covers members, hubs and bikes data. Bike shares are explored and visualized in the [(near) real-time bike availability](https://public.tableau.com/views/RealTimeBikeShareAvailability/BikeShareAvailability?:language=en-US&:display_count=n&:origin=viz_share_link), [monthly paths and counts](https://public.tableau.com/views/MonthlyBikeShareTrips/MapofPaths?:language=en-US&:display_count=n&:origin=viz_share_link), and [yearly patterns](https://public.tableau.com/shared/5P9Z6MMBR?:display_count=n&:origin=viz_share_link). For the real-time data visualization, a [web data connector](https://github.com/KeshiaRose/JSON-XML-WDC) is applied.
+The ODOT project tracker mapped MTIP projects in Lane [here](https://gis.odot.state.or.us/tpt/projects?county=Lane&mapped=TRUE).The map is available [here](https://gis.odot.state.or.us/arcgis1006/rest/services/tpt/tpt_display/MapServer/). However, the json file missed spatial data and can't be converted to GIS data. As such, the shapefiles were transferred from ODOT.
 
-In the "[BikeShare](https://github.com/dongmeic/BikeCounting/tree/main/BikeShare)" folder, the script [GetBikeShareData.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/GetBikeShareData.ipynb) downloads bike availability data from the [PeachHealth Rides data portal](https://data.socialbicycles.com/). The script "[Explore_Bike_Shares.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/Explore_Bike_Shares.ipynb)" reshapes origin and destination data. The script "[Bike_Share_Trip_Locations.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/Bike_Share_Trip_Locations.ipynb)" collects the address information for the bike share path map. The scripts "[Trips.R](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/Trips.R)" and "[Yearly_Bike_Share_Trip_Locations.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/Yearly_Bike_Share_Trip_Locations.ipynb)" organizes bike share data by year.
+The draft data table is reorganized to a machine-readable format following the steps: 1) add a column "Geo" to reorganize the location information on the rows; 2) remove the extra rows with field names when combining the separated tables; 3) remove the "Merge & Center" and "Wrap Text" formats; 4) remove the "Total" rows; 5) separate funding and source on the fields; 6) clean all the font and cell formats. When the final data table is available, simply remove all the extra rows (geo info and field names) and columns (total and blank), add field names, and merge the first edited table to get the geo info.
 
-## Bike on buses
+To review or create spatial data, the first step is to match FME_PROJ_KEY_NO with STIP Key to get the existing spatial data. The next step is to review the project details in *T:\MPO\TIP\Calls For Projects\Call for Projects 25-27\Apps Received\Word Versions* to get the location info and match the projects geographically in ArcGIS Pro. I reviewed separately the mapped and unmapped projects and added notes on feature type, location file path, and clarification needed. Then I followed up for further clarification on data and project info. 
 
-Bike on buses data is provided by LTD monthly since 2013. The April and October data can be explored by routes in the [MPO data portal](https://www.lcog.org/thempo/page/bikes-buses). The monthly data is [aggregated](https://github.com/dongmeic/BikeCounting/blob/main/BikeCounts/Explore_Bikes_On_Buses.ipynb) to show the stations with the most frequent bikes on buses. The script "[Explore_Bikes_On_Buses.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/BikeCounts/Explore_Bikes_On_Buses.ipynb)" combines all-year data and aggregates bikes on buses by stop name and year.
+# Steps for FY 21-24
+## Review existing data
 
-## Bike facilities and infrastructure (bike map)
+The MTIP 21-24 projects are mapped [here](https://arcg.is/15rCGy). The spatial information was collected from multiple resources, including MTIP projects from 2018 to 2021, ODOT web maps and project tracker.
 
-The [interactive bike map](https://arcg.is/09XWmC) is built using [ArcGIS Web AppBuilder](https://developers.arcgis.com/web-appbuilder/). The 'about' widget describes the map layers and basic map design. The 'layer list' is used to toggle on and off layers.
+The new 21 projects on June 2020 need to be added in August 2020.
 
-The bike facilities data is available on [RLID](https://www.rlid.org/). Only "built" facilities are included in the maps and data analysis. The map also includes bike shops, bike share stations, bike racks, bike friendly business, bike lockers, and bike fixit stations. Bike shops in Eugene are listed [here](https://www.eugene-or.gov/3260/Bike-Repair-Rentals). Bike shops and bike racks are provided by City of Eugene. Bike share locations are from the [map on PeaceHealth Rides](https://www.peacehealthrides.com/). The bike share stations are [organized](https://github.com/dongmeic/BikeCounting/blob/main/BikeMap/BikeShareStations.ipynb) from the [open data portal](https://peacehealthrides.com/opendata/station_information.json). Bike lockers, and bike fixit stations are from previous work by Chrissy. The bike facilities data was further modified by reviewing the NULL status and changing some status to built, adding to the existing built ones. The LTD stops are from the Winter 2019 version.
+## Collect spatial information
 
-The bike-friendly business data is from Travel Oregon provided with business name, address, and coordinates. The coordinates are mostly from the InfoUSA (now Data Axle USA) business data by matching the business names, since a few provided coordinates are not accurate. If there is not a match, the coordinates are from Google Maps by manually typing in the address or using `geopy`. The discrepancy between the two approaches is not neglectable in some addresses because geopy can't get the exact addresses. As such, coordinates values from the manual searching are retained. There are six points located outside of the MPO boundary. The coordinates were reviewed between data sources to correct errors, although the data was not checked one by one.
+<!-- Spatial information can be found on [this document](https://www.lcog.org/AgendaCenter/ViewFile/Item/3168?fileID=11682). -->
+Contact agencies for existing shapefiles in the CLMPO 2022-2024 STBG/TA/CMAQ Candidate Project Summary, particularly for the below three projects. Identify whether spatial projects are lines and add coordinates to all spatial projects. Review the mapped and revised projects in ArcGIS Pro.
 
-<!---[Eugene bike map](https://www.eugene-or.gov/DocumentCenter/View/4268/Eugene-Bike-Map---English?bidId=);
-[Springfield bike map](https://www.eugene-or.gov/DocumentCenter/View/4270/Springfield-Bike-Map---English?bidId=);
-[previous bike map](https://lcog.maps.arcgis.com/apps/webappviewer/index.html?id=c598924750d94d06a372bb467ec9a01e)--->
+1. [Division Ave Roundabouts](https://documentcloud.adobe.com/link/track?uri=urn:aaid:scds:US:a0a1af2a-bc26-4e80-be89-10fb28bc4ebf) - Dan updated the map
 
-# Analysis
-## Spatial overlay between bike counts and bike facility type
-To understand the bike count distribution among the bike facility types, a spatial join links the two dataset with the nearest function. Setting 10 meters as the reference for road width based the maximum lane width 15 feet and the typical two-lane roadway, the bikes per hour data is aggregated by bike lane type to compare.
+2. [Vision Zero Intersection Study](https://documentcloud.adobe.com/link/track?uri=urn:aaid:scds:US:229a19d4-9f0f-4598-b255-89cb119bb6fc) - Dan suggested not to map this project
 
-## Data aggregation on bike counts, bike share counts and bikes on buses counts
-Bike counts, bike share counts, and bikes on buses counts are aggregated from multi-year data using summary statistics, saved as spatial data, and uploaded to the [online bike map](https://arcg.is/K59Oi0) for reference. Bike counting data includes average bikes per hour during 2012 and 2020, total origin and destination bike share station trips during 2019 - 2021, and average annual total counts on bikes on buses during 2013 - 2021.
+3. [FTN Safety & Amenity Program](https://documentcloud.adobe.com/link/track?uri=urn:aaid:scds:US:0c6876a8-c7fa-4157-a626-e0b814b26b2d) - Dan suggested not to map this project
 
-## Exploratory data analysis
-To understand the bike counting spatial patterns, [hot spot analysis](https://github.com/dongmeic/BikeCounting/blob/main/Analysis/EDA_Plots.R) is conducted in R and ArcGIS Pro.
+## Map the projects
+
+The previous feature created as "MTIP_Lines" is saved in C:/Users/clid1852/Documents/ArcGIS/Projects/MTIP/MTIP.gdb. The last final version of the MTIP maps are saved as "Lines200428" (last revision time April 28th, 2020) and "Points200428" in G:/projects/Transportation/MTIP/MTIP_FY21-24.gdb.
+
+Steps to map the projects:
+
+1. [Create Feature Class](https://pro.arcgis.com/en/pro-app/help/data/feature-classes/create-a-feature-class.htm)
+
+Need to set Feature Class Name and Geometry Type.
+
+2. [Create Features](https://pro.arcgis.com/en/pro-app/help/editing/create-polyline-features.htm)
+
+Search the street name on [Google Maps](https://www.google.com/maps) and draw the lines for each line project in the new feature class.
+
+3. [Modify Features](https://pro.arcgis.com/en/pro-app/help/editing/introduction-to-modifying-features.htm)
+
+Select the feature, go to Edit and Modify.
+
+4. [Merge](https://pro.arcgis.com/en/pro-app/tool-reference/data-management/merge.htm)
+
+Point projects are mapped with coordinates by adding [XY Point Data](https://pro.arcgis.com/en/pro-app/help/mapping/layer-properties/add-x-y-coordinate-data-as-a-layer.htm)(go to Map --> Add Data --> XY Point Data). [Add Attribute Index](https://pro.arcgis.com/en/pro-app/tool-reference/data-management/add-attribute-index.htm) to join tables of newly created line feature and the CSV table that lists the project items using MTIP ID (since STIP key is not complete). Merge the new line and point projects with previous projects. Change the variable names due to the length limit (10 characters).
+
+5. [ArcGIS Online](https://arcg.is/OuiCW)
+
+Compress the shapefile and upload to the map. [Configure](https://doc.arcgis.com/en/arcgis-online/create-maps/configure-pop-ups.htm) the pop-ups.
+
+
+
+## Revision
+Added new projects in August, 2020.
+
+# Story map
+## Organize tables
+
+The databased is organized by removing the summary rows from the original tables and combing the projects from different time periods. Some projects have been updated with new data.
+
+## Tableau
+
+The tableau dashboard includes a bar chart and a map showing project introduciton and funding information. The chart and map use different data sources since the map only shows the summary information while the chart covers data from different phases. As such, they cannot be linked using actions in the dashboard. To overlap the line and point features, spatial join is applied between the two shapefiles and dual axis is set for the points.
+
+## ArcGIS Online
