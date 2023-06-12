@@ -38,3 +38,8 @@ Bike counts, bike share counts, and bikes on buses counts are aggregated from mu
 
 ## Exploratory data analysis
 To understand the bike counting spatial patterns, [hot spot analysis](https://github.com/dongmeic/BikeCounting/blob/main/Analysis/EDA_Plots.R) is conducted in R and ArcGIS Pro.
+
+#  Storymap update
+## 
+
+
