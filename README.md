@@ -40,6 +40,34 @@ Bike counts, bike share counts, and bikes on buses counts are aggregated from mu
 To understand the bike counting spatial patterns, [hot spot analysis](https://github.com/dongmeic/BikeCounting/blob/main/Analysis/EDA_Plots.R) is conducted in R and ArcGIS Pro.
 
 #  Storymap update
-## 
+## Save copies before update the story map with new contents
 
+Export [the storymap content](https://github.com/dongmeic/BikeCounting/blob/main/StoryMap/get_storymap_text.py) and [save it to word](https://github.com/dongmeic/BikeCounting/blob/main/StoryMap/export_text_to_word.py) for historical copies. 
 
+1. Introduction
+
+The introduction explains the purpose of the story map, its sections, and how the storymap is updated yearly. 
+
+2. Bike commuters
+
+1) download bike commmuter data B08006 and B08301;)
+2) run the scripts to get the annual bike commuter percentage in urbanized area nationwide (boxplot), bike commuter structure by city (ggplot), and bike commuter by city with margin of error;
+3) write or review the paragrahs with the analysis results.
+
+3. Bike counts
+
+1) download bike share data;
+2) run the scripts to get average bikes per hour (BPH), growth in BPH, heatmaps of BPH, bikes on buses, and bike shares;
+3) work on the Tableau updates (redesign the vizzes as needed);
+4) write or review the paragrahs with the analysis results (redesign the storymap as needed).
+
+4. Bicycle network
+
+1) definitions of bikeway types;
+2) BPH by bikeway types;
+3) bike-involved crash;
+4) webmap of bicycle network.
+
+5. Conclusions
+
+The summary answers the questions of how many bike commuters in Eug-Spr, how often people bike, and where and when people bike the most. 
