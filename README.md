@@ -1,4 +1,4 @@
-The repository is to organize bike counting related datasets (bike counts, bike shares, bikes on buses, bike facilities and infrastructure, etc.) collected in CLMPO. The US Census ACS [Table B08301: Means of Transportation to Work](https://censusreporter.org/tables/B08301/) ([download](https://data.census.gov/cedsci/table?q=Table%20B08301&g=0100000US%243100000&tid=ACSDT5Y2020.B08301)) and [Table B08006: Sex of Workers by Means of Transportation to Work](https://censusreporter.org/tables/B08006/) ([download](https://data.census.gov/cedsci/table?q=Table%20B08006&g=310XX00US21660&tid=ACSDT5Y2020.B08006)) are also reviewed to understand the number and percent of bike commuters in the metropolitan area.
+The repository is to organize bike counting related datasets (bike counts, bike shares, bikes on buses, bike facilities and infrastructure, etc.) collected in CLMPO. The US Census ACS [Table B08301: Means of Transportation to Work](https://censusreporter.org/tables/B08301/) ([download](https://data.census.gov/cedsci/table?q=Table%20B08301&g=0100000US%243100000&tid=ACSDT5Y2021.B08301)) and [Table B08006: Sex of Workers by Means of Transportation to Work](https://censusreporter.org/tables/B08006/) ([download](https://data.census.gov/cedsci/table?q=Table%20B08006&g=310XX00US21660&tid=ACSDT5Y2021.B08006)) are also reviewed to understand the number and percent of bike commuters in the metropolitan area.
 
 # Data
 ## Bike counts
@@ -9,7 +9,7 @@ In the "[BikeCounts](https://github.com/dongmeic/BikeCounting/tree/main/BikeCoun
 
 ## Bike shares
 
-Bike share data is provided by [Cascadia Mobility](https://forthmobility.org/CascadiaMobility) through the [PeaceHealth Rides](https://peacehealthrides.com/) program and is accessible [here](https://peacehealthrides.com/opendata). The bike share is organized and presented in the [MPO data portal](https://www.lcog.org/thempo/page/peacehealth-rides-bike-share-program). More explanations on the bike share data can be found [here](https://github.com/NABSA/gbfs). Account credentials are required to access the [PeachHealth Rides data portal](https://data.socialbicycles.com/) for the bike trips data. The data portal also covers members, hubs and bikes data. Bike shares are explored and visualized in the [(near) real-time bike availability](https://public.tableau.com/views/RealTimeBikeShareAvailability/BikeShareAvailability?:language=en-US&:display_count=n&:origin=viz_share_link), [monthly paths and counts](https://public.tableau.com/views/MonthlyBikeShareTrips/MapofPaths?:language=en-US&:display_count=n&:origin=viz_share_link), and [yearly patterns](https://public.tableau.com/shared/5P9Z6MMBR?:display_count=n&:origin=viz_share_link). For the real-time data visualization, a [web data connector](https://github.com/KeshiaRose/JSON-XML-WDC) is applied.
+Bike share data is provided by [Cascadia Mobility](https://forthmobility.org/CascadiaMobility) through the [PeaceHealth Rides](https://peacehealthrides.com/) program and is accessible [here](https://peacehealthrides.com/opendata). The bike share is organized and presented in the [MPO data portal](https://www.lcog.org/thempo/page/peacehealth-rides-bike-share-program). More explanations on the bike share data can be found [here](https://github.com/NABSA/gbfs). Account credentials are required to access the [PeachHealth Rides data portal](https://data.socialbicycles.com/) for the bike trips data. The data portal also covers members, hubs and bikes data. Bike shares are explored and visualized in the [(near) real-time bike availability](https://public.tableau.com/views/RealTimeBikeShareAvailability/BikeShareAvailability?:language=en-US&:display_count=n&:origin=viz_share_link), [monthly paths and counts](https://public.tableau.com/views/MonthlyBikeShareTrips/MapofPaths?:language=en-US&:display_count=n&:origin=viz_share_link), and [yearly patterns](https://public.tableau.com/shared/5P9Z6MMBR?:display_count=n&:origin=viz_share_link). For the real-time data visualization, a [web data connector](https://github.com/KeshiaRose/JSON-XML-WDC) is applied. The Tableau workbook is saved [internally](//clsrv111.int.lcog.org/transpor/MPO/Bike&Ped/BikeCounting/StoryMap/BikeShare). 
 
 In the "[BikeShare](https://github.com/dongmeic/BikeCounting/tree/main/BikeShare)" folder, the script [GetBikeShareData.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/GetBikeShareData.ipynb) downloads bike availability data from the [PeachHealth Rides data portal](https://data.socialbicycles.com/). The script "[Explore_Bike_Shares.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/Explore_Bike_Shares.ipynb)" reshapes origin and destination data. The script "[Bike_Share_Trip_Locations.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/Bike_Share_Trip_Locations.ipynb)" collects the address information for the bike share path map. The scripts "[Trips.R](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/Trips.R)" and "[Yearly_Bike_Share_Trip_Locations.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/Yearly_Bike_Share_Trip_Locations.ipynb)" organizes bike share data by year.
 
@@ -44,6 +44,7 @@ To understand the bike counting spatial patterns, [hot spot analysis](https://gi
 
 Export [the storymap content](https://github.com/dongmeic/BikeCounting/blob/main/StoryMap/get_storymap_text.py) and [save it to word](https://github.com/dongmeic/BikeCounting/blob/main/StoryMap/export_text_to_word.py) for historical copies. 
 
+## Steps to update the all-year storymap
 1. Introduction
 
 The introduction explains the purpose of the story map, its sections, and how the storymap is updated yearly. 
@@ -71,3 +72,23 @@ The introduction explains the purpose of the story map, its sections, and how th
 5. Conclusions
 
 The summary answers the questions of how many bike commuters in Eug-Spr, how often people bike, and where and when people bike the most. 
+
+## Data sources
+
+### Bike commuters
+
+1. [Table B08301: Means of Transportation to Work](https://data.census.gov/table?q=Table+B08301&g=010XX00US$3100000&tid=ACSDT5Y2021.B08301) ([internal link](\\clsrv111.int.lcog.org\transpor\MPO\Bike&Ped\BikeCounting\StoryMap\ACS\B08301),  [by city](https://data.census.gov/table?q=Table+B08301&g=321XX00US412166023850,412166069600))
+
+Table B08301 data is organized by nationwide metro area and by city. 
+
+2. [Table B08006: Sex of Workers by Means of Transportation to Work](https://data.census.gov/cedsci/table?q=Table%20B08006&g=310XX00US21660&tid=ACSDT5Y2021.B08006)([internal link](\\clsrv111.int.lcog.org\transpor\MPO\Bike&Ped\BikeCounting\StoryMap\ACS\B08006),  [by city](https://data.census.gov/table?q=Table+B08301&g=321XX00US412166023850,412166069600))
+
+Table B08006 data is organized by Eugene-Springfield metro area and by city. 
+
+3. [Table B01003 Total Population](https://data.census.gov/table?q=Table+B01003&g=321XX00US412166023850,412166069600)([internal link](\\clsrv111.int.lcog.org\transpor\MPO\Bike&Ped\BikeCounting\StoryMap\ACS\B01003))
+
+Table B01003 data is organized by city. 
+
+4. 
+
+### Hourly bike counts
