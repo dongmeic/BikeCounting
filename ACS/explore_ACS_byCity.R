@@ -4,63 +4,7 @@ library(plotly)
 library(scales)
 library(ggpubr)
 
-path <- "T:/DCProjects/StoryMap/BikeCounting/ACS"
-
-read_table <- function(file, foldernm="B08006"){
-  if(foldernm == "B01003"){
-    inpath <- paste0(path, "/", foldernm)
-  }else{
-    inpath <- paste0(path, "/", foldernm, "/ByCity")
-  }
-  
-  data <- read.csv(paste0(inpath, "/", file))
-  year <- as.numeric(substr(file, 8, 11))
-  if(foldernm=="B08006"){
-    cols <- paste0(foldernm, c("_001E", "_001M",
-              "_014E", "_014M", 
-              "_031E", "_031M",
-              "_048E", "_048M"))
-  }else if(foldernm=="B08301"){
-    cols <- paste0(foldernm, c("_001E", "_001M", 
-              "_018E", "_018M"))
-  }else{
-    cols <- paste0(foldernm, c("_001E", "_001M"))
-  }
-  
-  dat <- data[-1,-which(names(data) %in% c("GEO_ID", "NAME"))]
-  dat <- apply(dat[,cols], 2, as.numeric)
-  dat <- cbind(as.data.frame(dat), data[-1, c("GEO_ID", "NAME")])
-  dat$YEAR <- rep(year, dim(dat)[1])
-  
-  if(foldernm=="B08006"){
-    dat$PCT <- dat$B08006_014E/dat$B08006_001E
-  }else if(foldernm=="B08301"){
-    dat$PCT <- dat$B08301_018E/dat$B08301_001E
-  }
-  
-  return(dat)
-}
-
-get_data <- function(foldernm="B08006"){
-  
-  if(foldernm == "B01003"){
-    files <- list.files(paste0(path, "/", foldernm), pattern = "_data_with_overlays_")
-  }else{
-    files <- list.files(paste0(path, "/", foldernm, "/ByCity"), pattern = "_data_with_overlays_")
-  }
-  
-  for(file in files){
-    print(file)
-    if(file==files[1]){
-      df <- read_table(file, foldernm=foldernm)
-    }else{
-      ndf <- read_table(file, foldernm=foldernm)
-      df <- rbind(df, ndf)
-    }
-  }
-  
-  return(df)
-}
+source("C:/Users/clid1852/.0GitHub/BikeCounting/ACS/explore_ACS_byCity_functions.R")
 
 # get data
 data1 <- get_data(foldernm="B08006")
@@ -77,7 +21,7 @@ names(data)
 
 # percentage of commuters
 data$PCT2 <- data$B08006_001E/data$B01003_001E
-data$City <- ifelse(data$NAME == "Eugene city, Oregon", "EUG", "SPR")
+data$City <- ifelse(grepl("Eugene city", data$NAME), "EUG", "SPR")
 names(data)[which(names(data) == "YEAR")] <- "Year"
 
 df <- data
@@ -100,6 +44,7 @@ bike_commuters <- ggplot(df, aes(x = Year, y = Est, color=City)) +
 
 ggplotly(bike_commuters)
 
+# figure 3
 png(paste0(path, "/bike_commuters_by_city_with_MoE.png"), width = 8, height = 6,
     units = "in", res = 300)
 print(bike_commuters)
@@ -120,7 +65,7 @@ ndf <- rbind(df1, df2)
 ndf$Percent <- round(ndf$Percent * 100,1)
 
 pct_bike_work_commuters <- ggplot(ndf, aes(x = Year, y = Percent, color=City, shape=Category)) + 
-  geom_line(size = 2) + 
+  geom_line(linewidth = 2) + 
   geom_point(size = 4) + 
   scale_x_continuous(label = scales::label_number(accuracy = 1)) +
   theme_minimal(base_size = 12)+
@@ -131,7 +76,7 @@ ggplotly(pct_bike_work_commuters)
 
 pct_work_commuters <- ggplot(ndf[ndf$Category=="% Work Commuters",], 
                              aes(x = Year, y = Percent, color=City)) + 
-  geom_line(size = 1.25) + 
+  geom_line(linewidth = 1.25) + 
   geom_point(size = 3, shape=17) + 
   scale_x_continuous(label = scales::label_number(accuracy = 1)) +
   theme_minimal(base_size = 12)+
@@ -140,7 +85,7 @@ pct_work_commuters <- ggplot(ndf[ndf$Category=="% Work Commuters",],
 
 pct_bike_commuters <- ggplot(ndf[ndf$Category=="% Bike Commuters",], 
                              aes(x = Year, y = Percent, color=City)) + 
-  geom_line(size = 1.25) + 
+  geom_line(linewidth = 1.25) + 
   geom_point(size = 3, shape=16) + 
   scale_x_continuous(label = scales::label_number(accuracy = 1)) +
   theme_minimal(base_size = 12)+
@@ -152,6 +97,7 @@ combined <- ggarrange(
   common.legend = TRUE, legend = "top",  ncol = 1, nrow = 2
 )
 
+# figure 4
 png(paste0(path, "/percent_bike_work_commuters.png"), width = 8, height = 6,
     units = "in", res = 300)
 print(combined)
@@ -207,6 +153,7 @@ combined2 <- ggarrange(
   common.legend = TRUE, legend = "bottom",  ncol = 2, nrow = 1
 )
 
+# figure 5
 png(paste0(path, "/bike_commuter_structure.png"), width = 8, height = 6,
     units = "in", res = 300)
 print(combined2)

@@ -2,6 +2,8 @@
 # By Dongmei Chen (dchen@lcog.org)
 # On June 13th, 2023
 
+inpath <- "T:/MPO/Bike&Ped/BikeCounting/StoryMap/ACS"
+
 read_table <- function(file, foldernm="B08301"){
   inpath <- paste0(inpath, "/", foldernm)
   data <- read.csv(paste0(inpath, "/", file))

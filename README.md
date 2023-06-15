@@ -58,6 +58,7 @@ Go to the [data sources](https://github.com/dongmeic/BikeCounting/tree/main#bike
 
 2) run the scripts to get the annual bike commuter percentage in urbanized area nationwide (boxplot), bike commuter structure by city (ggplot), and bike commuter by city with margin of error;
 
+The script [explore_ACS.R](https://github.com/dongmeic/BikeCounting/blob/main/ACS/explore_ACS.R) exported Figures 1 and 2. 
 
 3) write or review the paragrahs with the analysis results.
 

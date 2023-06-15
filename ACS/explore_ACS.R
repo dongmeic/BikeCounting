@@ -5,7 +5,6 @@
 # Target area - 310M100US21660
 # Bike - B08301018
 
-inpath <- "T:/MPO/Bike&Ped/BikeCounting/StoryMap/ACS"
 source("C:/Users/clid1852/.0GitHub/BikeCounting/ACS/explore_ACS_functions.R")
 StartYear <- 2010
 EndYear <- 2021
@@ -124,6 +123,7 @@ mean(df_total[grepl("Corvallis", df_total$NAME), "B08301_018E"])
 # get data from Table B08006
 df <- get_data(foldernm="B08006")
 mean(df$PCT)
+
 # figure 2
 png(paste0(inpath, "/bike_commuters_sex.png"), width = 8, height = 6,
     units = "in", res = 300)
