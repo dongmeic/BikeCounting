@@ -53,13 +53,23 @@ The introduction explains the purpose of the story map, its sections, and how th
 2. Bike commuters
 
 1) download bike commmuter data B08006 and B08301;)
+
+Go to the [data sources](https://github.com/dongmeic/BikeCounting/tree/main#bike-commuters) section, download data with the links provided and save data in the designated folder. 
+
 2) run the scripts to get the annual bike commuter percentage in urbanized area nationwide (boxplot), bike commuter structure by city (ggplot), and bike commuter by city with margin of error;
+
+
 3) write or review the paragrahs with the analysis results.
 
 3. Bike counts
 
 1) download bike share data;
+
+Login bike share trips from the [social bicycles](https://data.socialbicycles.com/dashboard/#/154/trips/reports) site sometimes takes a while, especially in the "generating" step. Optionally, holds data is also downloaded for other bike share data analysis needs, and saved at T:\MPO\Bike&Ped\BikeCounting\StoryMap\BikeShare\Data\Holds.
+
 2) run the scripts to get average bikes per hour (BPH), growth in BPH, heatmaps of BPH, bikes on buses, and bike shares;
+
+
 3) work on the viz updates (redesign the vizzes as needed);
 4) write or review the paragrahs with the analysis results (redesign the storymap as needed).
 
@@ -67,7 +77,7 @@ The introduction explains the purpose of the story map, its sections, and how th
 
 1) definitions of bikeway types;
 2) BPH by bikeway types;
-3) bike-involved crash;
+3) [bike-involved crash](https://www.lcog.org/thempo/page/bicycle-involved-crashes);
 4) webmap of bicycle network.
 
 5. Conclusions
@@ -109,11 +119,11 @@ This part summarizes the hotspots of hourly bike counts, bike share, and bikes o
 
 Table B08301 data is organized by nationwide metro area and by city. 
 
-2. [Table B08006: Sex of Workers by Means of Transportation to Work](https://data.census.gov/cedsci/table?q=Table%20B08006&g=310XX00US21660&tid=ACSDT5Y2021.B08006)(T:\MPO\Bike&Ped\BikeCounting\StoryMap\ACS\B08006,  [by city](https://data.census.gov/table?q=Table+B08301&g=321XX00US412166023850,412166069600))
+2. [Table B08006: Sex of Workers by Means of Transportation to Work](https://data.census.gov/cedsci/table?q=Table%20B08006&g=310XX00US21660&tid=ACSDT5Y2021.B08006) (T:\MPO\Bike&Ped\BikeCounting\StoryMap\ACS\B08006,  [by city](https://data.census.gov/table?q=Table+B08301&g=321XX00US412166023850,412166069600))
 
 Table B08006 data is organized by Eugene-Springfield metro area and by city. 
 
-3. [Table B01003 Total Population](https://data.census.gov/table?q=Table+B01003&g=321XX00US412166023850,412166069600)(T:\MPO\Bike&Ped\BikeCounting\StoryMap\ACS\B01003)
+3. [Table B01003 Total Population](https://data.census.gov/table?q=Table+B01003&g=321XX00US412166023850,412166069600) (T:\MPO\Bike&Ped\BikeCounting\StoryMap\ACS\B01003)
 
 Table B01003 data is organized by city. 
 
@@ -124,4 +134,4 @@ Data is saved at T:\Data\COUNTS\Nonmotorized Counts\Summary Tables\Bicycle\Bicyc
 Data is saved at T:\Data\LTD Data\MonthlyBoardings.
 
 ### Bike shares
-Bike share [trips](https://data.socialbicycles.com/dashboard/#/154/trips/reports) data is downloaded manually by month. 
+Bike share [trips](https://data.socialbicycles.com/dashboard/#/154/trips/reports) data is downloaded manually by month, and saved at T:\MPO\Bike&Ped\BikeCounting\StoryMap\BikeShare\Data\Trips. 

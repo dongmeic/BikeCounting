@@ -5,71 +5,25 @@
 # Target area - 310M100US21660
 # Bike - B08301018
 
-inpath <- "T:/DCProjects/StoryMap/BikeCounting/ACS"
-
-# B08301
-read_table <- function(file, foldernm="B08301"){
-  inpath <- paste0(inpath, "/", foldernm)
-  data <- read.csv(paste0(inpath, "/", file))
-  year <- as.numeric(substr(file, 8, 11))
-  if(foldernm=="B08006"){
-    cols <- c("B08006_014E", "B08006_014M", 
-              "B08006_031E", "B08006_031M",
-              "B08006_048E", "B08006_048M")
-  }else{
-    cols <- c("B08301_001E", "B08301_001M", 
-              "B08301_018E", "B08301_018M")
-  }
-  
-  dat <- data[-1,-which(names(data) %in% c("GEO_ID", "NAME"))]
-  dat <- apply(dat[,cols], 2, as.numeric)
-  if(foldernm=="B08301"){
-    dat <- cbind(as.data.frame(dat), data[-1, c("GEO_ID", "NAME")])
-  }else{
-    dat <- cbind(t(as.data.frame(dat)), data[-1, c("GEO_ID", "NAME")])
-    rownames(dat) <- NULL
-  }
-  dat$YEAR <- rep(year, dim(dat)[1])
-  if(foldernm=="B08006"){
-    dat$PCT <- dat$B08006_048E/dat$B08006_014E
-  }else{
-    dat$PCT <- dat$B08301_018E/dat$B08301_001E
-  }
-  return(dat)
-}
-
-files <- list.files(paste0(inpath, "/B08301"), pattern = "_data_with_overlays_")
-for(file in files){
-  if(file==files[1]){
-    df <- read_table(file)
-  }else{
-    ndf <- read_table(file)
-    df <- rbind(df, ndf)
-  }
-}
-
+inpath <- "T:/MPO/Bike&Ped/BikeCounting/StoryMap/ACS"
+source("C:/Users/clid1852/.0GitHub/BikeCounting/ACS/explore_ACS_functions.R")
+StartYear <- 2010
+EndYear <- 2021
+# get data from Table B08301
+df <- get_data()
+# quick view on Eug-Spr data
 df[df$GEO_ID %in% c('310M100US21660', '310M200US21660', '310M300US21660',
-                    '310M400US21660', '310M500US21660'),]
+                    '310M400US21660', '310M500US21660', '310M600US21660'),]
 df[df$NAME %in% c('Eugene-Springfield, OR Metro Area', 'Eugene, OR Metro Area'),]
+# quick view on the nationwide data (boxlot) 
 df_total <- df
 boxplot(df_total$PCT~df_total$YEAR)
 
-files <- list.files(paste0(inpath, "/B08301-310M100US21660"), 
-                    pattern = "_data_with_overlays_")
-for(file in files){
-  if(file==files[1]){
-    df <- read_table(file, foldernm="B08301-310M100US21660")
-  }else{
-    ndf <- read_table(file, foldernm="B08301-310M100US21660")
-    df <- rbind(df, ndf)
-  }
-}
-
+df <- get_data(foldernm="B08301-310M100US21660")
 df_eug <- df
-
 data <- df_total
 
-# percent
+# aggregate percent by mean and max
 data_means <- aggregate(data$PCT,                       
                         list(data$YEAR),
                         function(x) mean(na.omit(x)))
@@ -82,7 +36,8 @@ data_maxes <- aggregate(data$PCT,
 
 colnames(data_maxes)[1] <- "Year"
 
-for(year in 2010:2020){
+# check the metro with the maximum pct bike commuters
+for(year in 2010:EndYear){
   sdf <- data[data$YEAR==year,]
   max <- max(na.omit(sdf$PCT))
   print(paste0(year, ": ", sdf[sdf$PCT==max,"NAME"]))
@@ -99,14 +54,18 @@ data_maxes_tot <- aggregate(data$B08301_018E,
                         function(x) max(na.omit(x)))
 
 colnames(data_maxes_tot)[1] <- "Year"
+# the maximum has been Corvallis since 2011
+# this number will be used on the figure - boxplot_bike_commuters.png
+n <- EndYear-StartYear+1
 
-for(year in 2010:2020){
+# check the metro with the maximum bike commuters
+for(year in 2010:EndYear){
   sdf <- data[data$YEAR==year,]
   max <- max(na.omit(sdf$B08301_018E))
   print(paste0(year, ": ", sdf[sdf$B08301_018E==max,"NAME"]))
 }
 
-
+# figure 1
 png(paste0(inpath, "/boxplot_bike_commuters.png"), width = 8, height = 6,
     units = "in", res = 300)
 par(mar=c(2,4,1,1))
@@ -114,7 +73,7 @@ boxplot(df_total$PCT~df_total$YEAR, xlab="",
         ylab="% Bike Commuters",
         col="grey", outcol="lightgrey")
 par(new=T)
-plot(df_eug$YEAR, df_eug$PCT, xlim=c(2009.5, 2020.5), 
+plot(df_eug$YEAR, df_eug$PCT, xlim=c(StartYear-0.5, EndYear+0.5), 
      ylim=range(na.omit(df_total$PCT)), pch=19, cex=1.5,
      col="red", axes=F, xlab="", ylab="")
 lines(df_eug$YEAR, df_eug$PCT, 
@@ -135,55 +94,37 @@ text(x = 2017,
      y = 0.048,
      labels = "Eugene-Springfield", 
      col = "red")
-points(x = data_maxes$Year[2:11],                             
-       y = data_maxes$x[2:11])
-lines(data_maxes$Year[2:11], data_maxes$x[2:11], 
+points(x = data_maxes$Year[2:n],                             
+       y = data_maxes$x[2:n])
+lines(data_maxes$Year[2:n], data_maxes$x[2:n], 
       lwd=2, lty=2)
 text(x = 2018,                               
      y = 0.085,
      labels = "Corvallis")
 dev.off()
 
-
+# quick view on no. bike commuters
 boxplot(df_total$B08301_018E~df_total$YEAR, xlab="", 
         ylab="No. Bike Commuters",
         col="grey", outcol="lightgrey")
 par(new=T)
-plot(df_eug$YEAR, df_eug$B08301_018E, xlim=c(2009.5, 2019.5), 
+plot(df_eug$YEAR, df_eug$B08301_018E, xlim=c(StartYear-0.5, EndYear+0.5), 
      ylim=range(na.omit(df_total$B08301_018E)), pch=19, cex=1.5,
      col="red", axes=F, xlab="", ylab="")
 lines(df_eug$YEAR, df_eug$B08301_018E, 
       lwd=2, lty=2, col="red")
 
+# check the differences in population sizes and bike commuters
 mean(df_total[grepl("Eugene", df_total$NAME), "B08301_001E"])
 mean(df_total[grepl("Corvallis", df_total$NAME), "B08301_001E"])
 
 mean(df_total[grepl("Eugene", df_total$NAME), "B08301_018E"])
 mean(df_total[grepl("Corvallis", df_total$NAME), "B08301_018E"])
 
-# B08006
-files <- list.files(paste0(inpath, "/B08006"), 
-                    pattern = "_data_with_overlays_")
-
-for(file in files){
-  #print(file)
-  if(file==files[1]){
-    df <- read_table(file, foldernm = "B08006")
-  }else{
-    ndf <- read_table(file, foldernm = "B08006")
-    df <- rbind(df, ndf)
-  }
-}
-
-add_legend <- function(...){
-  opar <- par(fig=c(0,1,0,1), oma=c(0,0,0,0),mar=c(0,0,0,0), new=TRUE)
-  on.exit(par(opar))
-  plot(0, 0, type="n", bty="n", xaxt="n", yaxt="n")
-  legend(...)
-}
-
-
+# get data from Table B08006
+df <- get_data(foldernm="B08006")
 mean(df$PCT)
+# figure 2
 png(paste0(inpath, "/bike_commuters_sex.png"), width = 8, height = 6,
     units = "in", res = 300)
 par(mar=c(2,4,1,1))
@@ -214,12 +155,12 @@ legend("center", c("Total", "Men", "Women"), horiz=TRUE, bty="n",
 plot(df$YEAR, df$PCT, xlab="", ylab="% Women bike commuters", 
      col="red", cex=1.5, ylim=c(range(df$PCT)[1], range(df$PCT)[2]+0.008))
 lines(df$YEAR, df$PCT, col="red", lwd=2)
-text(x = df$YEAR[1:10],                               
-     y = df$PCT[1:10]+0.006,
-     labels = paste0(round(df$PCT[1:10], 3)*100, "%"), col='red')
-text(x = df$YEAR[11]+0.18,                               
-     y = df$PCT[11]+0.006,
-     labels = paste0(round(df$PCT[11], 3)*100, "%"), col='red')
+text(x = df$YEAR[1:(n-2)],                               
+     y = df$PCT[1:(n-2)]+0.006,
+     labels = paste0(round(df$PCT[1:(n-2)], 3)*100, "%"), col='red')
+text(x = df$YEAR[(n-1):n]+0.18,                               
+     y = df$PCT[(n-1):n]+0.006,
+     labels = paste0(round(df$PCT[(n-1):n], 3)*100, "%"), col='red')
 dev.off()
 
 # check the rank
@@ -228,9 +169,8 @@ odf = sdf[order(sdf$PCT, decreasing = TRUE),]
 head(odf, 10)
 which(odf$NAME == "Portland-Vancouver-Hillsboro, OR-WA Metro Area")
 
+# this figure is for illustration
 df$PCT_M = 1-df$PCT
-
-
 png(paste0(inpath, "/bike_commuters_sex_pct.png"), width = 4, height = 4,
     units = "in", res = 300)
 par(mar=c(2,4,1,1))
@@ -240,6 +180,3 @@ lines(df$YEAR, df$PCT_M, col='blue',lwd=2)
 lines(df$YEAR, df$PCT, col="red", lwd=2)
 points(df$YEAR, df$PCT, col='red', pch=16, cex=1.2)
 dev.off()
-
-
-
