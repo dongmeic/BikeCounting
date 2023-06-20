@@ -10,6 +10,9 @@ library(classInt)
 library(raster)
 
 options(warn = -1)
+start_year <- 2012
+end_year <- 2022
+prj4str <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1 +units=m +nadgrids=@null +wktext +no_defs +type=crs"
 inpath <- 'T:/Data/COUNTS/Nonmotorized Counts/Summary Tables/Bicycle/'
 data <- read.csv(paste0(inpath, 'Bicycle_HourlyForTableau.csv'))
 
@@ -38,9 +41,9 @@ data1 <- data[!is.na(data$Hourly_Count),]
 data1 <- data1[data1$Direction == 'Total',]
 
 range(data1$Date)
-most_recent_year <- 2023
+#most_recent_year <- 2023
 # if the most recent year is not complete, remove it first
-data1 <- data1[data1$Year != most_recent_year,]
+data1 <- data1[data1$Year != end_year+1,]
 outdata <- aggregate(x=list(BPH = data1$Hourly_Count), by=list(Year = data1$Year, Location = data1$Location), FUN=mean)
 locvars <- c('Location', 'Latitude', 'Longitude', 'Site_Name', 'DoubleCountLocation', 
              'IsOneway', 'OnewayDirection', 'IsSidewalk')
@@ -48,7 +51,6 @@ outdata <- merge(outdata, locdata[,locvars], by = 'Location')
 
 df2spdf <- function(df, lon_col_name, lat_col_name, trans = TRUE){
   lonlat <- sp::CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0")
-  prj4str <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1 +units=m +nadgrids=@null +wktext +no_defs +type=crs"
   lon_col_no <- which(names(df)==lon_col_name)
   lat_col_no <- which(names(df)==lat_col_name)
   xy <- data.frame(df[,c(lon_col_no,lat_col_no)])
@@ -95,6 +97,10 @@ for(loc in unique(outdata$Location)){
 
 tail(outdata)
 outspdf <- df2spdf(outdata, 'Longitude', 'Latitude')
+# add city info
+ugb <- shapefile("X:/Data/Boundary/UGB/UGB_CLMPO.shp")
+ugb <- spTransform(ugb, CRS(prj4str))
+outspdf$City <- over(outspdf, ugb)$ugbcitynam
 shapefile(outspdf, filename='T:/MPO/Bike&Ped/BikeCounting/StoryMap/BikeCounts/Output/BPH_by_Year.shp', overwrite=TRUE)
 
 outspdf <- outspdf[order(outspdf$BPH),]
@@ -141,8 +147,6 @@ df1 <- cbind(df1, df_n1$N)
 colnames(df1)[4] <- 'n'
 df1
 
-start_year <- 2012
-end_year <- 2022
 #png(paste0(outpath, "/line_bph_mpo.png"), width = 5, 
 #    height = 5, units = "in", res = 300)
 pdf(paste0(outpath, "/line_bph_mpo.pdf"), width = 5, height = 5)
@@ -193,4 +197,9 @@ aggyear <- aggregate(x=list(Years = bph$Year), by=list(Location = bph$Location),
 aggdata <- merge(aggdata, aggyear, by = 'Location')
 names(aggdata)[which(names(aggdata) %in% c('DoubleCountLocation', 'OnewayDirection'))] <- c('DoubleCNT', 'OnewayDIR')
 aggspdf <- df2spdf(aggdata, 'Longitude', 'Latitude')
+# add city info
+aggspdf$City <- over(aggspdf, ugb)$ugbcitynam
 shapefile(aggspdf, filename='T:/MPO/Bike&Ped/BikeCounting/StoryMap/BikeCounts/Output/BPH.shp', overwrite=TRUE)
+
+# revise the text
+outspdf@data[outspdf$BPH==max(outspdf$BPH),]
