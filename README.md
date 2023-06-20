@@ -5,7 +5,7 @@ The repository is to organize bike counting related datasets (bike counts, bike 
 
 Bicycle counts in Central Lane MPO area combine both permanent and short-term tube counts. There are 16 permanent counters that are collecting data continuously and data is accessible from [Eco-Visio](https://www.eco-visio.net/v5/login/?callback=%2Fv5%2F#::) with credentials. Six [short-term bike counting tubes](https://www.eco-counter.com/produits/pyro-evo-range-en/urban-postevo/) are rotated manually every two weeks from March to October among the locations determined by a process described in the Section 2 Data Collection (page 19) in [the ODOT bicycle count data report](https://www.oregon.gov/odot/Programs/ResearchDocuments/304-761%20Bicycle%20Counts%20Travel%20Safety%20Health.pdf#page=24). The CLMPO bike counts can be viewed and downloaded from the [data portal](https://www.lcog.org/thempo/page/bicycle-counts). The data includes various spatial and temporal information about bike counts with a temporal resolution of hourly. Bikes per hour (BPH) is chosen as an indicator to [explore](https://github.com/dongmeic/BikeCounting/blob/main/BikeCounts/Explore_Bike_Counts.ipynb) the spatial and temporal patterns.
 
-In the "[BikeCounts](https://github.com/dongmeic/BikeCounting/tree/main/BikeCounts)" folder, the script "[Explore_Bike_Counts.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/BikeCounts/Explore_Bike_Counts.ipynb)" aggregates the average bikes per hour by year and location and merges the data with the sampling locations. The script also calculates the growth of bikers per hour over year and aggregates MPO-wide average bike counts. The script is reorganized to [1_Hourly_Bike_Counts.R](https://github.com/dongmeic/BikeCounting/blob/main/BikeCounts/1_Hourly_Bike_Counts.R) in the review process. The script "[Bike_Counts_Merged_by_Locations.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/BikeCounts/Bike_Counts_Merged_by_Locations.ipynb)" merges bike counts and sampling locations without aggregation. Both scripts generate data for the Tableau viz "Bike Counts".
+In the "[BikeCounts](https://github.com/dongmeic/BikeCounting/tree/main/BikeCounts)" folder, the script "[Explore_Bike_Counts.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/BikeCounts/Explore_Bike_Counts.ipynb)" aggregates the average bikes per hour by year and location and merges the data with the sampling locations. The script also calculates the growth of bikers per hour over year and aggregates MPO-wide average bike counts. The script is reorganized to [Hourly_Bike_Counts.R](https://github.com/dongmeic/BikeCounting/blob/main/BikeCounts/Hourly_Bike_Counts.R) in the review process. The script "[Bike_Counts_Merged_by_Locations.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/BikeCounts/Bike_Counts_Merged_by_Locations.ipynb)" merges bike counts and sampling locations without aggregation. Both scripts generate data for the Tableau viz "Bike Counts".
 
 ## Bike shares
 
@@ -45,7 +45,7 @@ To understand the bike counting spatial patterns, [hot spot analysis](https://gi
 Export [the storymap content](https://github.com/dongmeic/BikeCounting/blob/main/StoryMap/get_storymap_text.py) and [save it to word](https://github.com/dongmeic/BikeCounting/blob/main/StoryMap/export_text_to_word.py) for historical copies. 
 
 ## Steps to update the storymaps
-### all-year story maps
+### all-year story maps (titled "**Biking in Central Lane**")
 1. Introduction
 
 The introduction explains the purpose of the story map, its sections, and how the storymap is updated yearly. 
@@ -58,7 +58,13 @@ Go to the [data sources](https://github.com/dongmeic/BikeCounting/tree/main#bike
 
 2) run the scripts to get the annual bike commuter percentage in urbanized area nationwide (boxplot), bike commuter structure by city (ggplot), and bike commuter by city with margin of error;
 
-The script [explore_ACS.R](https://github.com/dongmeic/BikeCounting/blob/main/ACS/explore_ACS.R) exported Figures 1 and 2. 
+The script [explore_ACS.R](https://github.com/dongmeic/BikeCounting/blob/main/ACS/explore_ACS.R) exported Figures 1 and 2. The script [explore_ACS_byCity.R](https://github.com/dongmeic/BikeCounting/blob/main/ACS/explore_ACS_byCity.R) exported Figures 3 to 5, including the plotly links for Figures 3 and 4. 
+
+Figure 1: boxplot_bike_commuters.png
+Figure 2: bike_commuters_sex.png
+Figure 3: bike_commuters_by_city_with_MoE.png
+Figure 4: percent_bike_work_commuters.png
+Figure 5: bike_commuter_structure.png 
 
 3) write or review the paragrahs with the analysis results.
 
@@ -70,11 +76,17 @@ Login bike share trips from the [social bicycles](https://data.socialbicycles.co
 
 2) run the scripts to get average bikes per hour (BPH), growth in BPH, heatmaps of BPH, bikes on buses, and bike shares;
 
+2-1) BPH 
+Dashboard: [**Yearly Bikes Per Hour and the Growth**](https://lcog.maps.arcgis.com/home/item.html?id=264a0023f5514080a15dfdbf7c629291)
+Data:  [BPH by Year](https://lcog.maps.arcgis.com/home/item.html?id=6be94ae89dcd4cfa9ccd9748f3d49a89)(BPH_by_Year.zip)
+Script: [Explore_Bike_Counts.R](https://github.com/dongmeic/BikeCounting/blob/main/BikeCounts/Explore_Bike_Counts.R)
 
 3) work on the viz updates (redesign the vizzes as needed);
+
+
 4) write or review the paragrahs with the analysis results (redesign the storymap as needed).
 
-4. Bicycle network
+4. Bikeways
 
 1) definitions of bikeway types;
 2) BPH by bikeway types;
