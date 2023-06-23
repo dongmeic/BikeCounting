@@ -93,9 +93,13 @@ Steps to update the dashboard:
 Dashboard: [**Spatial Patterns of Average Bikes Per Hour**](https://lcog.maps.arcgis.com/home/item.html?id=b3c3f09b17ac4d6ebb81c1d387970f61)
 Webmaps: [Spatial Patterns of Average Bikes Per Hour by Hour](https://lcog.maps.arcgis.com/home/item.html?id=651a5ee1e56a4ed88f50f3681e592869); [Spatial Patterns of Average Bikes Per Hour by Weekday](https://lcog.maps.arcgis.com/home/item.html?id=dd8533342e6344579e89b011ddc318b2); [Spatial Patterns of Average Bikes Per Hour by Month](https://lcog.maps.arcgis.com/home/item.html?id=8b48e22af3ef41549d6f72c7a3ca9ee5); [Spatial Patterns of Average Bikes Per Hour by Season](https://lcog.maps.arcgis.com/home/item.html?id=77dc95044fee4cb0b52ca2307f91f184)
 Data:
-Scripts: [Agg_BPH_by_Hour_Month_Weekday_Season.R](https://github.com/dongmeic/BikeCounting/blob/main/BikeCounts/Agg_BPH_by_Hour_Month_Weekday_Season.R), [create_bph_webmap.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/BikeCounts/create_bph_webmap.ipynb)
+Scripts: [Agg_BPH_by_Hour_Month_Weekday_Season.R](https://github.com/dongmeic/BikeCounting/blob/main/BikeCounts/Agg_BPH_by_Hour_Month_Weekday_Season.R), [update_bph_webmap.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/BikeCounts/create_bph_webmap.ipynb)
 
-
+Steps to update the dashboards:
+2-2-1) Run the R script to get aggregated BPH, then upload the data by running the python script on the Pro environment;
+2-2-2) Update data by overwriting entire feature layer;
+2-2-3) Edit the dashboard title on the year inf and save;
+2-2-4) Revise the storymap content with updated data 
 
 3) work on the viz updates (redesign the vizzes as needed);
 
