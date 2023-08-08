@@ -3,10 +3,12 @@
 # On January 23th, 2022
 
 library(lubridate)
-source("T:/DCProjects/GitHub/RLearning/geocoding_functions.R")
+library(stringr)
+#source("C:/Users/clid1852/.0GitHub/RLearning/geocoding_functions.R")
 
-inpath <- "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/Trips"
-outpath <- "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/Output/review"
+path <- "T:/MPO/Bike&Ped/BikeCounting/StoryMap/BikeShare/Data"
+inpath <- paste0(path, "/Trips")
+outpath <- paste0(path,"/Output/review")
   
 files <- list.files(inpath)
 fileso <- list.files(outpath)
@@ -19,8 +21,6 @@ selected_vars <- c('User.ID', 'Route.ID', 'Start.Hub',
                    'End.Hub', 'End.Latitude', 'End.Longitude',
                    'End.Date', 'End.Time', 'Bike.ID', 'Bike.Name',
                    'Distance..Miles.', 'Duration')
-
-#test <- read.csv("T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_2019-05-01_2019-05-31.csv")
 
 ########################################### Collect Data ###############################################
 organize_points <- function(trips){
@@ -58,6 +58,7 @@ toMinutes <- function(x){
 }
 
 #file = files[1]
+# skip geocoding
 if(FALSE){
   geocode_hubs <- function(file){
     df1 <- read.csv(paste0(inpath, "/", file))
@@ -146,7 +147,7 @@ df$Start.Hub[grep("Eugene Station", df$Start.Hub)] <- "Eugene Station"
 df$Start.Hub[grep("Police Dept", df$Start.Hub)] <- "UO Police Department"
 df$Start.Hub[grep("HEDCO", df$Start.Hub)]  <- "HEDCO Education Building"
 df$Start.Hub[grep("Virtual", df$Start.Hub)] <- str_replace(df$Start.Hub[grep("Virtual", df$Start.Hub)], 
-                                                                        " \\(Virtual Hub\\)", "")
+                                                                        " //(Virtual Hub//)", "")
 
 df$End.Hub[grep("University of Oregon Station - Bay", df$End.Hub)]  <- "UO Station"
 df$End.Hub[grep("U of O Station", df$End.Hub)]  <- "UO Station"
@@ -157,29 +158,16 @@ df$End.Hub[grep("Eugene Station", df$End.Hub)] <- "Eugene Station"
 df$End.Hub[grep("Police Dept", df$End.Hub)] <- "UO Police Department"
 df$End.Hub[grep("HEDCO", df$End.Hub)]  <- "HEDCO Education Building"
 df$End.Hub[grep("Virtual", df$End.Hub)] <- str_replace(df$End.Hub[grep("Virtual", df$End.Hub)], 
-                                                                  " \\(Virtual Hub\\)", "")
+                                                                  " //(Virtual Hub//)", "")
 
 df[df$Start.Hub == "Monroe St & Blair Blvd ", "Start.Hub"] = "Monroe St & Blair Blvd"
-df[df$End.Hub == "Monroe St & Blair Blvd ", "Start.Hub"] = "Monroe St & Blair Blvd"
+df[df$End.Hub == "Monroe St & Blair Blvd ", "End.Hub"] = "Monroe St & Blair Blvd"
 
 df$Path.ID = paste(df$Start.Hub, "-", df$End.Hub)
 
-# library(rgdal)
-# library(raster)
-# 
-# mpob <- readOGR(dsn="V:/Data/Transportation", layer="MPO_Boundary")
-# mpob <- spTransform(mpob, CRS("+init=epsg:4326"))
-# 
-# > extent(mpob)
-# class      : Extent 
-# xmin       : -123.2321 
-# xmax       : -122.8281 
-# ymin       : 43.97865 
-# ymax       : 44.16123 
+write.csv(df, paste0(path, "/trips_all.csv"), row.names=FALSE)
 
-write.csv(df, "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_all.csv",
-          row.names=FALSE)
-
+#within MPO boundary
 mdf <- df[(df$Start.Latitude >= 43.97865 & df$Start.Latitude <= 44.16123) & 
            (df$Start.Longitude >= -123.2321 & df$Start.Longitude <= -122.8281) & 
            (df$End.Latitude >= 43.97865 & df$End.Latitude <= 44.16123) &
@@ -189,14 +177,13 @@ mdf <- mdf[!(mdf$Start.Longitude == mdf$End.Longitude & mdf$Start.Latitude == md
 
 ndf <- organize_points(mdf)
 
-write.csv(ndf, "T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_org_dst.csv",
-          row.names=FALSE)
+write.csv(ndf, paste0(path, "/trips_org_dst.csv"), row.names=FALSE)
 
-pathname <- as.data.frame(table(df$Path.Name))
-tail(pathname[order(pathname$Freq),])
+# pathname <- as.data.frame(table(df$Path.Name))
+# tail(pathname[order(pathname$Freq),])
 
 ########################################### Select Stations ##################################################
-#ndf <- read.csv("T:/DCProjects/StoryMap/BikeCounting/BikeShare/Data/trips_org_dst.csv")
+
 orgdf <- ndf[ndf$OriginDestination == "Origin", ]
 orgdf[orgdf$Location != "",]
 #orgdf <- orgdf[orgdf$Location != "",]
@@ -209,21 +196,21 @@ hist(sitedf$Freq)
  
 ########################################### Aggregate Data by Year ###########################################
 # trips and duration by year
-df_trips <- transform(aggregate(x=list(Trips = df1$Route.ID), 
-                                by=list(Year = year(df1$Start.Date)), 
+df_trips <- transform(aggregate(x=list(Trips = df$Route.ID), 
+                                by=list(Year = year(df$Start.Date)), 
                                 FUN=function(x) length(unique(x))), 
                                 Growth=ave(Trips,FUN=function(x) c(NA, diff(x)/x[-length(x)]))) 
 df_trips
                                                                                                               
-df_users <- transform(aggregate(x=list(Users = df1$User.ID), 
-                                by=list(Year = year(df1$Start.Date)), 
+df_users <- transform(aggregate(x=list(Users = df$User.ID), 
+                                by=list(Year = year(df$Start.Date)), 
                                 FUN=function(x) length(unique(x))), 
                       Growth=ave(Users,FUN=function(x) c(NA, diff(x)/x[-length(x)]))) 
 
 df_users
 
-df_duration <- transform(aggregate(x=list(Duration = df1$Minutes), 
-                                by=list(Year = year(df1$Start.Date)), 
+df_duration <- transform(aggregate(x=list(Duration = df$Minutes), 
+                                by=list(Year = year(df$Start.Date)), 
                                 FUN=mean), 
                       Growth=ave(Duration,FUN=function(x) c(NA, diff(x)/x[-length(x)]))) 
 
