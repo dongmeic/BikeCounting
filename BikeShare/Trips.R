@@ -1,19 +1,21 @@
-# This script was created to organize bike share trips data
+# This script was created to organize the bike share trips data
 # By Dongmei Chen (dchen@lcog.org)
 # On January 23th, 2022
 
 library(lubridate)
+library(sf)
 library(stringr)
+library(dplyr)
 #source("C:/Users/clid1852/.0GitHub/RLearning/geocoding_functions.R")
+source("C:/Users/clid1852/.0GitHub/BikeCounting/BikeShare/bike_share_functions.R")
 
 path <- "T:/MPO/Bike&Ped/BikeCounting/StoryMap/BikeShare/Data"
 inpath <- paste0(path, "/Trips")
-outpath <- paste0(path,"/Output/review")
+outpath <- paste0(path,"/Output/review") # add coordinates on the records with missing coordinates
   
 files <- list.files(inpath)
 fileso <- list.files(outpath)
 #files[which(!(files %in% fileso))]
-  
 
 selected_vars <- c('User.ID', 'Route.ID', 'Start.Hub', 
                    'Start.Latitude', 'Start.Longitude',
@@ -23,39 +25,6 @@ selected_vars <- c('User.ID', 'Route.ID', 'Start.Hub',
                    'Distance..Miles.', 'Duration')
 
 ########################################### Collect Data ###############################################
-organize_points <- function(trips){
-  #trips <- read.csv(paste0(inpath, "/", file))
-  org <- trips[,c('Route.ID', 'Bike.ID', 'User.ID', 
-                  'Start.Hub', 'Start.Latitude', 'Start.Longitude',
-                  'Start.Date', 'Start.Time', 'Path.ID',
-                  'Distance..Miles.', 'Minutes')]
-  names(org) <- c("RouteID", "BikeID", 'UserID',
-                  "Location", "Latitude", "Longitude",
-                  "Date", "Time", 'PathID',
-                  'Distance', 'Minutes')
-  org$OriginDestination <- rep("Origin", dim(org)[1])
-  dst <- trips[,c('Route.ID', 'Bike.ID', 'User.ID', 'End.Hub',
-                  'End.Latitude', 'End.Longitude',
-                  'End.Date','End.Time', 'Path.ID',
-                  'Distance..Miles.', 'Minutes')]
-  names(dst) <- c("RouteID", "BikeID", 'UserID',
-                  "Location", "Latitude", "Longitude", 
-                  "Date", "Time", 'PathID',
-                  'Distance', 'Minutes')
-  dst$OriginDestination <- rep("Destination", dim(dst)[1])
-  df <- rbind(org, dst)
-  return(df)
-}
-
-toMinutes <- function(x){
-  h <- as.numeric(strsplit(x, ":")[[1]][1])
-  m <- as.numeric(strsplit(x, ":")[[1]][2])
-  s <- as.numeric(strsplit(x, ":")[[1]][3])
-  
-  res <- h*60 + m + s/60
-  
-  return(res)
-}
 
 #file = files[1]
 # skip geocoding
@@ -107,14 +76,14 @@ if(FALSE){
 # file <- "trips_peace_health_rides_05_01_2019-05_31_2019.csv"
 # testdf <- read.csv(paste0(outpath, "/", file))
 
-for(file in fileso){
-  if(file == fileso[1]){
-    df <- read.csv(paste0(outpath, "/", file))
+for(file in files){
+  if(file == files[1]){
+    df <- read.csv(paste0(inpath, "/", file))
     df$Start.Date <- as.Date(df$Start.Date, format = "%Y-%m-%d")
     df$End.Date <- as.Date(df$End.Date, format = "%Y-%m-%d")
     df <- df[selected_vars]
   }else{
-    ndf <- read.csv(paste0(outpath, "/", file))
+    ndf <- read.csv(paste0(inpath, "/", file))
     
     if(file=='trips_peace_health_rides_05_01_2019-05_31_2019.csv'){
       ndf$Start.Date <- as.Date(ndf$Start.Date, format = "%m/%d/%Y")
@@ -129,35 +98,45 @@ for(file in fileso){
   }
   print(file)
 }
+excludedIDs <- c(717565, 742339, 764038, 819845, 1228447, 
+                 1354709, 1897910, 2184703, 2207685)
+df <- df[!(df$User.ID %in% excludedIDs),]
 
+dim(df)
 df <- df[!(df$Start.Latitude == " - " | df$Start.Longitude == " - " | df$End.Latitude == " - " | df$End.Longitude == "- "), ]
-dim(df[(df$Start.Hub == "" | df$End.Hub == ""), ])
-df <- df[!(df$Start.Hub == "" | df$End.Hub == ""), ]
+# dim(sdf)
+# dim(sdf)[1]/dim(df)[1]
+# dim(df[(df$Start.Hub == "" | df$End.Hub == ""), ])
+# ssdf <- sdf[!(sdf$Start.Hub == "" | sdf$End.Hub == ""), ]
+# dim(ssdf)[1]/dim(df)[1]
+# sdf0 <- df[(df$Start.Latitude == " - " | df$Start.Longitude == " - " | df$End.Latitude == " - " | df$End.Longitude == "- "), ]
+# ssdf0 <- sdf0[sdf0$Start.Hub != "" & sdf0$End.Hub != "", ]
 
 df$Minutes <- unlist(lapply(df$Duration, function(x) toMinutes(x)))
-
-# review hub names
-#unique(df$Start.Hub[grep("HEDCO", df$Start.Hub)])
+dat <- df
+df <- df[!(df$Start.Hub == "" | df$End.Hub == ""), ]
+# # review hub names
+# #unique(df$Start.Hub[grep("HEDCO", df$Start.Hub)])
 df$Start.Hub[grep("University of Oregon Station - Bay", df$Start.Hub)]  <- "UO Station"
 df$Start.Hub[grep("U of O Station", df$Start.Hub)]  <- "UO Station"
-df$Start.Hub[grep("University of Oregon", df$Start.Hub)] <- str_replace(df$Start.Hub[grep("University of Oregon", df$Start.Hub)], 
+df$Start.Hub[grep("University of Oregon", df$Start.Hub)] <- str_replace(df$Start.Hub[grep("University of Oregon", df$Start.Hub)],
                                                                         "University of Oregon", "UO")
 df$Start.Hub[grep("EMU|Erb Memorial Union", df$Start.Hub)] <- "Erb Memorial Union"
 df$Start.Hub[grep("Eugene Station", df$Start.Hub)] <- "Eugene Station"
 df$Start.Hub[grep("Police Dept", df$Start.Hub)] <- "UO Police Department"
 df$Start.Hub[grep("HEDCO", df$Start.Hub)]  <- "HEDCO Education Building"
-df$Start.Hub[grep("Virtual", df$Start.Hub)] <- str_replace(df$Start.Hub[grep("Virtual", df$Start.Hub)], 
+df$Start.Hub[grep("Virtual", df$Start.Hub)] <- str_replace(df$Start.Hub[grep("Virtual", df$Start.Hub)],
                                                                         " //(Virtual Hub//)", "")
 
 df$End.Hub[grep("University of Oregon Station - Bay", df$End.Hub)]  <- "UO Station"
 df$End.Hub[grep("U of O Station", df$End.Hub)]  <- "UO Station"
-df$End.Hub[grep("University of Oregon", df$End.Hub)] <- str_replace(df$End.Hub[grep("University of Oregon", df$End.Hub)], 
+df$End.Hub[grep("University of Oregon", df$End.Hub)] <- str_replace(df$End.Hub[grep("University of Oregon", df$End.Hub)],
                                                                         "University of Oregon", "UO")
 df$End.Hub[grep("EMU|Erb Memorial Union", df$End.Hub)] <- "Erb Memorial Union"
 df$End.Hub[grep("Eugene Station", df$End.Hub)] <- "Eugene Station"
 df$End.Hub[grep("Police Dept", df$End.Hub)] <- "UO Police Department"
 df$End.Hub[grep("HEDCO", df$End.Hub)]  <- "HEDCO Education Building"
-df$End.Hub[grep("Virtual", df$End.Hub)] <- str_replace(df$End.Hub[grep("Virtual", df$End.Hub)], 
+df$End.Hub[grep("Virtual", df$End.Hub)] <- str_replace(df$End.Hub[grep("Virtual", df$End.Hub)],
                                                                   " //(Virtual Hub//)", "")
 
 df[df$Start.Hub == "Monroe St & Blair Blvd ", "Start.Hub"] = "Monroe St & Blair Blvd"
@@ -168,6 +147,11 @@ df$Path.ID = paste(df$Start.Hub, "-", df$End.Hub)
 write.csv(df, paste0(path, "/trips_all.csv"), row.names=FALSE)
 
 #within MPO boundary
+df <- dat
+cols <- c("Start.Latitude", "Start.Longitude", "End.Latitude", "End.Longitude")
+df <- df %>%
+  mutate(across(all_of(cols), function(x) as.numeric(x)))
+
 mdf <- df[(df$Start.Latitude >= 43.97865 & df$Start.Latitude <= 44.16123) & 
            (df$Start.Longitude >= -123.2321 & df$Start.Longitude <= -122.8281) & 
            (df$End.Latitude >= 43.97865 & df$End.Latitude <= 44.16123) &
@@ -176,14 +160,28 @@ mdf <- df[(df$Start.Latitude >= 43.97865 & df$Start.Latitude <= 44.16123) &
 mdf <- mdf[!(mdf$Start.Longitude == mdf$End.Longitude & mdf$Start.Latitude == mdf$End.Latitude),]
 
 ndf <- organize_points(mdf)
-
+ndf$Date <- as.Date(ndf$Date, "%Y-%m-%d")
+ndf$Weekday <- as.character(wday(ndf$Date, label=TRUE, abbr=FALSE))
+ndf$Month <- months(ndf$Date)
+ndf$Season <- ifelse(ndf$Month %in% c("December", "January", "February"), "Winter",
+                     ifelse(ndf$Month %in% c("March", "April", "May"), "Spring",
+                            ifelse(ndf$Month %in% c("June", "July", "August"), "Summer", "Fall")))
+ndf$SeasonOrder <- ifelse(ndf$Season == "Spring", 1, 
+                          ifelse(ndf$Season == "Summer", 2, 
+                                 ifelse(ndf$Season == "Fall", 3, 4)))
+ndf$WeekdayOrder <- ifelse(ndf$Weekday == "Monday", 1, 
+                           ifelse(ndf$Weekday == "Tuesday", 2, 
+                                  ifelse(ndf$Weekday == "Wednesday", 3, 
+                                         ifelse(ndf$Weekday == "Thursday", 4, 
+                                                ifelse(ndf$Weekday == "Friday", 5, 
+                                                       ifelse(ndf$Weekday == "Saturday", 6, 7))))))
+ndf$Year <- year(ndf$Date)
 write.csv(ndf, paste0(path, "/trips_org_dst.csv"), row.names=FALSE)
 
 # pathname <- as.data.frame(table(df$Path.Name))
 # tail(pathname[order(pathname$Freq),])
 
 ########################################### Select Stations ##################################################
-
 orgdf <- ndf[ndf$OriginDestination == "Origin", ]
 orgdf[orgdf$Location != "",]
 #orgdf <- orgdf[orgdf$Location != "",]
