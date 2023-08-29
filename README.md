@@ -58,7 +58,7 @@ Go to the [data sources](https://github.com/dongmeic/BikeCounting/tree/main#bike
 
 2) run the scripts to get the annual bike commuter percentage in urbanized area nationwide (boxplot), bike commuter structure by city (ggplot), and bike commuter by city with margin of error;
 
-The script [explore_ACS.R](https://github.com/dongmeic/BikeCounting/blob/main/ACS/explore_ACS.R) exported Figures 1 and 2. The script [explore_ACS_byCity.R](https://github.com/dongmeic/BikeCounting/blob/main/ACS/explore_ACS_byCity.R) exported Figures 3 to 5, including the plotly links for Figures 3 and 4. 
+The script [explore_ACS.R](https://github.com/dongmeic/BikeCounting/blob/main/ACS/explore_ACS.R) exported Figures 1 and 2. The script [explore_ACS_byCity.R](https://github.com/dongmeic/BikeCounting/blob/main/ACS/explore_ACS_byCity.R) exported Figures 3 to 5, including the plotly links for Figures 3 and 4. Check [RPubs](https://rpubs.com/) for the links.
 
 Figure 1: boxplot_bike_commuters.png
 Figure 2: bike_commuters_sex.png
@@ -106,14 +106,25 @@ Steps to update the dashboards:
 
 4) write or review the paragrahs with the analysis results (redesign the storymap as needed).
 
-4. Bikeways
+4. Bikes on buses
+
+
+
+
+
+5. Bike share trips
+Bike share [trips](https://data.socialbicycles.com/dashboard/#/154/trips/reports) data is downloaded manually by month, and saved at T:\MPO\Bike&Ped\BikeCounting\StoryMap\BikeShare\Data\Trips. 
+
+The exploratory scripts [R_Explore_Bike_Shares](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/R_Explore_Bike_Shares.ipynb) checks the bike share trips raw data where *bike_share_locations* is generated for [Bike_Share_Trip_Locations](http://localhost:8888/notebooks/BikeCounting/BikeShare/Bike_Share_Trip_Locations.ipynb) that retrieves coordinates when they are not available (same as [ReverseGeocoding](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/ReverseGeocoding.ipynb) and [Monthly_ReverseGeocoding](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/Monthly_ReverseGeocoding.ipynb), this step generates data in the "Output/review" folder), [R_Daily_Bike_Share_Trips](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/R_Daily_Bike_Share_Trips.ipynb) aggregates daily bike share trip data, [R_Bike_Share_Trips_by_Time_of_Day](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/R_Bike_Share_Trips_by_Time_of_Day.ipynb) splits bike share trips by time of day, and [R_Nighttime_BikeShare_by_Season](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/R_Nighttime_BikeShare_by_Season.ipynb) explores night time bike share by season. [Trips](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/Trips.R) organizes raw data using the codes collected from the exploratory scripts and creates data for the all-year bike share dashboard. 
+
+6. Bikeways
 
 1) definitions of bikeway types;
 2) BPH by bikeway types;
 3) [bike-involved crash](https://www.lcog.org/thempo/page/bicycle-involved-crashes);
 4) webmap of bicycle network.
 
-5. Conclusions
+7. Conclusions
 
 The summary answers the questions of how many bike commuters in Eug-Spr, how often people bike, and where and when people bike the most.
 
@@ -167,4 +178,3 @@ Data is saved at T:\Data\COUNTS\Nonmotorized Counts\Summary Tables\Bicycle\Bicyc
 Data is saved at T:\Data\LTD Data\MonthlyBoardings.
 
 ### Bike shares
-Bike share [trips](https://data.socialbicycles.com/dashboard/#/154/trips/reports) data is downloaded manually by month, and saved at T:\MPO\Bike&Ped\BikeCounting\StoryMap\BikeShare\Data\Trips. 

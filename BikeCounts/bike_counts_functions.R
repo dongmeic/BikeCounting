@@ -50,3 +50,9 @@ agg_data <- function(dt=data1, var="Hour"){
   shapefile(outspdf, filename=paste0(main_dir, sub_dir, "/", filename, ".shp"), overwrite=TRUE)
   print(paste("Got the spatial aggregated data by", var))
 }
+
+convert_time_to_hour <- function(x){
+  s <- unlist(str_split(x, ":"))
+  return(as.numeric(s[1])+as.numeric(s[2])/60)
+}
+
