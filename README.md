@@ -108,8 +108,7 @@ Steps to update the dashboards:
 
 4. Bikes on buses
 
-
-
+The monthly bikes on buses data prior to 2022 is save at T:\Data\LTD Data\BikeOnBuses\Monthly and from 2022 at T:\Data\LTD Data\MonthlyBoardings. Aggregated data is calculated on [Bikes_On_Buses](https://github.com/dongmeic/BikeCounting/blob/main/BikesOnBuses/Bikes_On_Buses.R). The city information is added in ArcGIS Pro. 
 
 
 5. Bike share trips

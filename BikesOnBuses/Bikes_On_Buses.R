@@ -48,3 +48,20 @@ df <- transform(aggregate(x=list(Counts = data$qty), by=list(Year = year(data$da
                                                                                                            FUN=function(x) c(NA, diff(x)/x[-length(x)])))
 
 df
+
+outdata <- exportdata(data=data, b="total", export=TRUE)
+# combine yearly aggregated data
+inpath <- "T:/Tableau/tableauBikesOnBuses/Datasources/AggregatedBikesOnBuses_"
+total <- read.csv(paste0(inpath, "total.csv"))
+total$Category <- 'Total'
+inbd <- read.csv(paste0(inpath, "inbound.csv"))
+inbd$Category <- 'Inbound'
+outbd <- read.csv(paste0(inpath, "outbound.csv"))
+outbd$Category <- 'Outbound'
+outdata <- rbind(total, rbind(inbd, outbd))
+
+spdf <- df2spdf(df=outdata, lon_col_name='Longitude', lat_col_name='Latitude')
+outpath <- 'T:/MPO/Bike&Ped/BikeCounting/StoryMap/BikeOnBuses/Output'
+st_write(st_as_sf(spdf), dsn = outpath, layer = "Yearly_Bikes_On_Buses", 
+         driver = "ESRI Shapefile", delete_layer = TRUE)
+
