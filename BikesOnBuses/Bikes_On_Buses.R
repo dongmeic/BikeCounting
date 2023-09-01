@@ -36,20 +36,20 @@ plot(MPOBound$geometry)
 plot(spdf, add=TRUE, col='grey')
 points(coordinates(spdf_s)[,'coords.x1'], coordinates(spdf_s)[,'coords.x2'], cex=spdf$qty/5000, col='red')
 
+# export data
 outdata <- exportdata(export=TRUE)
+outdata <- exportdata(data=inbd_data, b="inbound", export=TRUE)
+outdata <- exportdata(data=data, b="total", export=TRUE)
 
 sdata <- outdata[!grepl(paste(c("Springfield Station, Bay", "Eugene Station, Bay"),collapse = "|"), outdata$Location),]
 options(repr.plot.width=8, repr.plot.height=8)
 par(mfrow=c(1,1),mar=c(4,4,2,0))
 boxplot(Counts~Year,data=sdata)
 
-outdata <- exportdata(data=inbd_data, b="inbound", export=TRUE)
 df <- transform(aggregate(x=list(Counts = data$qty), by=list(Year = year(data$date)), FUN=sum), Growth=ave(Counts, 
                                                                                                            FUN=function(x) c(NA, diff(x)/x[-length(x)])))
-
 df
 
-outdata <- exportdata(data=data, b="total", export=TRUE)
 # combine yearly aggregated data
 inpath <- "T:/Tableau/tableauBikesOnBuses/Datasources/AggregatedBikesOnBuses_"
 total <- read.csv(paste0(inpath, "total.csv"))
@@ -65,3 +65,15 @@ outpath <- 'T:/MPO/Bike&Ped/BikeCounting/StoryMap/BikeOnBuses/Output'
 st_write(st_as_sf(spdf), dsn = outpath, layer = "Yearly_Bikes_On_Buses", 
          driver = "ESRI Shapefile", delete_layer = TRUE)
 
+# create a layer to list the stops
+stop_df <- as.data.frame(spdf)[,c("Location", "Latitude", "Longitude", "Route")]
+stop_df2 <- stop_df %>% filter(!duplicated(cbind(Location, Route)))
+stop_df3 <- aggregate(Route ~ Location, data = stop_df2, paste, collapse = ",")
+names(stop_df3)[2] <- "Routes"
+stop_df4 <- merge(stop_df2, stop_df3, by="Location")
+stop_spdf <- df2spdf(df=stop_df4, lon_col_name="Longitude", lat_col_name="Latitude")
+stop_spdf <- stop_spdf[, c("Location", "Routes", "Route")]
+names(stop_spdf) <- c('stop_name', 'routes', 'route')
+
+st_write(st_as_sf(stop_spdf), dsn = outpath, layer = "LTD_Stops", 
+         driver = "ESRI Shapefile", delete_layer = TRUE)
