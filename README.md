@@ -61,16 +61,20 @@ Go to the [data sources](https://github.com/dongmeic/BikeCounting/tree/main#bike
 The script [explore_ACS.R](https://github.com/dongmeic/BikeCounting/blob/main/ACS/explore_ACS.R) exported Figures 1 and 2. The script [explore_ACS_byCity.R](https://github.com/dongmeic/BikeCounting/blob/main/ACS/explore_ACS_byCity.R) exported Figures 3 to 5, including the plotly links for Figures 3 and 4. Check [RPubs](https://rpubs.com/) for the links.
 
 Figure 1: boxplot_bike_commuters.png
+
 Figure 2: bike_commuters_sex.png
+
 Figure 3: bike_commuters_by_city_with_MoE.png
+
 Figure 4: percent_bike_work_commuters.png
+
 Figure 5: bike_commuter_structure.png 
 
 3) write or review the paragrahs with the analysis results.
 
 3. Bike counts
 
-2-1) BPH and its growth
+1) BPH and its growth
 Dashboard: [**Yearly Bikes Per Hour and the Growth**](https://lcog.maps.arcgis.com/home/item.html?id=264a0023f5514080a15dfdbf7c629291);
 
 Webmap: [Bike Counts Per Hour By Year](https://lcog.maps.arcgis.com/home/item.html?id=56cdac2023ba4635ad106cf52d7a68e4);
@@ -81,15 +85,15 @@ Script: [Explore_Bike_Counts.R](https://github.com/dongmeic/BikeCounting/blob/ma
 
 Steps to update the dashboard:
 
-2-1-1) Run the script to get data bikes per hour by year;
+1-1) Run the script to get data bikes per hour by year;
 
-2-1-2) Update data by overwriting entire feature layer;
+1-2) Update data by overwriting entire feature layer;
 
-2-1-3) Edit the dashboard title on the year inf and save;
+1-3) Edit the dashboard title on the year inf and save;
 
-2-1-4) Revise the storymap content with updated data 
+1-4) Revise the storymap content with updated data 
 
-2-2) BPH by hour, day of the week, month, and season
+2) BPH by hour, day of the week, month, and season
 
 Dashboard: [**Spatial Patterns of Average Bikes Per Hour**](https://lcog.maps.arcgis.com/home/item.html?id=b3c3f09b17ac4d6ebb81c1d387970f61)
 
@@ -101,34 +105,45 @@ Scripts: [Agg_BPH_by_Hour_Month_Weekday_Season.R](https://github.com/dongmeic/Bi
 
 Steps to update the dashboards:
 
-2-2-1) Run the R script to get aggregated BPH, then upload the data by running the python script on the Pro environment;
+2-1) Run the R script to get aggregated BPH, then upload the data by running the python script on the Pro environment;
 
-2-2-2) Update data by overwriting entire feature layer;
+2-2) Update data by overwriting entire feature layer;
 
-2-2-3) Edit the dashboard title on the year inf and save;
+2-3) Edit the dashboard title on the year info and save;
 
-2-2-4) Revise the storymap content with updated data 
+2-4) Revise the storymap content with the updated data 
 
 3) work on the viz updates (redesign the vizzes as needed);
-
 
 4) write or review the paragrahs with the analysis results (redesign the storymap as needed).
 
 4. Bikes on buses
 
-The monthly bikes on buses data prior to 2022 is save at T:\Data\LTD Data\BikeOnBuses\Monthly and from 2022 at T:\Data\LTD Data\MonthlyBoardings. Aggregated data *Yearly_Bikes_On_Buses* (shapefile) is calculated on [Bikes_On_Buses](https://github.com/dongmeic/BikeCounting/blob/main/BikesOnBuses/Bikes_On_Buses.R). The city information is added on ArcGIS Pro. 
+The monthly bikes on buses data prior to 2022 is save at T:\Data\LTD Data\BikeOnBuses\Monthly and from 2022 at T:\Data\LTD Data\MonthlyBoardings. Aggregated data *Yearly_Bikes_On_Buses* (shapefile) is calculated on [Bikes_On_Buses](https://github.com/dongmeic/BikeCounting/blob/main/BikesOnBuses/Bikes_On_Buses.R). The city information is added on ArcGIS Pro. The LTD routes are organized in [LTD_Routes_and_Stops.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/BikesOnBuses/LTD_Routes_and_Stops.ipynb).
 
 Dashboard: [**Yearly Patterns of Bikes on Buses and the Growth**](https://lcog.maps.arcgis.com/home/item.html?id=6662c4fdcf2a4310ad7c3ca371757353)
 
 Webmap:[Yearly Bikes on Buses](https://lcog.maps.arcgis.com/home/item.html?id=61cd99f311c444689dfcae9e78f796d1)
 
-Data: Yearly_Bikes_On_Buses.shp, 
+Data: Yearly_Bikes_On_Buses.shp
 
-Scripts: [Bikes_On_Buses.R](https://github.com/dongmeic/BikeCounting/blob/main/BikesOnBuses/Bikes_On_Buses.R)
+Scripts: [Bikes_On_Buses.R](https://github.com/dongmeic/BikeCounting/blob/main/BikesOnBuses/Bikes_On_Buses.R), [LTD_Routes_and_Stops.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/BikesOnBuses/LTD_Routes_and_Stops.ipynb)
+
+Steps to update the dashboards:
+
+1) Review and make sure the raw data is complete in the new year;
+
+2) Run the R script to update the yearly bikes on buses shapefile and update data on ArcGIS Online;
+
+3) In case routes and stops are updated, update and run the python script to get data with new routes and run the last section (commented) of R script to get data with new stops;
+
+4) Edit the dashboard title on the year info and save;
+
+5) Revise the storymap content with the updated data.
 
 5. Bike share trips
 
-To download bike share data, login bike share trips from the [social bicycles](https://data.socialbicycles.com/dashboard/#/154/trips/reports) site (sometimes it takes a while, especially in the "generating" step). Optionally, holds data is also downloaded for other bike share data analysis needs, and saved at T:\MPO\Bike&Ped\BikeCounting\StoryMap\BikeShare\Data\Holds. Bike share [trips](https://data.socialbicycles.com/dashboard/#/154/trips/reports) data is downloaded manually by month, and saved at T:\MPO\Bike&Ped\BikeCounting\StoryMap\BikeShare\Data\Trips. 
+To download bike share data, login bike share trips from the [social bicycles](https://data.socialbicycles.com/dashboard/#/154/trips/reports) site (sometimes it takes a while, especially on the "generating" step). Optionally, holds data is also downloaded for other bike share data analysis needs, and saved at T:\MPO\Bike&Ped\BikeCounting\StoryMap\BikeShare\Data\Holds. Bike share [trips](https://data.socialbicycles.com/dashboard/#/154/trips/reports) data is downloaded manually by month, and saved at T:\MPO\Bike&Ped\BikeCounting\StoryMap\BikeShare\Data\Trips. 
 
 The exploratory scripts [R_Explore_Bike_Shares](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/R_Explore_Bike_Shares.ipynb) checks the bike share trips raw data where *bike_share_locations* is generated for [Bike_Share_Trip_Locations](http://localhost:8888/notebooks/BikeCounting/BikeShare/Bike_Share_Trip_Locations.ipynb) that retrieves coordinates when they are not available (same as [ReverseGeocoding](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/ReverseGeocoding.ipynb) and [Monthly_ReverseGeocoding](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/Monthly_ReverseGeocoding.ipynb), this step generates data in the "Output/review" folder), [R_Daily_Bike_Share_Trips](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/R_Daily_Bike_Share_Trips.ipynb) aggregates daily bike share trip data, [R_Bike_Share_Trips_by_Time_of_Day](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/R_Bike_Share_Trips_by_Time_of_Day.ipynb) splits bike share trips by time of day, and [R_Nighttime_BikeShare_by_Season](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/R_Nighttime_BikeShare_by_Season.ipynb) explores night time bike share by season. [Trips](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/Trips.R) organizes raw data using the codes collected from the exploratory scripts and creates data for the all-year bike share dashboard. 
 

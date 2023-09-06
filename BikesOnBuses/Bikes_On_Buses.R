@@ -65,15 +65,17 @@ outpath <- 'T:/MPO/Bike&Ped/BikeCounting/StoryMap/BikeOnBuses/Output'
 st_write(st_as_sf(spdf), dsn = outpath, layer = "Yearly_Bikes_On_Buses", 
          driver = "ESRI Shapefile", delete_layer = TRUE)
 
-# create a layer to list the stops
-stop_df <- as.data.frame(spdf)[,c("Location", "Latitude", "Longitude", "Route")]
-stop_df2 <- stop_df %>% filter(!duplicated(cbind(Location, Route)))
-stop_df3 <- aggregate(Route ~ Location, data = stop_df2, paste, collapse = ",")
-names(stop_df3)[2] <- "Routes"
-stop_df4 <- merge(stop_df2, stop_df3, by="Location")
-stop_spdf <- df2spdf(df=stop_df4, lon_col_name="Longitude", lat_col_name="Latitude")
-stop_spdf <- stop_spdf[, c("Location", "Routes", "Route")]
-names(stop_spdf) <- c('stop_name', 'routes', 'route')
 
-st_write(st_as_sf(stop_spdf), dsn = outpath, layer = "LTD_Stops", 
-         driver = "ESRI Shapefile", delete_layer = TRUE)
+# # create a layer to list the stops
+# # unless there are updates on the stops, this section doesn't require a yearly update
+# stop_df <- as.data.frame(spdf)[,c("Location", "Latitude", "Longitude", "Route")]
+# stop_df2 <- stop_df %>% filter(!duplicated(cbind(Location, Route)))
+# stop_df3 <- aggregate(Route ~ Location, data = stop_df2, paste, collapse = ",")
+# names(stop_df3)[2] <- "Routes"
+# stop_df4 <- merge(stop_df2, stop_df3, by="Location")
+# stop_spdf <- df2spdf(df=stop_df4, lon_col_name="Longitude", lat_col_name="Latitude")
+# stop_spdf <- stop_spdf[, c("Location", "Routes", "Route")]
+# names(stop_spdf) <- c('stop_name', 'routes', 'route')
+# 
+# st_write(st_as_sf(stop_spdf), dsn = outpath, layer = "LTD_Stops", 
+#          driver = "ESRI Shapefile", delete_layer = TRUE)
