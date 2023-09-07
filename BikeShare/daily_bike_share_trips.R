@@ -1,4 +1,4 @@
-# This script was created to organize the bike share trips data by day parts
+# This script was created to organize the daily bike share trips data
 # By Dongmei Chen (dchen@lcog.org)
 # On August 9th, 2023
 

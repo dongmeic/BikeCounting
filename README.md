@@ -52,7 +52,7 @@ The introduction explains the purpose of the story map, its sections, and how th
 
 2. Bike commuters
 
-1) download bike commmuter data B08006 and B08301;)
+1) download bike commmuter data B08006 and B08301;
 
 Go to the [data sources](https://github.com/dongmeic/BikeCounting/tree/main#bike-commuters) section, download data with the links provided and save data in the designated folder. 
 
@@ -129,7 +129,7 @@ Data: Yearly_Bikes_On_Buses.shp
 
 Scripts: [Bikes_On_Buses.R](https://github.com/dongmeic/BikeCounting/blob/main/BikesOnBuses/Bikes_On_Buses.R), [LTD_Routes_and_Stops.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/BikesOnBuses/LTD_Routes_and_Stops.ipynb)
 
-Steps to update the dashboards:
+Steps to update the dashboard:
 
 1) Review and make sure the raw data is complete in the new year;
 
@@ -149,18 +149,21 @@ The exploratory scripts [R_Explore_Bike_Shares](https://github.com/dongmeic/Bike
 
 Dashboard:
 
-Webmap: [Bike Share Trips](https://lcog.maps.arcgis.com/home/item.html?id=cda04d94998c471db6ca651a28c17763)
+Webmap:
 
-Data: [Daily_Bike_Share_Trips.shp] (https://lcog.maps.arcgis.com/home/item.html?id=a5920c05b71443979c9e9fec75bbfc96), [Summarized_Bike_Share_Trips.shp](https://lcog.maps.arcgis.com/home/item.html?id=e7c55142446b4e579d8a24f58512c23a)
+Data:
 
-Scripts: [daily_bike_share_trips.R](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/daily_bike_share_trips.R)
+Scripts: 
 
 
 6. Bikeways
 
 1) definitions of bikeway types;
+
 2) BPH by bikeway types;
+
 3) [bike-involved crash](https://www.lcog.org/thempo/page/bicycle-involved-crashes);
+
 4) webmap of bicycle network.
 
 7. Conclusions
@@ -180,13 +183,13 @@ The introduction explains the purpose of the story map, its sections, and how th
 
 3) write or review the paragrahs with the analysis results (redesign the storymap as needed).
 
-Dashboard:
+Dashboard: [Daily Bike Counts in 2022](https://lcog.maps.arcgis.com/home/item.html?id=9fa954208df446928f774a0824a7638e)
 
-Webmap:
+Webmap: [Daily Bike Counts](https://lcog.maps.arcgis.com/home/item.html?id=7595cb635b934021a2546ed164fe57dd)
 
-Data:
+Data: [Daily Bike Counts](https://lcog.maps.arcgis.com/home/item.html?id=d449b3c11fe54cbf9ca867bcf42ac9be), [Mean Daily Bike Counts](https://lcog.maps.arcgis.com/home/item.html?id=3da6a6d5ab194720b1c53a89d04c44f5)
 
-Scripts: 
+Scripts: [daily_bike_counts.R](https://github.com/dongmeic/BikeCounting/tree/main/BikeCounts/daily_bike_counts.R)
 
 
 3. Bike share trips
@@ -197,14 +200,23 @@ Scripts:
 
 3) write or review the paragrahs with the analysis results (redesign the storymap as needed).
 
-Dashboard:
+Dashboard: [Daily Bike Share Trips in 2022](https://lcog.maps.arcgis.com/home/item.html?id=313ae9cad34041bfb5442ce697126c0f)
 
-Webmap:
+Webmap: [Bike Share Trips](https://lcog.maps.arcgis.com/home/item.html?id=cda04d94998c471db6ca651a28c17763)
 
-Data:
+Data: [Daily_Bike_Share_Trips.shp] (https://lcog.maps.arcgis.com/home/item.html?id=a5920c05b71443979c9e9fec75bbfc96), [Summarized_Bike_Share_Trips.shp](https://lcog.maps.arcgis.com/home/item.html?id=e7c55142446b4e579d8a24f58512c23a)
 
-Scripts: 
+Scripts: [daily_bike_share_trips.R](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/daily_bike_share_trips.R)
 
+Steps to update the dashboard:
+
+1) Confirm the completeness of the data and run the R script to get the listed data;
+
+2) Compress the listed data and upload the zip files online;
+
+3) Edit the dashboard title on the year info and save;
+
+4) Revise the storymap content with the updated data.
 
 4. Bikes on buses
 
