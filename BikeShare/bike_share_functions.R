@@ -1,4 +1,6 @@
 
+prj4str <- "+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1 +units=m +nadgrids=@null +wktext +no_defs +type=crs"
+
 organize_points <- function(trips){
   #trips <- read.csv(paste0(inpath, "/", file))
   org <- trips[,c('Route.ID', 'Bike.ID', 'User.ID', 
@@ -69,7 +71,7 @@ df2spdf <- function(df, lon_col_name, lat_col_name, trans = TRUE){
   proj4string(xy) <- lonlat
   spdf <- sp::SpatialPointsDataFrame(coords = xy, data = df)
   if(trans){
-    spdf <- spTransform(spdf,  CRS("+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1 +units=m +nadgrids=@null +wktext +no_defs +type=crs"))
+    spdf <- spTransform(spdf,  CRS(prj4str))
   }
   return(spdf)
 }

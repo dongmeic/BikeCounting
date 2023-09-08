@@ -15,7 +15,7 @@ outpath <- paste0(path, "/Output")
 year = "2022"
 df <- get_yearly_data("2022")
 ndf <- organize_yearly_data(df)
-#write.csv(ndf, paste0(outpath, "/Bike_Share_Trips.csv"), row.names = FALSE)
+write.csv(ndf, paste0(outpath, "/Bike_Share_Trips.csv"), row.names = FALSE)
 #MPOBound <- st_read(dsn = "X:/Data/Transportation", layer="MPO_Bound")
 # spdf <- df2spdf(ndf, 'Longitude', 'Latitude')
 # st_write(st_as_sf(spdf), dsn = outpath, layer = "Bike_Share_Trips", 

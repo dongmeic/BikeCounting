@@ -185,11 +185,13 @@ The introduction explains the purpose of the story map, its sections, and how th
 
 Dashboard: [Daily Bike Counts in 2022](https://lcog.maps.arcgis.com/home/item.html?id=9fa954208df446928f774a0824a7638e)
 
-Webmap: [Daily Bike Counts](https://lcog.maps.arcgis.com/home/item.html?id=7595cb635b934021a2546ed164fe57dd)
+Instant App: [Average Daily Counts by Season](https://lcog.maps.arcgis.com/home/item.html?id=51161cd8d1e2414fb7ed1cc76ca4010f)
 
-Data: [Daily Bike Counts](https://lcog.maps.arcgis.com/home/item.html?id=d449b3c11fe54cbf9ca867bcf42ac9be), [Mean Daily Bike Counts](https://lcog.maps.arcgis.com/home/item.html?id=3da6a6d5ab194720b1c53a89d04c44f5)
+Webmap: [Daily Bike Counts](https://lcog.maps.arcgis.com/home/item.html?id=7595cb635b934021a2546ed164fe57dd), [Average Daily Counts by Season](https://lcog.maps.arcgis.com/home/item.html?id=a4269fcccc5640bbb8b4ae76968030de)
 
-Scripts: [daily_bike_counts.R](https://github.com/dongmeic/BikeCounting/tree/main/BikeCounts/daily_bike_counts.R)
+Data: [Daily Bike Counts](https://lcog.maps.arcgis.com/home/item.html?id=d449b3c11fe54cbf9ca867bcf42ac9be)(Daily_Bike_Counts.zip), [Mean Daily Bike Counts](https://lcog.maps.arcgis.com/home/item.html?id=3da6a6d5ab194720b1c53a89d04c44f5)(Mean_Daily_Bike_Counts.zip), [Average Daily Counts by Season](https://lcog.maps.arcgis.com/home/item.html?id=9b3378459b6b4e778719a16c27900188)(DailyCounts_Season.zip)
+
+Scripts: [daily_bike_counts.R](https://github.com/dongmeic/BikeCounting/tree/main/BikeCounts/daily_bike_counts.R), [Agg_DailyCounts_By_Weekday_Month_Season.R](https://github.com/dongmeic/BikeCounting/tree/main/BikeCounts/Agg_DailyCounts_By_Weekday_Month_Season.R)
 
 
 3. Bike share trips
@@ -202,11 +204,11 @@ Scripts: [daily_bike_counts.R](https://github.com/dongmeic/BikeCounting/tree/mai
 
 Dashboard: [Daily Bike Share Trips in 2022](https://lcog.maps.arcgis.com/home/item.html?id=313ae9cad34041bfb5442ce697126c0f)
 
-Webmap: [Bike Share Trips](https://lcog.maps.arcgis.com/home/item.html?id=cda04d94998c471db6ca651a28c17763)
+Webmap: [Bike Share Trips](https://lcog.maps.arcgis.com/home/item.html?id=cda04d94998c471db6ca651a28c17763), [Bike Share Destinations-Morning](https://lcog.maps.arcgis.com/home/item.html?id=99630d36981a4e21a3457d1d2fc7496b), [Bike Share Destinations-Afternoon](https://lcog.maps.arcgis.com/home/item.html?id=4557cd4017c64da69498ff1df04b3a2c), [Bike Share Destinations-Evening](https://lcog.maps.arcgis.com/home/item.html?id=826231525662481b9c9d1bf1e22cd095), [Bike Share Destinations-Night](https://lcog.maps.arcgis.com/home/item.html?id=fcd2822734dc4477b9b81da2c3c05a0f)
 
-Data: [Daily_Bike_Share_Trips.shp] (https://lcog.maps.arcgis.com/home/item.html?id=a5920c05b71443979c9e9fec75bbfc96), [Summarized_Bike_Share_Trips.shp](https://lcog.maps.arcgis.com/home/item.html?id=e7c55142446b4e579d8a24f58512c23a)
+Data: [Daily_Bike_Share_Trips.shp] (https://lcog.maps.arcgis.com/home/item.html?id=a5920c05b71443979c9e9fec75bbfc96), [Summarized_Bike_Share_Trips.shp](https://lcog.maps.arcgis.com/home/item.html?id=e7c55142446b4e579d8a24f58512c23a), [Bike Share Destinations by Day Parts](https://lcog.maps.arcgis.com/home/item.html?id=2d628489004d41e39b385e820b92c010)
 
-Scripts: [daily_bike_share_trips.R](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/daily_bike_share_trips.R)
+Scripts: [daily_bike_share_trips.R](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/daily_bike_share_trips.R), [bike_share_trips_by_time_of_day.R](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/bike_share_trips_by_time_of_day.R)
 
 Steps to update the dashboard:
 
@@ -226,14 +228,13 @@ Steps to update the dashboard:
 
 3) write or review the paragrahs with the analysis results (redesign the storymap as needed).
 
-Dashboard:
+Dashboard: [Daily Bikes on Buses in 2022](https://lcog.maps.arcgis.com/home/item.html?id=9ff1afbd5e4545018816b03d59ffa7c2)
 
-Webmap:
+Webmap: [Daily Bikes on Buses](https://lcog.maps.arcgis.com/home/item.html?id=b92fab5ea2d840a9a0ad9952695fef95), [Inbound Bikes on Buses by Daypart-Morning](https://lcog.maps.arcgis.com/home/item.html?id=d6bfb0e56533452a882512cf472b0b1d), [Inbound Bikes on Buses by Daypart-Afternoon](https://lcog.maps.arcgis.com/home/item.html?id=d7433f66b0144f65b576c323d0cad457), [Inbound Bikes on Buses by Daypart-Evening](https://lcog.maps.arcgis.com/home/item.html?id=dc59509733aa49669bcaa72d836e1107), [Inbound Bikes on Buses by Daypart-Night](https://lcog.maps.arcgis.com/home/item.html?id=b3e24b419a6e40d78edbfac9fcde1652)
 
-Data:
+Data: [Daily Bikes On Buses](https://lcog.maps.arcgis.com/home/item.html?id=64261e668c40459695d6a63db25ca8af), [Sum Bikes On Buses](https://lcog.maps.arcgis.com/home/item.html?id=e7a713c1299c485caf62949b19d8db13), [Inbound Bikes on Buses by Daypart](https://lcog.maps.arcgis.com/home/item.html?id=040aa80e6dd4497f8cb3f297b87e8e97)(Inbound_BOB_DayPart.zip)
 
-Scripts: 
-
+Scripts: [daily_bikes_on_buses.R](https://github.com/dongmeic/BikeCounting/blob/main/BikesOnBuses/daily_bikes_on_buses.R), [bikes_on_buses_by_time_of_day.R](https://github.com/dongmeic/BikeCounting/blob/main/BikesOnBuses/bikes_on_buses_by_time_of_day.R)
 
 5. Conclusions
 

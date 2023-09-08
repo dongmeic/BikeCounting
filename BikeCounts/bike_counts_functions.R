@@ -56,3 +56,24 @@ convert_time_to_hour <- function(x){
   return(as.numeric(s[1])+as.numeric(s[2])/60)
 }
 
+aggData <- function(var="Weekday", year=2021, byyear=TRUE){
+  if(byyear){
+    aggdata <- aggdata[aggdata$Year == year,]
+  }
+  outdata <- aggregate(x=list(DailyCounts = aggdata$DailyCounts), by=list(Category = aggdata[,var], Location = aggdata$Location), FUN=mean)
+  outdata <- merge(outdata, locdata[,locvars], by = 'Location')
+  for(loc in unique(outdata$Location)){
+    for(cat in unique(outdata$Category)){
+      c <- aggdata[aggdata$Location == loc & aggdata[,var] == cat, var]
+      outdata[outdata$Location==loc & outdata$Category == cat,"N"] <- length(c)
+    }
+    
+  }
+  names(outdata)[which(names(outdata)=='Category')] <- var
+  write.csv(outdata, paste0(outpath, "/DailyCounts_", var,".csv"), row.names = FALSE)
+  print(paste("Got the aggregated data by", var))
+  outspdf <- df2spdf(outdata, 'Longitude', 'Latitude')
+  st_write(st_as_sf(outspdf), dsn=outpath, layer=paste0("DailyCounts_", var), 
+           driver="ESRI Shapefile", delete_layer=TRUE)
+  print(paste("Got the spatial aggregated data by", var))
+}

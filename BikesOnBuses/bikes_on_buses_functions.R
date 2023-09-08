@@ -9,6 +9,7 @@ library(glue)
 library(sp)
 
 options(rstudio.help.showDataPreview = FALSE)
+prj4str <- '+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1 +units=m +nadgrids=@null +wktext +no_defs +type=crs'
 stop.paths <- paste0("T:/Data/LTD Data/", c("2013 Fall_Oct2013_Routes and Stops/Fall 2013 LTD Stops", 
                                            "2014 Fall Oct2014_Routes and Stops",
                                            "2015 Fall LTD Routes and Stops",
@@ -34,7 +35,7 @@ df2spdf <- function(df, lon_col_name, lat_col_name, trans = TRUE){
   proj4string(xy) <- lonlat
   spdf <- sp::SpatialPointsDataFrame(coords = xy, data = df)
   if(trans){
-    spdf <- spTransform(spdf, CRS('+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1 +units=m +nadgrids=@null +wktext +no_defs +type=crs'))
+    spdf <- spTransform(spdf, CRS(prj4str))
   }
   return(spdf)
 }
@@ -182,3 +183,44 @@ exportdata <- function(data=outbd_data, b="outbound", export=FALSE){
   return(output)
 }
 
+get_daily_aggdata <- function(df=data, dir="O", rename=TRUE){
+  df <- df[df$dir == dir,]
+  aggdata <- aggregate(x=list(qty = df$qty), 
+                       by=list(date = df$date, stop = df$stop, route=df$route), 
+                       FUN=sum)
+  if(rename){
+    if(dir=="O"){
+      names(aggdata)[4] <- "out_qty"
+    }else{
+      names(aggdata)[4] <- "in_qty"
+    }
+  }
+  return(aggdata)    
+}
+
+convert_time_to_hour <- function(x){
+  x <- unlist(str_split(x, " "))[2]
+  s <- unlist(str_split(x, ":"))
+  return(as.numeric(s[1])+as.numeric(s[2])/60)
+}
+
+get_parts_of_day <- function(x){
+  if(x >= 21 | x <= 4){
+    d <- "Night"
+  }else if(x > 17 & x < 21){
+    d <- "Evening"
+  }else if(x > 12 & x <= 17){
+    d <- "Afternoon"
+  }else{
+    d <- "Morning"
+  }
+  return(d)
+}
+
+agg_data <- function(df=data, by="I"){
+  dt <- df[df$dir == by,]
+  aggdt <- aggregate(x=list(qty=dt$qty),
+                     by=list(stop = dt$stop, stop_name = dt$stop_name, route=dt$route, longitude = dt$longitude, latitude=dt$latitude, daypart=dt$DayPart),
+                     FUN=sum)
+  return(aggdt)
+}
