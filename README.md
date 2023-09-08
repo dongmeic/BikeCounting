@@ -232,13 +232,25 @@ Dashboard: [Daily Bikes on Buses in 2022](https://lcog.maps.arcgis.com/home/item
 
 Webmap: [Daily Bikes on Buses](https://lcog.maps.arcgis.com/home/item.html?id=b92fab5ea2d840a9a0ad9952695fef95), [Inbound Bikes on Buses by Daypart-Morning](https://lcog.maps.arcgis.com/home/item.html?id=d6bfb0e56533452a882512cf472b0b1d), [Inbound Bikes on Buses by Daypart-Afternoon](https://lcog.maps.arcgis.com/home/item.html?id=d7433f66b0144f65b576c323d0cad457), [Inbound Bikes on Buses by Daypart-Evening](https://lcog.maps.arcgis.com/home/item.html?id=dc59509733aa49669bcaa72d836e1107), [Inbound Bikes on Buses by Daypart-Night](https://lcog.maps.arcgis.com/home/item.html?id=b3e24b419a6e40d78edbfac9fcde1652)
 
-Data: [Daily Bikes On Buses](https://lcog.maps.arcgis.com/home/item.html?id=64261e668c40459695d6a63db25ca8af), [Sum Bikes On Buses](https://lcog.maps.arcgis.com/home/item.html?id=e7a713c1299c485caf62949b19d8db13), [Inbound Bikes on Buses by Daypart](https://lcog.maps.arcgis.com/home/item.html?id=040aa80e6dd4497f8cb3f297b87e8e97)(Inbound_BOB_DayPart.zip)
+Data: [Daily Bikes On Buses](https://lcog.maps.arcgis.com/home/item.html?id=64261e668c40459695d6a63db25ca8af)(Daily_Bikes_On_Buses.zip), [Sum Bikes On Buses](https://lcog.maps.arcgis.com/home/item.html?id=e7a713c1299c485caf62949b19d8db13)(Sum_Bikes_On_Buses.zip), [Inbound Bikes on Buses by Daypart](https://lcog.maps.arcgis.com/home/item.html?id=040aa80e6dd4497f8cb3f297b87e8e97)(Inbound_BOB_DayPart.zip)
 
 Scripts: [daily_bikes_on_buses.R](https://github.com/dongmeic/BikeCounting/blob/main/BikesOnBuses/daily_bikes_on_buses.R), [bikes_on_buses_by_time_of_day.R](https://github.com/dongmeic/BikeCounting/blob/main/BikesOnBuses/bikes_on_buses_by_time_of_day.R)
+
+Steps to update the dashboard:
+
+1) Confirm the completeness of the data and run the R script to get the listed data;
+
+2) Compress the listed data and upload the zip files online;
+
+3) Edit the dashboard title on the year info and save;
+
+4) Revise the storymap content with the updated data.
 
 5. Conclusions
 
 This part summarizes the hotspots of hourly bike counts, bike share, and bikes on buses by year and time of the day in the most recent year. 
+
+Script: [maps_plots_single_year.R](https://github.com/dongmeic/BikeCounting/blob/main/Analysis/maps_plots_single_year.R)
 
 ## Data sources
 
