@@ -248,7 +248,7 @@ Steps to update the dashboard:
 
 5. Conclusions
 
-This part summarizes the hotspots of hourly bike counts, bike share, and bikes on buses by year and time of the day in the most recent year. 
+This part summarizes the hotspots of hourly bike counts, bike share, and bikes on buses by year and time of the day in the most recent year. The image generated from the R script requires further editings on Illustrator. 
 
 Script: [maps_plots_single_year.R](https://github.com/dongmeic/BikeCounting/blob/main/Analysis/maps_plots_single_year.R)
 

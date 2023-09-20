@@ -42,3 +42,11 @@ legend("topright", c("Bike Counts", "Bike Share", "Bikes on Buses"),
        pch = c(3, 2, 1), col=c("#3A54A4", "#771D48", "#48853E"),
        cex = rep(1.5,3))
 dev.off()
+
+BikesOnBuses_in <- BikesOnBuses[!is.na(BikesOnBuses$in_qty),]
+sort(BikesOnBuses_in$in_qty, decreasing = TRUE)
+unique(BikesOnBuses_in[BikesOnBuses_in$in_qty > 800, "stop_name"])
+
+BikesOnBuses_out <- BikesOnBuses[!is.na(BikesOnBuses$out_qty),]
+sort(BikesOnBuses_out$out_qty, decreasing = TRUE)
+unique(BikesOnBuses_out[BikesOnBuses_out$out_qty > 1000, "stop_name"])

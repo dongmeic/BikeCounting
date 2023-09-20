@@ -57,6 +57,7 @@ aggdata$WeekdayOrder <- ifelse(aggdata$Weekday == "Monday", 1,
 
 outpath <- "T:/MPO/Bike&Ped/BikeCounting/StoryMap/BikeCounts/Output"
 write.csv(aggdata, paste0(outpath, "/Daily_Bike_Counts.csv"), row.names = FALSE)
+#dailybc <- read.csv(paste0(outpath, "/Daily_Bike_Counts.csv"))
 aggspdf <- df2spdf(aggdata, 'Longitude', 'Latitude')
 st_write(st_as_sf(aggspdf), dsn=outpath, layer="Daily_Bike_Counts", 
          driver="ESRI Shapefile", delete_layer=TRUE)
