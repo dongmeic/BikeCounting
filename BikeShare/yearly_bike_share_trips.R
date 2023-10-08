@@ -17,14 +17,16 @@ df <- get_data_multiyears(2019:2022)
 ndf <- organize_yearly_data(df)
 #write.csv(ndf, paste0(outpath, "/Bike_Share_Trips_all_years.csv"), row.names = FALSE)
 
-aggdata <- aggregate_data_daily(ndf)
-write.csv(aggdata, paste0(outpath, "/Daily_Bike_Share_Trips_all_years.csv"), row.names = FALSE)
+#aggdata_daily <- aggregate_data_daily(ndf)
 
-agg_spdf <- df2spdf(aggdata, 'Longitude', 'Latitude')
-st_write(st_as_sf(agg_spdf), dsn = outpath, layer = "Daily_Bike_Share_Trips_all_years", 
+aggdata_yearly <- aggregate_data_yearly(ndf)
+write.csv(aggdata_yearly, paste0(outpath, "/Yearly_Bike_Share_Trips.csv"), row.names = FALSE)
+
+agg_spdf <- df2spdf(aggdata_yearly, 'Longitude', 'Latitude')
+st_write(st_as_sf(agg_spdf), dsn = outpath, layer = "Yearly_Bike_Share_Trips", 
          driver = "ESRI Shapefile", delete_layer = TRUE)  # ignore the warning message
 
-sum_avg_df <- summarize_data_daily(aggdata)
+sum_avg_df <- summarize_aggdata(aggdata_yearly)
 write.csv(sum_avg_df, paste0(outpath, "/Sum_Bike_Share_Trips_all_years.csv"), row.names = FALSE)
 
 sum_avg_spdf <- df2spdf(sum_avg_df, 'Longitude', 'Latitude')

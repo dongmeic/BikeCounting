@@ -25,6 +25,7 @@ aggdata <- aggregate_data_daily(ndf)
 write.csv(aggdata, paste0(outpath, "/Daily_Bike_Share_Trips.csv"), row.names = FALSE)
 
 agg_spdf <- df2spdf(aggdata, 'Longitude', 'Latitude')
+agg_spdf$Date <- as.character(agg_spdf$Date)
 st_write(st_as_sf(agg_spdf), dsn = outpath, layer = "Daily_Bike_Share_Trips", 
          driver = "ESRI Shapefile", delete_layer = TRUE) # ignore the warning message
 

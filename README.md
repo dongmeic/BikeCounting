@@ -147,7 +147,7 @@ To download bike share data, login bike share trips from the [social bicycles](h
 
 The exploratory scripts [R_Explore_Bike_Shares](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/R_Explore_Bike_Shares.ipynb) checks the bike share trips raw data where *bike_share_locations* is generated for [Bike_Share_Trip_Locations](http://localhost:8888/notebooks/BikeCounting/BikeShare/Bike_Share_Trip_Locations.ipynb) that retrieves coordinates when they are not available (same as [ReverseGeocoding](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/ReverseGeocoding.ipynb) and [Monthly_ReverseGeocoding](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/Monthly_ReverseGeocoding.ipynb), this step generates data in the "Output/review" folder), [R_Daily_Bike_Share_Trips](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/R_Daily_Bike_Share_Trips.ipynb) aggregates daily bike share trip data, [R_Bike_Share_Trips_by_Time_of_Day](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/R_Bike_Share_Trips_by_Time_of_Day.ipynb) splits bike share trips by time of day, and [R_Nighttime_BikeShare_by_Season](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/R_Nighttime_BikeShare_by_Season.ipynb) explores night time bike share by season. [Trips](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/Trips.R) organizes raw data using the codes collected from the exploratory scripts and creates data for the all-year bike share dashboard. 
 
-Dashboard:
+Dashboard: 
 
 Webmap:
 

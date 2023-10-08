@@ -76,11 +76,17 @@ df2spdf <- function(df, lon_col_name, lat_col_name, trans = TRUE){
   return(spdf)
 }
 
-get_aggdata <- function(df=hub_df, OrgDst="Origin"){
+get_aggdata <- function(df=hub_df, OrgDst="Origin", cat='daily'){
   df <- df[df$OriginDestination == OrgDst,]
-  aggdata <- aggregate(x=list(NoTrips = df$RouteID, NoUsers = df$UserID), 
-                       by=list(Date = df$Date, Location = df$Location), 
-                       FUN=function(x) length(x))
+  if(cat=='daily'){
+    aggdata <- aggregate(x=list(NoTrips = df$RouteID, NoUsers = df$UserID), 
+                         by=list(Date = df$Date, Location = df$Location), 
+                         FUN=function(x) length(x))
+  }else{
+    aggdata <- aggregate(x=list(NoTrips = df$RouteID, NoUsers = df$UserID), 
+                         by=list(Year = df$Year, Location = df$Location), 
+                         FUN=function(x) length(x))
+  }
   
   if(OrgDst=="Origin"){
     names(aggdata)[3:4] <- c("OrgTrips", "OrgUsers")
@@ -174,19 +180,8 @@ get_stations <- function(){
   return(stations)
 }
 
-aggregate_data_daily <- function(ndf){
-  datedf <- unique(ndf[,c("Date", "Month", "Season", "Weekday", "SeasonOrder", "WeekdayOrder")])
-  datedf$MonthOrder <- ifelse(datedf$Month == "January", 1, 
-                              ifelse(datedf$Month == "February", 2, 
-                                     ifelse(datedf$Month == "March", 3, 
-                                            ifelse(datedf$Month == "April", 4, 
-                                                   ifelse(datedf$Month == "May", 5, 
-                                                          ifelse(datedf$Month == "June", 6, 
-                                                                 ifelse(datedf$Month == "July", 7, 
-                                                                        ifelse(datedf$Month == "August", 8, 
-                                                                               ifelse(datedf$Month == "September", 9, 
-                                                                                      ifelse(datedf$Month == "October", 10, 
-                                                                                             ifelse(datedf$Month == "November", 11, 12)))))))))))
+# get the location dataframe outside stations
+get_locdf_out <- function(ndf){
   locdf <- unique(ndf[,c("Location", "Latitude", "Longitude", "OriginDestination")])
   stations <- get_stations()
   nlocdf <- ndf[!(ndf$Location %in% stations$Location), c("Location", "Longitude", "Latitude")]
@@ -204,6 +199,23 @@ aggregate_data_daily <- function(ndf){
   ugb <- st_transform(ugb, 3857)
   inside.polygon <- over(nlocspdf, as(ugb[,"ugbcityname"], 'Spatial'))
   nlocdf$City <- inside.polygon$ugbcityname
+  return(nlocdf)
+}
+
+aggregate_data_daily <- function(ndf){
+  datedf <- unique(ndf[,c("Date", "Month", "Season", "Weekday", "SeasonOrder", "WeekdayOrder")])
+  datedf$MonthOrder <- ifelse(datedf$Month == "January", 1, 
+                              ifelse(datedf$Month == "February", 2, 
+                                     ifelse(datedf$Month == "March", 3, 
+                                            ifelse(datedf$Month == "April", 4, 
+                                                   ifelse(datedf$Month == "May", 5, 
+                                                          ifelse(datedf$Month == "June", 6, 
+                                                                 ifelse(datedf$Month == "July", 7, 
+                                                                        ifelse(datedf$Month == "August", 8, 
+                                                                               ifelse(datedf$Month == "September", 9, 
+                                                                                      ifelse(datedf$Month == "October", 10, 
+                                                                                             ifelse(datedf$Month == "November", 11, 12)))))))))))
+  stations <- get_stations()
   hub_df <- ndf[ndf$Location %in% stations$Location,]
   #dim(hub_df)
   #unique(hub_df$OriginDestination)
@@ -217,7 +229,19 @@ aggregate_data_daily <- function(ndf){
   return(aggdata)
 }
 
-summarize_data_daily <- function(aggdata){
+aggregate_data_yearly <- function(ndf){
+  stations <- get_stations()
+  hub_df <- ndf[ndf$Location %in% stations$Location,]
+  aggdata <- aggregate(x=list(NoTrips = hub_df$RouteID, NoUsers = hub_df$UserID), 
+                       by=list(Year = hub_df$Year, Location = hub_df$Location), 
+                       FUN=function(x) length(x))
+  aggdata <- merge(aggdata, get_aggdata(df=hub_df, OrgDst="Origin", cat='yearly'), by=c("Location", "Year"))
+  aggdata <- merge(aggdata, get_aggdata(df=hub_df, OrgDst="Destination", cat='yearly'), by=c("Location", "Year"))
+  aggdata <- merge(aggdata, stations, by="Location")
+  return(aggdata)
+}
+
+summarize_aggdata <- function(aggdata){
   sumdf <- aggregate(x=list(NoTrips = aggdata$NoTrips, 
                             NoUsers = aggdata$NoUsers, 
                             OrgTrips = aggdata$OrgTrips, 
