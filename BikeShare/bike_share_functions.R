@@ -81,11 +81,11 @@ get_aggdata <- function(df=hub_df, OrgDst="Origin", cat='daily'){
   if(cat=='daily'){
     aggdata <- aggregate(x=list(NoTrips = df$RouteID, NoUsers = df$UserID), 
                          by=list(Date = df$Date, Location = df$Location), 
-                         FUN=function(x) length(x))
+                         FUN=function(x) length(unique(x)))
   }else{
     aggdata <- aggregate(x=list(NoTrips = df$RouteID, NoUsers = df$UserID), 
                          by=list(Year = df$Year, Location = df$Location), 
-                         FUN=function(x) length(x))
+                         FUN=function(x) length(unique(x)))
   }
   
   if(OrgDst=="Origin"){
@@ -221,7 +221,7 @@ aggregate_data_daily <- function(ndf){
   #unique(hub_df$OriginDestination)
   aggdata <- aggregate(x=list(NoTrips = hub_df$RouteID, NoUsers = hub_df$UserID), 
                        by=list(Date = hub_df$Date, Location = hub_df$Location), 
-                       FUN=function(x) length(x))
+                       FUN=function(x) length(unique(x)))
   aggdata <- merge(aggdata, get_aggdata(df=hub_df, OrgDst="Origin"), by=c("Location", "Date"))
   aggdata <- merge(aggdata, get_aggdata(df=hub_df, OrgDst="Destination"), by=c("Location", "Date"))
   aggdata <- merge(aggdata, stations, by="Location")
@@ -234,7 +234,7 @@ aggregate_data_yearly <- function(ndf){
   hub_df <- ndf[ndf$Location %in% stations$Location,]
   aggdata <- aggregate(x=list(NoTrips = hub_df$RouteID, NoUsers = hub_df$UserID), 
                        by=list(Year = hub_df$Year, Location = hub_df$Location), 
-                       FUN=function(x) length(x))
+                       FUN=function(x) length(unique(x)))
   aggdata <- merge(aggdata, get_aggdata(df=hub_df, OrgDst="Origin", cat='yearly'), by=c("Location", "Year"))
   aggdata <- merge(aggdata, get_aggdata(df=hub_df, OrgDst="Destination", cat='yearly'), by=c("Location", "Year"))
   aggdata <- merge(aggdata, stations, by="Location")
@@ -260,4 +260,22 @@ summarize_aggdata <- function(aggdata){
   sumdf <- merge(sumdf, stations, by="Location")
   sum_avg_df <- merge(sumdf, avgdf, by="Location")
   return(sum_avg_df)
+}
+
+calculate_growth <- function(outdata, infield, outfield){
+  for(loc in unique(outdata$Location)){
+    years <- sort(unique(outdata[outdata$Location == loc,"Year"]))
+    for(yr in years){
+      if(yr==min(years)){
+        outdata[outdata$Location==loc & outdata$Year==yr, outfield] <- NA
+      }else{
+        i <- which(years==yr)
+        x1 <- outdata[outdata$Location==loc & outdata$Year==yr, infield]
+        x2 <- outdata[outdata$Location==loc & outdata$Year==years[i-1], infield]
+        n <- yr - years[i-1]
+        outdata[outdata$Location==loc & outdata$Year==yr, outfield] <- (x1-x2)/(n*x2)
+      }
+    }
+  }
+  return(outdata)
 }

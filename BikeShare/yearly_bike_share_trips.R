@@ -20,9 +20,11 @@ ndf <- organize_yearly_data(df)
 #aggdata_daily <- aggregate_data_daily(ndf)
 
 aggdata_yearly <- aggregate_data_yearly(ndf)
+outdata <- calculate_growth(outdata=aggdata_yearly, infield='NoTrips', outfield='NoTrips_G')
+outdata <- calculate_growth(outdata=outdata, infield='NoUsers', outfield='NoUsers_G')
 write.csv(aggdata_yearly, paste0(outpath, "/Yearly_Bike_Share_Trips.csv"), row.names = FALSE)
 
-agg_spdf <- df2spdf(aggdata_yearly, 'Longitude', 'Latitude')
+agg_spdf <- df2spdf(outdata, 'Longitude', 'Latitude')
 st_write(st_as_sf(agg_spdf), dsn = outpath, layer = "Yearly_Bike_Share_Trips", 
          driver = "ESRI Shapefile", delete_layer = TRUE)  # ignore the warning message
 

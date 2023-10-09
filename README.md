@@ -125,7 +125,7 @@ Dashboard: [**Yearly Patterns of Bikes on Buses and the Growth**](https://lcog.m
 
 Webmap:[Yearly Bikes on Buses](https://lcog.maps.arcgis.com/home/item.html?id=61cd99f311c444689dfcae9e78f796d1)
 
-Data: Yearly_Bikes_On_Buses.shp
+Data: [Yearly Bikes on Buses](https://lcog.maps.arcgis.com/home/item.html?id=5e1a745d6de84049a69ac380be8cb4b0) (T:\MPO\Bike&Ped\BikeCounting\StoryMap\BikeOnBuses\Output\Yearly_Bikes_On_Buses.zip)
 
 Scripts: [Bikes_On_Buses.R](https://github.com/dongmeic/BikeCounting/blob/main/BikesOnBuses/Bikes_On_Buses.R), [LTD_Routes_and_Stops.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/BikesOnBuses/LTD_Routes_and_Stops.ipynb)
 
@@ -147,13 +147,13 @@ To download bike share data, login bike share trips from the [social bicycles](h
 
 The exploratory scripts [R_Explore_Bike_Shares](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/R_Explore_Bike_Shares.ipynb) checks the bike share trips raw data where *bike_share_locations* is generated for [Bike_Share_Trip_Locations](http://localhost:8888/notebooks/BikeCounting/BikeShare/Bike_Share_Trip_Locations.ipynb) that retrieves coordinates when they are not available (same as [ReverseGeocoding](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/ReverseGeocoding.ipynb) and [Monthly_ReverseGeocoding](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/Monthly_ReverseGeocoding.ipynb), this step generates data in the "Output/review" folder), [R_Daily_Bike_Share_Trips](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/R_Daily_Bike_Share_Trips.ipynb) aggregates daily bike share trip data, [R_Bike_Share_Trips_by_Time_of_Day](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/R_Bike_Share_Trips_by_Time_of_Day.ipynb) splits bike share trips by time of day, and [R_Nighttime_BikeShare_by_Season](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/R_Nighttime_BikeShare_by_Season.ipynb) explores night time bike share by season. [Trips](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/Trips.R) organizes raw data using the codes collected from the exploratory scripts and creates data for the all-year bike share dashboard. 
 
-Dashboard: 
+Dashboard: [**PeaceHealth Rides Yearly Bike Share Trips and Users**](https://lcog.maps.arcgis.com/home/item.html?id=ee605aa23f104ffeb66e6b01dd9ee5c7)
 
-Webmap:
+Webmap: [Yearly Bike Share Trips and Users](https://lcog.maps.arcgis.com/home/item.html?id=9d34bbc74e3f474c84d1b45ce60e32cd)
 
-Data:
+Data: [Yearly Bike Share Trips](https://lcog.maps.arcgis.com/home/item.html?id=29d46d35da4141b9a8fffe221d030ad8)(T:\MPO\Bike&Ped\BikeCounting\StoryMap\BikeShare\Output\Yearly_Bike_Share_Trips.zip); [Sum Bike Share Trips all years](https://lcog.maps.arcgis.com/home/item.html?id=d0c3b153b8bc4ce3a00907394e14b856)(T:\MPO\Bike&Ped\BikeCounting\StoryMap\BikeShare\Output\Sum_Bike_Share_Trips_all_years.zip)
 
-Scripts: 
+Scripts: [daily_bike_share_trips.R](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/daily_bike_share_trips.R); [bike_share_functions.R](https://github.com/dongmeic/BikeCounting/blob/main/BikeShare/bike_share_functions.R)
 
 
 6. Bikeways
