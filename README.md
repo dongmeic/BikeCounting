@@ -160,11 +160,16 @@ Scripts: [daily_bike_share_trips.R](https://github.com/dongmeic/BikeCounting/blo
 
 1) definitions of bikeway types;
 
+The map tour is created using the photos saved at T:\MPO\Bike&Ped\BikeCounting\StoryMap\photos. The locations are identified from fieldwork or photos saved at T:\MPO\Public Involvement\Photos2020. 
+
 2) BPH by bikeway types;
 
-3) [bike-involved crash](https://www.lcog.org/thempo/page/bicycle-involved-crashes);
 
-4) webmap of bicycle network.
+
+3) webmap of bicycle network;
+
+4) [bike-involved crash](https://www.lcog.org/thempo/page/bicycle-involved-crashes);
+
 
 7. Conclusions
 
