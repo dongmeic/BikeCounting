@@ -164,13 +164,13 @@ The map tour is created using the photos saved at T:\MPO\Bike&Ped\BikeCounting\S
 
 2) BPH by bikeway types;
 
-The figure "Bikes Per Hour by Bike Lane Type" is created from the script "[Bike_Counts_by_Lane_Type.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/Analysis/Bike_Counts_by_Lane_Type.ipynb)". 
+The figure "Bikes Per Hour by Bikeway Type" is created from the script "[Bike_Counts_by_Bikeway_Type.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/Analysis/Bike_Counts_by_Bikeway_Type.ipynb)". 
 
 3) webmap of bicycle network;
 
 The WebApp Builder requires updates on bike counts, bikes on buses, and bike share trips. 
 
-The web map is "[Bike Counting in Central Lane](https://lcog.maps.arcgis.com/home/item.html?id=3f2a7746563c40008fe556f6c1271b21)".
+The web map is "[Bike Counting in Central Lane](https://lcog.maps.arcgis.com/home/item.html?id=3f2a7746563c40008fe556f6c1271b21)". Need to rename the layers when uploading new data.
 
 The list of data sets is shown below:
 
