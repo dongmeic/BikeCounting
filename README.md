@@ -160,13 +160,44 @@ Scripts: [daily_bike_share_trips.R](https://github.com/dongmeic/BikeCounting/blo
 
 1) definitions of bikeway types;
 
-The map tour is created using the photos saved at T:\MPO\Bike&Ped\BikeCounting\StoryMap\photos. The locations are identified from fieldwork or photos saved at T:\MPO\Public Involvement\Photos2020. 
+The map tour is created using the photos saved at T:\MPO\Bike&Ped\BikeCounting\StoryMap\photos. The locations are identified from fieldwork or photos saved at T:\MPO\Public Involvement\Photos2020. This part doesn't require regular updates.
 
 2) BPH by bikeway types;
 
-
+The figure "Bikes Per Hour by Bike Lane Type" is created from the script "[Bike_Counts_by_Lane_Type.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/Analysis/Bike_Counts_by_Lane_Type.ipynb)". 
 
 3) webmap of bicycle network;
+
+The WebApp Builder requires updates on bike counts, bikes on buses, and bike share trips. 
+
+The web map is "[Bike Counting in Central Lane](https://lcog.maps.arcgis.com/home/item.html?id=3f2a7746563c40008fe556f6c1271b21)".
+
+The list of data sets is shown below:
+
+(1) bike counts (BPH.shp created from [Explore_Bike_Counts.R](https://github.com/dongmeic/BikeCounting/blob/48aaff891d51e3bdcc646ed57e0d7da988962075/BikeCounts/Explore_Bike_Counts.R#L177))
+
+[Average Bikes Per Hour During 2012 - 2022](https://lcog.maps.arcgis.com/home/item.html?id=ddcf729f6ca146b5a158b5b63560d526)
+
+(2) bikes on buses (created from [Bikes_On_Buses.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/Analysis/Bikes_On_Buses.ipynb))
+
+[Average Annual Total Counts on Inbound Bikes on Buses During 2013 - 2022](https://lcog.maps.arcgis.com/home/item.html?id=2a9e85a566e54cf1b1596e996259e7b6)(T:\MPO\Bike&Ped\BikeCounting\StoryMap\BikeOnBuses\Output\Bikes_on_Buses_inbound.zip)
+
+[Average Annual Total Counts on Outbound Bikes on Buses During 2013 - 2022](https://lcog.maps.arcgis.com/home/item.html?id=ff9e9fadd94f47558a663167535731c9)(T:\MPO\Bike&Ped\BikeCounting\StoryMap\BikeOnBuses\Output\Bikes_on_Buses_inbound.zip)
+
+[Average Annual Total Counts on Bikes on Buses During 2013 - 2022](https://lcog.maps.arcgis.com/home/item.html?id=030d3528f8fc41109144cee728712b47)(T:\MPO\Bike&Ped\BikeCounting\StoryMap\BikeOnBuses\Output\Bikes_on_Buses.zip)
+
+[Average Annual Total Counts on Inbound Bikes on Buses During 2013 - 2022 (excluded Eugene and Springfield stations)](https://lcog.maps.arcgis.com/home/item.html?id=d249a3303365432ebb0a77bf9bae2a48)(T:\MPO\Bike&Ped\BikeCounting\StoryMap\BikeOnBuses\Output\Bikes_on_Buses_inbound_excluded.zip)
+
+[Average Annual Total Counts on Outbound Bikes on Buses During 2013 - 2022 (excluded Eugene and Springfield stations)](https://lcog.maps.arcgis.com/home/item.html?id=0525e396090a4ba6b5312790c5226ab8)(T:\MPO\Bike&Ped\BikeCounting\StoryMap\BikeOnBuses\Output\Bikes_on_Buses_inbound_excluded.zip)
+
+[Average Annual Total Counts on Bikes on Buses During 2013 - 2022 (excluded Eugene and Springfield stations)](https://lcog.maps.arcgis.com/home/item.html?id=f4f01f031d1c42b48e3fdb5635d2fb86)(T:\MPO\Bike&Ped\BikeCounting\StoryMap\BikeOnBuses\Output\Bikes_on_Buses_excluded.zip)
+
+(3) bike share trips (created from [Bike_Share_Trips.ipynb](https://github.com/dongmeic/BikeCounting/blob/main/Analysis/Bike_Share_Trips.ipynb))
+
+[Total Destination Station Bike Share Trips During 2019 - 2022](https://lcog.maps.arcgis.com/home/item.html?id=c267c6e9d624426f86ffbbeab013e4e8)(T:\MPO\Bike&Ped\BikeCounting\StoryMap\BikeShare\Data\DestinationCounts.zip)
+
+[Total Origin Station Bike Share Trips During 2019 - 2022](https://lcog.maps.arcgis.com/home/item.html?id=bc39817382ef4b67ae61109f4cf26a51)(T:\MPO\Bike&Ped\BikeCounting\StoryMap\BikeShare\Data\OriginCounts.zip)
+
 
 4) [bike-involved crash](https://www.lcog.org/thempo/page/bicycle-involved-crashes);
 
@@ -197,7 +228,6 @@ Webmap: [Daily Bike Counts](https://lcog.maps.arcgis.com/home/item.html?id=7595c
 Data: [Daily Bike Counts](https://lcog.maps.arcgis.com/home/item.html?id=d449b3c11fe54cbf9ca867bcf42ac9be)(Daily_Bike_Counts.zip), [Mean Daily Bike Counts](https://lcog.maps.arcgis.com/home/item.html?id=3da6a6d5ab194720b1c53a89d04c44f5)(Mean_Daily_Bike_Counts.zip), [Average Daily Counts by Season](https://lcog.maps.arcgis.com/home/item.html?id=9b3378459b6b4e778719a16c27900188)(DailyCounts_Season.zip)
 
 Scripts: [daily_bike_counts.R](https://github.com/dongmeic/BikeCounting/tree/main/BikeCounts/daily_bike_counts.R), [Agg_DailyCounts_By_Weekday_Month_Season.R](https://github.com/dongmeic/BikeCounting/tree/main/BikeCounts/Agg_DailyCounts_By_Weekday_Month_Season.R)
-
 
 3. Bike share trips
 
