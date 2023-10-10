@@ -201,10 +201,15 @@ The list of data sets is shown below:
 
 4) [bike-involved crash](https://www.lcog.org/thempo/page/bicycle-involved-crashes);
 
+The [crash data](https://lcog.maps.arcgis.com/home/item.html?id=49ed11f9b3214b17995c25e84158ba45) is created using ArcGIS Pro and [python](https://github.com/dongmeic/BikeCounting/blob/main/Analysis/Crash_Bicyclists.ipynb). 
+
+Dashboard: [Bicyclist-Involved Crashes in Central Lane](https://lcog.maps.arcgis.com/apps/dashboards/db3ff913377744a3a99f36ff0b02dbb6)
+
+Webmap: [Crash Heat Map](https://lcog.maps.arcgis.com/home/webmap/viewer.html?webmap=d5577b5b6d39494db3c118f372cca9ee)
 
 7. Conclusions
 
-The summary answers the questions of how many bike commuters in Eug-Spr, how often people bike, and where and when people bike the most.
+The summary answers the questions of how many bike commuters in Eug-Spr, how often people bike, and where and when people bike the most. It also make suggestions on biking support systems based on data analysis. 
 
 ### one-year story map
 1. Introduction
