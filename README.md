@@ -45,7 +45,7 @@ To understand the bike counting spatial patterns, [hot spot analysis](https://gi
 Export [the storymap content](https://github.com/dongmeic/BikeCounting/blob/main/StoryMap/get_storymap_text.py) and [save it to word](https://github.com/dongmeic/BikeCounting/blob/main/StoryMap/export_text_to_word.py) for historical copies. 
 
 ## Steps to update the storymaps
-### all-year story maps (titled "**Biking in Central Lane**")
+### all-year story maps (titled "[**Biking in Central Lane**](https://storymaps.arcgis.com/stories/4c8e01a034f5438eb17be5436baeb16d)")
 1. Introduction
 
 The introduction explains the purpose of the story map, its sections, and how the storymap is updated yearly. 
@@ -211,7 +211,7 @@ Webmap: [Crash Heat Map](https://lcog.maps.arcgis.com/home/webmap/viewer.html?we
 
 The summary answers the questions of how many bike commuters in Eug-Spr, how often people bike, and where and when people bike the most. It also make suggestions on biking support systems based on data analysis. 
 
-### one-year story map
+### one-year story map (titled "[**Central Lane Bike Counting in 2022**](https://storymaps.arcgis.com/stories/241cfe53fdc54602b313eeb299729031)")
 1. Introduction
 
 The introduction explains the purpose of the story map, its sections, and how the storymap is updated yearly. 
