@@ -315,4 +315,4 @@ Data is saved at T:\Data\COUNTS\Nonmotorized Counts\Summary Tables\Bicycle\Bicyc
 Data is saved at T:\Data\LTD Data\MonthlyBoardings.
 
 ### Bike shares
-Data is saved at T:\MPO\Bike&Ped\BikeCounting\StoryMap\BikeShare\Data\Trips.
+Data is saved at T:\MPO\Bike&Ped\BikeCounting\StoryMap\BikeShare\Data\Trips. 
